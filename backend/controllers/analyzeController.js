@@ -3,6 +3,7 @@ const { analyzeResume } = require('../services/openAiService');
 const analyzeResumeController = async (req, res) => {
     try {
         const resumeFile = req.file; // The uploaded resume file
+        console.log(resumeFile);
         const jobDescription = req.body.jobDescription; // Job description text
 
         // Assuming resume is a text file or extracted text from the PDF
