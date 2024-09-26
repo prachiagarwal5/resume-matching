@@ -25,7 +25,7 @@ const analyzeResumeController = async (req, res) => {
                 resumeText = data.text;
           
                 // Log or use the extracted text
-                // console.log(resumeText);
+                console.log(resumeText);
               })
               .catch(error => {
                 console.error('Error parsing PDF:', error);
