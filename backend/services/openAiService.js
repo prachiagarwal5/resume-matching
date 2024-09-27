@@ -5,65 +5,74 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const analyzeResume = async (resumeText, jobDescription) => {
     try {
-        const prompt = `
-    I will provide you with two inputs:
-    Resume Text: A candidate's resume in text format.
-    Job Description (JD): A job listing or description that the candidate is applying to.
+        const prompt = `I will provide you with two inputs:
+Resume Text: A candidate's resume in text format.
+Job Description (JD): A job listing or description that the candidate is applying to.
 
-    Your task is to evaluate the resume in relation to the JD and return a detailed, constructive report covering the following areas. 
-    Be sure to match skills not just by keyword, but by context. For example, if the JD mentions "Python" for Data Structures and Algorithms (DSA), 
-    match it only if Python was used for DSA in the resume, not for machine learning or other unrelated contexts.
+Your task is to evaluate the resume in relation to the JD and return a detailed, constructive report covering the following areas.
 
-    Here is the Resume Text: "${resumeText}"
-    Here is the Job Description: "${jobDescription}"
+Be sure to match skills not just by keyword, but by context. For example, if the JD mentions "Python" for Data Structures and Algorithms (DSA),
+match it only if Python was used for DSA in the resume, not for machine learning or other unrelated contexts.
 
-    Please evaluate and return a JSON object with the following fields:
+Here is the Resume Text: "${resumeText}"
+Here is the Job Description: "${jobDescription}"
 
-    matchedSkills: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA), ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
+Please evaluate and return a JSON object with the following fields:
 
-    suggestedSkills: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and consider any contextual gaps between the JD and resume.
+1. matchedSkills: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA),
+ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
 
-    matchedProjectsAndInternships: Identify specific projects and internships from the resume that align most closely with the JD. Explain why they match based on the context in which skills or technologies were used. For example, if a project involved Python for DSA and the JD requests Python for DSA, explain this alignment.
+2. suggestedSkills: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and consider any contextual gaps between the JD and resume.
 
-    rephrasedProjectsAndInternships: Provide examples of how to rephrase certain project or internship descriptions in the resume to better align with the JD. Ensure that rephrased versions emphasize relevant skills, technologies, and outcomes in the appropriate context, making them more impactful.
+3. matchedProjectsAndInternships: Identify specific projects and internships from the resume that align most closely with the JD. Explain why they match based on the context in which skills or technologies were used. For example, if a project involved Python for DSA and the JD requests Python for DSA, explain this alignment.
 
-    resumeImprovementSuggestions: Offer suggestions for how the candidate can enhance their resume to make it more professional and tailored to the JD. This should include advice on structure, formatting, and content. Focus on improving clarity, readability, and how effectively skills are presented in relation to the JD's requirements.
+4. rephrasedProjectsAndInternships: Provide examples of how to rephrase certain project or internship descriptions in the resume to better align with the JD. Ensure that rephrased versions emphasize relevant skills, technologies, and outcomes in the appropriate context, making them more impactful.
 
-    The JSON object should follow this structure:
-    {
-        "resumeText": "The candidate's resume text",
-        "jobDescription": "The provided job description",
-        "matchedSkills": ["Skill1 (contextual explanation)", "Skill2 (contextual explanation)", "Skill3 (contextual explanation)"],
-        "suggestedSkills": ["Suggested Skill 1 (with explanation)", "Suggested Skill 2 (with explanation)"],
-        "matchedProjectsAndInternships": [
-            {
-                "project": "Project Title 1",
-                "description": "Explain how this project aligns contextually with the JD and what was achieved"
-            },
-            {
-                "internship": "Internship Title 1",
-                "description": "Explain how this internship aligns contextually with the JD"
-            }
-        ],
-        "rephrasedProjectsAndInternships": [
-            {
-                "originalProject": "Original project description",
-                "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
-            },
-            {
-                "originalInternship": "Original internship description",
-                "rephrasedInternship": "Rephrased internship description to align with the JD and highlight key outcomes"
-            }
-        ],
-        "resumeImprovementSuggestions": [
-            "Suggestion 1 for improving the overall professionalism and structure of the resume",
-            "Suggestion 2 for highlighting skills and achievements more clearly",
-            "Suggestion 3 for enhancing readability and impact"
-        ]
-    }
+5. resumeImprovementSuggestions: Offer suggestions for how the candidate can enhance their resume to make it more professional and tailored to the JD. This should include advice on structure, formatting, and content. Focus on improving clarity, readability, and how effectively skills are presented in relation to the JD's requirements.
 
-    Focus on contextual alignment between the resume and JD, ensuring skills are matched based on the context in which they are mentioned and demonstrated.
-`;
+6. score: Provide a score between 0 and 100 that evaluates how well the resume aligns with the JD. Consider the following factors in scoring:
+   - How closely the matched skills align with the context in the JD.
+   - The quality and relevance of matched projects and internships.
+   - Overall presentation, clarity, and impact of the resume.
+   - The extent to which the resume meets the specific requirements and expectations outlined in the JD.
+   - Any additional factors that demonstrate the candidate's suitability for the role.
+   - The score should reflect the overall match between the resume and JD, considering both technical skills and soft skills.
+
+The JSON object should follow this structure:
+{
+    "matchedSkills": ["Skill1 (contextual explanation)", "Skill2 (contextual explanation)", "Skill3 (contextual explanation)"],
+    "suggestedSkills": ["Suggested Skill 1 (with explanation)", "Suggested Skill 2 (with explanation)"],
+    "matchedProjectsAndInternships": [
+        {
+            "project": "Project Title 1",
+            "description": "Explain how this project aligns contextually with the JD and what was achieved"
+        },
+        {
+            "internship": "Internship Title 1",
+            "description": "Explain how this internship aligns contextually with the JD"
+        }
+    ],
+    "rephrasedProjectsAndInternships": [
+        {
+            "originalProject": "Original project description",
+            "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
+        },
+        {
+            "originalInternship": "Original internship description",
+            "rephrasedInternship": "Rephrased internship description to align with the JD and highlight key outcomes"
+        }
+    ],
+    "resumeImprovementSuggestions": [
+        "Suggestion 1 for improving the overall professionalism and structure of the resume",
+        "Suggestion 2 for highlighting skills and achievements more clearly",
+        "Suggestion 3 for enhancing readability and impact"
+    ],
+    "score": "A number between 0 and 100 that reflects the overall match between the resume and JD"
+}
+
+Focus on contextual alignment between the resume and JD, ensuring skills are matched based on the context in which they are mentioned and demonstrated. 
+Be sure to consider how well the projects and internships showcase the candidate’s ability to meet the JD’s requirements.`;
+
 
 
 
