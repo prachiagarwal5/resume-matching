@@ -1,4 +1,7 @@
-const axios = require('axios');
+require('dotenv').config();
+const Groq = require('groq-sdk');
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const analyzeResume = async (resumeText, jobDescription) => {
     try {
@@ -11,24 +14,34 @@ const analyzeResume = async (resumeText, jobDescription) => {
         Job Description: ${jobDescription}
         `;
 
-        const response = await axios.post('https://api.openai.com/v1/completions', {
-            model: 'text-davinci-003',
-            prompt: prompt,
-            max_tokens: 500
-        }, {
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-            }
+        const response = await groq.chat.completions.create({
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+            model: "llama3-8b-8192", // Adjust the model if needed
         });
-
-        const { data } = response;
-        return {
-            matches: data.choices[0].text
-        };
+        
+        // Log response to check the data structure
+        console.log(response);
+        
+        const { choices } = response;
+        if (choices && choices[0]?.message?.content) {
+            console.log("Matched Skills:", choices[0].message.content);
+            return {
+                matches: choices[0].message.content,
+            };
+        } else {
+            console.log("No matches found.");
+            return {
+                matches: "No matches found.",
+            };
+        }
     } catch (error) {
-        console.error('Error calling OpenAI API:', error);
-        throw new Error('OpenAI API error');
+        console.error('Error calling Groq API:', error);
+        throw new Error('Groq API error');
     }
 };
 
