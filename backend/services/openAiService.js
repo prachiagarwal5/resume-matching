@@ -6,65 +6,84 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const analyzeResume = async (resumeText, jobDescription) => {
     try {
         const prompt = `
-    I will provide you with two inputs:
-    
-    Resume Text: A candidate's resume in text format.
-    Job Description (JD): A job listing or description that the candidate is applying to.
+I will provide you with two inputs: 
+- Resume Text: The candidate's resume in text format.
+- Job Description (JD): The job description the candidate is applying for.
 
-    Your task is to evaluate the resume in relation to the JD and return a detailed, constructive report covering the following areas. Make sure to go beyond simple keyword matching. 
-    Comprehend the context and meaning behind both the resume and the JD to identify relevant skills, projects, and experiences. Your goal is to help the user craft a more professional 
-    and tailored resume.
+Your task is to analyze the resume in context with the JD and provide a detailed, professional report. Focus on matching relevant skills, experiences, and projects, but go beyond simple keyword matching by understanding the context and intent behind both the resume and the JD. The goal is to help the candidate enhance their resume, making it more aligned with the job and improving their chances of being shortlisted.
 
-    Here is the Resume Text: "${resumeText}"
-    Here is the Job Description: "${jobDescription}"
+Inputs:
+- Resume Text: "${resumeText}"
+- Job Description: "${jobDescription}"
 
-    Please evaluate and return a JSON object with the following fields:
+Return a JSON object containing the following fields:
 
-    matchedSkills: A list of skills from the resume that match the skills required in the JD. Ensure these skills are matched contextually, not just by keywords. If the skill is demonstrated through a project or experience, explain how it aligns with the JD.
+1. **matchedSkills**: 
+    - A list of skills from the resume that align with the skills required in the JD.
+    - Include context for each skill—how it was demonstrated through experiences, projects, or achievements.
+    - Focus on meaningful alignment, not just keyword matches.
 
-    suggestedSkills: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and consider any gaps between the JD and resume.
+2. **suggestedSkills**: 
+    - A list of skills the candidate could add to their resume to better match the JD.
+    - Suggest both technical and soft skills where relevant, identifying gaps that could make the resume stronger.
+    - Explain why each suggested skill would be beneficial.
 
-    matchedProjectsAndInternships: Identify and return the specific projects and internships from the resume that align most closely with the JD. Instead of simply finding keyword matches, explain why certain experiences or projects are relevant based on their context, outcomes, or the technologies used.
+3. **matchedProjectsAndInternships**: 
+    - Identify specific projects or internships from the resume that closely align with the JD.
+    - Provide a context-based explanation of why these experiences are relevant, highlighting technologies, outcomes, or key responsibilities.
 
-    rephrasedProjectsAndInternships: Provide examples of how to rephrase certain project or internship descriptions in the resume to better align with the JD. Ensure that the rephrased versions emphasize the most relevant skills, technologies, and outcomes while presenting them in a more professional and impactful manner.
+4. **rephrasedProjectsAndInternships**: 
+    - Offer improved versions of the project or internship descriptions from the resume to better align with the JD.
+    - Focus on presenting skills, outcomes, and responsibilities in a professional and impactful way, tailoring them to the job requirements.
 
-    resumeImprovementSuggestions: Offer suggestions for how the candidate can enhance their resume to make it look more professional and tailored to the JD. This should include advice on structure, formatting, and content—such as improving the clarity of achievements, highlighting key skills, and using action-oriented language. Include tips on how to present information succinctly and effectively, as well as how to improve readability and overall impact.
+5. **resumeImprovementSuggestions**: 
+    - Provide actionable suggestions to improve the overall quality and professionalism of the resume.
+    - Focus on areas such as structure, clarity, formatting, and how to highlight key achievements effectively.
+    - Offer guidance on how to make the resume more impactful, readable, and tailored to the job.
 
-    The JSON object should be structured like this:
-    {
-        "resumeText": "The candidate's resume text",
-        "jobDescription": "The provided job description",
-        "matchedSkills": ["Skill1 (contextual explanation)", "Skill2 (contextual explanation)", "Skill3 (contextual explanation)"],
-        "suggestedSkills": ["Suggested Skill 1 (with explanation)", "Suggested Skill 2 (with explanation)"],
-        "matchedProjectsAndInternships": [
-            {
-                "project": "Project Title 1",
-                "description": "Explain how this project aligns contextually with the JD and what was achieved"
-            },
-            {
-                "internship": "Internship Title 1",
-                "description": "Explain how this internship aligns contextually with the JD"
-            }
-        ],
-        "rephrasedProjectsAndInternships": [
-            {
-                "originalProject": "Original project description",
-                "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
-            },
-            {
-                "originalInternship": "Original internship description",
-                "rephrasedInternship": "Rephrased internship description to align with the JD and highlight key outcomes"
-            }
-        ],
-        "resumeImprovementSuggestions": [
-            "Suggestion 1 for improving the overall professionalism and structure of the resume",
-            "Suggestion 2 for highlighting skills and achievements more clearly",
-            "Suggestion 3 for enhancing readability and impact"
-        ]
-    }
+### The JSON object should follow this structure:
 
-    Ensure the keys are exactly "resumeText", "jobDescription", "matchedSkills", "suggestedSkills", "matchedProjectsAndInternships", "rephrasedProjectsAndInternships", and "resumeImprovementSuggestions". The focus should be on providing actionable, contextual feedback that helps the user present their resume in a professional, impactful way that aligns with the job requirements.
+{
+    "resumeText": "The candidate's resume text",
+    "jobDescription": "The provided job description",
+    "matchedSkills": [
+        "Skill1 (with contextual explanation)", 
+        "Skill2 (with contextual explanation)"
+    ],
+    "suggestedSkills": [
+        "Suggested Skill1 (with explanation)", 
+        "Suggested Skill2 (with explanation)"
+    ],
+    "matchedProjectsAndInternships": [
+        {
+            "project": "Project Title",
+            "description": "Explanation of how this project aligns with the JD"
+        },
+        {
+            "internship": "Internship Title",
+            "description": "Explanation of how this internship aligns with the JD"
+        }
+    ],
+    "rephrasedProjectsAndInternships": [
+        {
+            "originalProject": "Original project description",
+            "rephrasedProject": "Rephrased description tailored to JD"
+        },
+        {
+            "originalInternship": "Original internship description",
+            "rephrasedInternship": "Rephrased internship description to better align with the JD"
+        }
+    ],
+    "resumeImprovementSuggestions": [
+        "Improvement suggestion 1",
+        "Improvement suggestion 2",
+        "Improvement suggestion 3"
+    ]
+}
+
+Ensure the keys are exactly as shown. The goal is to provide actionable, professional feedback that helps the user refine their resume to improve alignment with the job requirements, while enhancing its overall professionalism and impact.
 `;
+
 
     
     
