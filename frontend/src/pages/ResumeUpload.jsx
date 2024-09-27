@@ -17,7 +17,7 @@ const ResumeUpload = () => {
         formData.append('jobDescription', jobDescription);
 
         try {
-            const response = await axios.post('http://localhost:5000/api/analyze', formData, {
+            const response = await axios.post('http://localhost:5001/api/analyze', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
