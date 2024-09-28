@@ -9,7 +9,7 @@ const ReportPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/analyze-resume', {
+        const response = await axios.post('http://localhost:5000/api/analyze', {
           resumeText: "Sample resume text", // Replace with actual resumeText
           jobDescription: "Sample job description" // Replace with actual jobDescription
         });

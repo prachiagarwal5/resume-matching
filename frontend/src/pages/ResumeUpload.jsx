@@ -83,11 +83,41 @@ const ResumeUpload = () => {
 
                 {/* Results Display (if available) */}
                 {results && (
-                    <div className="mt-8 bg-white text-black p-4 rounded-lg w-2/3">
-                        <h3 className="text-xl font-bold">Analysis Results</h3>
-                        <pre className="mt-4 whitespace-pre-wrap">{JSON.stringify(results, null, 2)}</pre>
-                    </div>
-                )}
+    <div className="mt-8 bg-white text-black p-4 rounded-lg w-2/3">
+        <h3 className="text-xl font-bold">Analysis Results</h3>
+        <div className="mt-4">
+            {Object.entries(results).map(([key, value]) => (
+                <div key={key} className="mb-4">
+                    <strong>{key}:</strong>
+                    {Array.isArray(value) ? (
+                        value.map((item, index) => (
+                            <div key={index} className="ml-4">
+                                {typeof item === 'object' && item !== null ? (
+                                    Object.entries(item).map(([subKey, subValue], subIndex) => (
+                                        <div key={subIndex} className="ml-2">
+                                            <strong>{subKey}:</strong> {JSON.stringify(subValue, null, 2)}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div>{JSON.stringify(item, null, 2)}</div>
+                                )}
+                            </div>
+                        ))
+                    ) : typeof value === 'object' && value !== null ? (
+                        Object.entries(value).map(([subKey, subValue], subIndex) => (
+                            <div key={subIndex} className="ml-4">
+                                <strong>{subKey}:</strong> {JSON.stringify(subValue, null, 2)}
+                            </div>
+                        ))
+                    ) : (
+                        <div>{JSON.stringify(value, null, 2)}</div>
+                    )}
+                </div>
+            ))}
+        </div>
+    </div>
+)}
+
             </div>
         </div>
     );
