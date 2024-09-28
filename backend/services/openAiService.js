@@ -107,6 +107,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
         console.log(response);
         const { choices } = response;
         if (choices && choices[0]?.message?.content) {
+            // hi
             console.log("Matched Skills:", choices[0].message.content);
             const result = JSON.parse(choices[0].message.content);
             return result;
