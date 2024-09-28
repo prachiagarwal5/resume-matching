@@ -83,34 +83,40 @@ const ResumeUpload = () => {
 
                 {/* Results Display (if available) */}
                 {results && (
-    <div className="mt-8 bg-white text-black p-4 rounded-lg w-2/3">
-        <h3 className="text-xl font-bold">Analysis Results</h3>
-        <div className="mt-4">
+    <div className="mt-8 bg-gray-100 p-6 rounded-lg shadow-lg w-2/3">
+        <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
+        <div className="space-y-6">
             {Object.entries(results).map(([key, value]) => (
-                <div key={key} className="mb-4">
-                    <strong>{key}:</strong>
+                <div key={key} className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+                    <h2 className="text-xl font-semibold text-blue-600 mb-4">{key}</h2>
                     {Array.isArray(value) ? (
                         value.map((item, index) => (
-                            <div key={index} className="ml-4">
+                            <div key={index} className="ml-6 mb-4">
                                 {typeof item === 'object' && item !== null ? (
                                     Object.entries(item).map(([subKey, subValue], subIndex) => (
-                                        <div key={subIndex} className="ml-2">
-                                            <strong>{subKey}:</strong> {JSON.stringify(subValue, null, 2)}
+                                        <div key={subIndex} className="mb-2">
+                                            <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
+                                            <p className="ml-4 text-gray-600">
+                                                {JSON.stringify(subValue, null, 2)}
+                                            </p>
                                         </div>
                                     ))
                                 ) : (
-                                    <div>{JSON.stringify(item, null, 2)}</div>
+                                    <p className="text-gray-600 ml-4">{JSON.stringify(item, null, 2)}</p>
                                 )}
                             </div>
                         ))
                     ) : typeof value === 'object' && value !== null ? (
                         Object.entries(value).map(([subKey, subValue], subIndex) => (
-                            <div key={subIndex} className="ml-4">
-                                <strong>{subKey}:</strong> {JSON.stringify(subValue, null, 2)}
+                            <div key={subIndex} className="ml-6 mb-4">
+                                <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
+                                <p className="ml-4 text-gray-600">
+                                    {JSON.stringify(subValue, null, 2)}
+                                </p>
                             </div>
                         ))
                     ) : (
-                        <div>{JSON.stringify(value, null, 2)}</div>
+                        <p className="text-gray-600 ml-4">{JSON.stringify(value, null, 2)}</p>
                     )}
                 </div>
             ))}
