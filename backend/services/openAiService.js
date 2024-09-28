@@ -47,9 +47,9 @@ const analyzeResume = async (resumeText, jobDescription) => {
 
         IMPORTANT: The JSON object should follow this structure and be strictly formatted as follows:
         {
-            "matchedSkills": ["skill1", "skill2", "skill3",etc.],
-            "suggestedSkills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3",etc.],
-            "matchedProjectsAndInternships": [
+            "Matched Skills": ["skill1", "skill2", "skill3",etc.],
+            "Suggested Skills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3",etc.],
+            "Matched Projects And Internships": [
                 {
                     "project": "Project Title 1",
                     "description": "Explain how this project aligns contextually with the JD and what was achieved"
@@ -66,7 +66,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
                     "description": "Explain how this internship aligns contextually with the JD"
                 }
             ],
-            "rephrasedProjectsAndInternships": [
+            "Ephrased Projects And Internships": [
                 {
                     "originalProject": "Original project description1",
                     "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
@@ -83,13 +83,13 @@ const analyzeResume = async (resumeText, jobDescription) => {
                     "rephrasedInternship": "Rephrased internship description to emphasize relevant skills and achievements"
                 }
             ],
-            "resumeImprovementSuggestions": [
+            "Resume Improvement Suggestions": [
                 "Suggestion 1 for improving the overall professionalism and structure of the resume, with key keywords from the JD",
                 "Suggestion 2 for highlighting skills and achievements more clearly, while ensuring important JD-related terms are included",
                 "Suggestion 3 for enhancing readability and impact, incorporating relevant JD terms",etc.
             ],
-            "vocabularyLevel": "Evaluation of how professional and appropriate the vocabulary is for the role, including suggestions for improvement if needed",
-            "score": "A number between 0 and 100 that reflects the overall match between the resume and JD, considering role specificity, keyword alignment, and vocabulary level"
+            "Vocabulary Level": "Evaluation of how professional and appropriate the vocabulary is for the role, including suggestions for improvement if needed",
+            "Score": "A number between 0 and 100 that reflects the overall match between the resume and JD, considering role specificity, keyword alignment, and vocabulary level"
         }`;
 
         const response = await groq.chat.completions.create({
