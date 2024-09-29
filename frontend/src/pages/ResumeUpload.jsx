@@ -5,9 +5,15 @@ const ResumeUpload = () => {
     const [resume, setResume] = useState(null);
     const [jobDescription, setJobDescription] = useState('');
     const [results, setResults] = useState(null);
+    const [resumeUrl, setResumeUrl] = useState(''); // Added to store the resume URL
 
     const handleFileChange = (e) => {
-        setResume(e.target.files[0]);
+        const file = e.target.files[0];
+        setResume(file);
+        if (file) {
+            const fileURL = URL.createObjectURL(file); // Create a URL for the uploaded file
+            setResumeUrl(fileURL); // Set the URL to state
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -41,13 +47,22 @@ const ResumeUpload = () => {
 
             {/* Content Area */}
             <div className="w-full max-w-7xl mt-12 grid grid-cols-2 gap-8 bg-white shadow-2xl rounded-lg overflow-hidden">
-                {/* Resume Image */}
+                {/* Resume Preview */}
                 <div className="p-6">
-                    <img
-                        src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
-                        alt="Resume Preview"
-                        className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
-                    />
+                    {resumeUrl ? (
+                        <iframe
+                            src={resumeUrl}
+                            title="Resume Preview"
+                            className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+                            style={{ minHeight: '600px' }} // Adjust height as needed
+                        />
+                    ) : (
+                        <img
+                            src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
+                            alt="Resume Preview"
+                            className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+                        />
+                    )}
                 </div>
 
                 {/* Upload Section */}
@@ -92,30 +107,29 @@ const ResumeUpload = () => {
                     <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
                     <div className="space-y-6">
                         {Object.entries(results).map(([key, value]) => (
-                            <div
-                                key={key}
-                                className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200"
-                            >
+                            <div key={key} className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
                                 <h2 className="text-xl font-semibold text-purple-600 mb-4">{key}</h2>
                                 {Array.isArray(value) ? (
-                                    value.map((item, index) => (
-                                        <div key={index} className="ml-6 mb-4">
-                                            {typeof item === 'object' && item !== null ? (
-                                                Object.entries(item).map(([subKey, subValue], subIndex) => (
-                                                    <div key={subIndex} className="mb-2">
-                                                        <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
-                                                        <p className="ml-4 text-gray-600">
-                                                            {JSON.stringify(subValue, null, 2)}
-                                                        </p>
+                                    <ul className="ml-4 list-disc">
+                                        {value.map((item, index) => (
+                                            <li key={index}>
+                                                {typeof item === 'object' && item !== null ? (
+                                                    <div className="ml-4">
+                                                        {Object.entries(item).map(([subKey, subValue], subIndex) => (
+                                                            <div key={subIndex} className="mb-2">
+                                                                <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
+                                                                <p className="text-gray-600">{JSON.stringify(subValue)}</p>
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                ))
-                                            ) : (
-                                                <p className="text-gray-600 ml-4">{JSON.stringify(item, null, 2)}</p>
-                                            )}
-                                        </div>
-                                    ))
+                                                ) : (
+                                                    <span className="text-gray-600">{item}</span>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 ) : (
-                                    <p className="text-gray-600 ml-4">{JSON.stringify(value, null, 2)}</p>
+                                    <p className="text-gray-600 ml-4">{JSON.stringify(value)}</p>
                                 )}
                             </div>
                         ))}
