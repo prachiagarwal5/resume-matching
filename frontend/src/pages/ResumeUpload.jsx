@@ -29,102 +29,96 @@ const ResumeUpload = () => {
     };
 
     return (
-        <div className="h-screen flex flex-col bg-black text-white w-screen">
+        <div className="min-h-screen bg-gradient-to-r from-pink-300 via-blue-100 to-blue-400 flex flex-col items-center justify-center w-screen">
             {/* Navbar */}
-            <nav className="bg-black text-white p-4 flex justify-between items-center shadow-lg">
-                <div className="text-3xl font-bold">GLA ResumeFit</div>
-                <div className="flex items-center space-x-4">
-                    <p className="text-lg">Hi xyz</p>
-                    <div className="relative">
-                        <button className="focus:outline-none">
-                            <span className="w-8 h-8 bg-white rounded-full inline-block text-black text-center leading-8">
-                                {/* Profile icon or initials */}
-                                P
-                            </span>
-                        </button>
-                    </div>
+            <nav className="bg-white bg-opacity-50 text-blue-900 w-full p-4 shadow-lg flex justify-between items-center">
+                <div className="text-3xl font-bold">GLA Resume Fit</div>
+                <div className="flex items-center">
+                    <span className="text-lg font-semibold mr-4">Hi xyz</span>
+                    <div className="w-10 h-10 bg-blue-700 text-white rounded-full flex items-center justify-center">P</div>
                 </div>
             </nav>
 
             {/* Content Area */}
-            <div className="flex-grow flex flex-col justify-center items-center ">
-                {/* Resume Upload & Job Description Inputs */}
-                <div className="w-2/3 flex justify-between items-center mt-10 gap-11">
-                    <div className="w-1/2 h-64 border-2 border-white rounded-lg flex justify-center items-center">
-                        <label className="cursor-pointer">
-                            <input
-                                type="file"
-                                onChange={handleFileChange}
-                                accept=".pdf"
-                                className="hidden"
-                            />
-                            <span className="text-lg">Upload your resume</span>
-                        </label>
-                    </div>
-                    <div className="w-1/2 h-64 border-2 border-white rounded-lg flex justify-center items-center">
-                        <textarea
-                            className="bg-transparent w-full h-full p-4 text-lg border-none outline-none"
-                            value={jobDescription}
-                            onChange={(e) => setJobDescription(e.target.value)}
-                            placeholder="Upload your job description"
-                        />
-                    </div>
+            <div className="w-full max-w-7xl mt-12 flex justify-between items-start bg-white shadow-xl rounded-lg overflow-hidden">
+                {/* Resume Image */}
+                <div className="w-2/5 p-6">
+                    <img
+                        src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
+                        alt="Resume Preview"
+                        className="w-full h-auto object-cover rounded-lg shadow-lg"
+                    />
                 </div>
 
-                {/* Analyze Button */}
-                <div className="mt-8">
+                {/* Upload Section */}
+                <div className="w-3/7 bg-gray-50 p-5 flex flex-col justify-center items-center mt-11 mr-11">
+                    <h2 className="text-blue-700 text-2xl font-bold mb-6">Gla Resume Fit</h2>
+                    <p className="text-gray-700 mb-6 text-center">
+                        Parse your resume and get a detailed analysis report matching your job description.
+                    </p>
+
+                    <div className="w-full mb-6">
+                        <label className="block mb-2 text-gray-700 font-semibold">Upload Resume (PDF)</label>
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                            accept=".pdf"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                        />
+                    </div>
+
+                    <div className="w-full mb-6">
+                        <label className="block mb-2 text-gray-700 font-semibold">Job Description</label>
+                        <textarea
+                            className="w-full h-32 px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none"
+                            value={jobDescription}
+                            onChange={(e) => setJobDescription(e.target.value)}
+                            placeholder="Paste the job description here"
+                        />
+                    </div>
+
                     <button
                         onClick={handleSubmit}
-                        className="bg-blue-600 text-white text-lg py-2 px-8 rounded-lg"
+                        className="w-full bg-blue-700 text-white py-3 rounded-lg shadow hover:bg-blue-800 transition duration-200"
                     >
                         Analyze
                     </button>
                 </div>
+            </div>
 
-                {/* Results Display (if available) */}
-                {results && (
-    <div className="mt-8 bg-gray-100 p-6 rounded-lg shadow-lg w-2/3">
-        <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
-        <div className="space-y-6">
-            {Object.entries(results).map(([key, value]) => (
-                <div key={key} className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-                    <h2 className="text-xl font-semibold text-blue-600 mb-4">{key}</h2>
-                    {Array.isArray(value) ? (
-                        value.map((item, index) => (
-                            <div key={index} className="ml-6 mb-4">
-                                {typeof item === 'object' && item !== null ? (
-                                    Object.entries(item).map(([subKey, subValue], subIndex) => (
-                                        <div key={subIndex} className="mb-2">
-                                            <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
-                                            <p className="ml-4 text-gray-600">
-                                                {JSON.stringify(subValue, null, 2)}
-                                            </p>
+            {/* Results Display (if available) */}
+            {results && (
+                <div className="mt-12 bg-white p-8 rounded-lg shadow-lg w-full max-w-7xl">
+                    <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
+                    <div className="space-y-6">
+                        {Object.entries(results).map(([key, value]) => (
+                            <div key={key} className="bg-gray-100 p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold text-blue-600 mb-4">{key}</h2>
+                                {Array.isArray(value) ? (
+                                    value.map((item, index) => (
+                                        <div key={index} className="ml-6 mb-4">
+                                            {typeof item === 'object' && item !== null ? (
+                                                Object.entries(item).map(([subKey, subValue], subIndex) => (
+                                                    <div key={subIndex} className="mb-2">
+                                                        <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
+                                                        <p className="ml-4 text-gray-600">
+                                                            {JSON.stringify(subValue, null, 2)}
+                                                        </p>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-gray-600 ml-4">{JSON.stringify(item, null, 2)}</p>
+                                            )}
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="text-gray-600 ml-4">{JSON.stringify(item, null, 2)}</p>
+                                    <p className="text-gray-600 ml-4">{JSON.stringify(value, null, 2)}</p>
                                 )}
                             </div>
-                        ))
-                    ) : typeof value === 'object' && value !== null ? (
-                        Object.entries(value).map(([subKey, subValue], subIndex) => (
-                            <div key={subIndex} className="ml-6 mb-4">
-                                <h3 className="text-lg font-medium text-gray-700">{subKey}:</h3>
-                                <p className="ml-4 text-gray-600">
-                                    {JSON.stringify(subValue, null, 2)}
-                                </p>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-gray-600 ml-4">{JSON.stringify(value, null, 2)}</p>
-                    )}
+                        ))}
+                    </div>
                 </div>
-            ))}
-        </div>
-    </div>
-)}
-
-            </div>
+            )}
         </div>
     );
 };
