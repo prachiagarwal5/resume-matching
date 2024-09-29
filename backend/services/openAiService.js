@@ -20,7 +20,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
         Here is the Resume Text: "${resumeText}"
         Here is the Job Description: "${jobDescription}"
 
-        Please evaluate and return ONLY a JSON object with the following fields. IMPORTANT: Do not provide any other explanations or responses, only return the JSON object strictly in this format:
+        Please evaluate and return ONLY a JSON object with the following fields. IMPORTANT: Do not provide any other explanations or responses, only return the JSON object strictly in this format and does not respond with any other information::
 
         1. matchedSkills: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA),
         ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
@@ -45,7 +45,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
            - **Vocabulary level**: Evaluate the professionalism of the language and terminology used in the resume.
            - The score should reflect the overall match between the resume and JD, considering both technical skills, soft skills, and alignment with the job role.
 
-        IMPORTANT: The JSON object should follow this structure and be strictly formatted as follows:
+        IMPORTANT: The JSON object should follow this structure and be strictly formatted as follows and does not respond with any other information:
         {
             "Matched Skills": ["skill1", "skill2", "skill3",etc.],
             "Suggested Skills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3",etc.],
