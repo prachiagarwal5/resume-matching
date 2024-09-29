@@ -22,30 +22,6 @@ const analyzeResume = async (resumeText, jobDescription) => {
 
         Please evaluate and return ONLY a JSON object with the following fields. IMPORTANT: Do not provide any other explanations or responses, only return the JSON object strictly in this format:
 
-        1. matchedSkills: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA),
-        ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
-
-        2. suggestedSkills: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and ensure that these suggestions include keywords that are critical in both the JD and resume.
-
-        3. matchedProjectsAndInternships: Identify specific projects and internships from the resume that align most closely with the JD. Explain why they match based on the context in which skills or technologies were used. For example, if a project involved Python for DSA and the JD requests Python for DSA, explain this alignment.
-
-        4. rephrasedProjectsAndInternships: Provide examples of how to rephrase certain project or internship descriptions in the resume to better align with the JD. Ensure that rephrased versions emphasize relevant skills, technologies, and outcomes in the appropriate context, making them more impactful.
-
-        5. resumeImprovementSuggestions: Offer suggestions for how the candidate can enhance their resume to make it more professional and tailored to the JD. This should include advice on structure, formatting, and content. Focus on improving clarity, readability, and how effectively skills are presented in relation to the JD's requirements. Additionally, include key JD-related keywords and phrases that the candidate should incorporate in their resume.
-
-        6. vocabularyLevel: Assess the level of vocabulary used in the resume. Consider whether the language is professional, precise, and appropriate for the role. Provide feedback on how well the vocabulary matches the expectations of the JD, including recommendations for improving or refining it. 
-
-        7. score: Provide a score between 0 and 100 that evaluates how well the resume aligns with the JD. Consider the following factors in scoring:
-           - How closely the matched skills align with the context in the JD.
-           - The quality and relevance of matched projects and internships.
-           - Overall presentation, clarity, and impact of the resume.
-           - **Role specificity**: Check whether the resume explicitly demonstrates experience or skills relevant to the specific role mentioned in the JD. Be strict in matching the role and required skills outlined in the JD.
-           - **Keyword inclusion**: Ensure that important keywords from the JD are either present in the resume or are included in the suggested improvements. The score should reflect how well the resume captures these critical terms.
-           - The extent to which the resume meets the specific requirements and expectations outlined in the JD.
-           - **Vocabulary level**: Evaluate the professionalism of the language and terminology used in the resume.
-           - The score should reflect the overall match between the resume and JD, considering both technical skills, soft skills, and alignment with the job role.
-
-        IMPORTANT: The JSON object should follow this structure and be strictly formatted as follows:
         {
             "Matched Skills": ["skill1", "skill2", "skill3",etc.],
             "Suggested Skills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3",etc.],
@@ -66,14 +42,15 @@ const analyzeResume = async (resumeText, jobDescription) => {
                     "description": "Explain how this internship aligns contextually with the JD"
                 }
             ],
-            "Ephrased Projects And Internships": [
+            "Rephrased Projects And Internships": [
                 {
                     "originalProject": "Original project description1",
                     "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
                 },
                 {
                     "originalProject": "Original project description2",
-                    "rephrasedProject": "Rephrased project description to highlight key skills and outcomes relevant to the JD"}
+                    "rephrasedProject": "Rephrased project description to highlight key skills and outcomes relevant to the JD"
+                },
                 {
                     "originalInternship": "Original internship description1",
                     "rephrasedInternship": "Rephrased internship description to align with the JD and highlight key outcomes"
@@ -107,9 +84,11 @@ const analyzeResume = async (resumeText, jobDescription) => {
         console.log(response);
         const { choices } = response;
         if (choices && choices[0]?.message?.content) {
-            // hi
-            console.log("Matched Skills:", choices[0].message.content);
-            const result = JSON.parse(choices[0].message.content);
+            const rawContent = choices[0].message.content;
+
+            // Now we'll trim the content to extract only the relevant parts between "Matched Skills" and "Score"
+            const trimmedContent = extractRelevantJSON(rawContent);
+            const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
             return result;
         } else {
             console.log("No matches found.");
@@ -121,6 +100,25 @@ const analyzeResume = async (resumeText, jobDescription) => {
         console.error('Error calling Groq API:', error);
         throw new Error('Groq API error');
     }
+};
+
+// Helper function to extract JSON data from "Matched Skills" to "Score"
+const extractRelevantJSON = (content) => {
+    // Define start and end markers
+    const startMarker = '"Matched Skills"';
+    const endMarker = '"Score"';
+
+    // Find the index positions of the start and end markers
+    const startIndex = content.indexOf(startMarker);
+    const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // +5 to account for number in score
+
+    if (startIndex !== -1 && endIndex !== -1) {
+        const trimmedContent = content.substring(startIndex, endIndex);
+        return `{${trimmedContent}}`; // Wrap it in curly braces to make it a valid JSON object
+    }
+
+    // If markers are not found, return empty JSON structure
+    return '{}';
 };
 
 module.exports = { analyzeResume };
