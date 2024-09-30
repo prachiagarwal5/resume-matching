@@ -1,4 +1,4 @@
-const { analyzeResume } = require('../services/openAiService');
+const { analyzeResumeWithPlagCheck } = require('../services/openAiService');
 const fs = require('fs');
 const pdfParse = require('pdf-parse');
 
@@ -20,7 +20,7 @@ const analyzeResumeController = async (req, res) => {
         console.log("_________________________________________________________________");
 
         // Call the OpenAI (Groq) service to analyze resume and job description
-        const result = await analyzeResume(resumeText, jobDescription);
+        const result = await analyzeResumeWithPlagCheck(resumeText, jobDescription);
 
         console.log("*****************************");
 

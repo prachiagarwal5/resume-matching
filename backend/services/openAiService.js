@@ -3,6 +3,7 @@ const Groq = require('groq-sdk');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+// Function to analyze resume against job description
 const analyzeResume = async (resumeText, jobDescription) => {
     try {
         const prompt = `I will provide you with two inputs:
@@ -102,15 +103,101 @@ const analyzeResume = async (resumeText, jobDescription) => {
     }
 };
 
-// Helper function to extract JSON data from "Matched Skills" to "Score"
+// Function to check plagiarism
+const checkPlagiarism = async (resumeText) => {
+    try {
+        const prompt = `You will be provided with a Resume in text format. Your task is to evaluate the content for potential plagiarism by comparing it to publicly available sources or common phrasing in similar contexts. Focus on the following areas:
+
+        1. Match phrases or sections that are commonly used in similar resumes or found in publicly available databases.
+        2. Identify specific portions of the resume that are likely to have been copied or heavily borrowed from other sources.
+        3. For each portion that matches existing content, provide a percentage value indicating how much of the text is likely copied.
+
+        IMPORTANT: The goal is to check if the resume contains any significant plagiarized content. Be strict in identifying copied content and ensure that only genuinely original writing is excluded from the plagiarism report.
+
+        Here is the Resume Text:
+        "${resumeText}"
+
+        Please return ONLY a JSON object in the following format:
+
+        {
+            "Plagiarism Percentage": "XX%", // Where XX is the percentage of text suspected to be plagiarized
+            "Copied Sections": [
+                {
+                    "section": "Exact phrase or portion of text that appears plagiarized",
+                    "source": "Mention the source or common usage context if available"
+                },
+                {
+                    "section": "Another plagiarized section if found",
+                    "source": "Mention the source or common usage context if available"
+                }
+            ],
+            "Originality Suggestions": [
+                "Suggestion 1 to rewrite plagiarized sections more originally",
+                "Suggestion 2 to improve the originality of the resume"
+            ]
+        }`;
+
+        const response = await groq.chat.completions.create({
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+            model: "llama3-70b-8192", // Adjust the model if needed
+            max_tokens: 1000, // Set token limit to 1000
+        });
+
+        // Log response to check the data structure
+        console.log(response);
+        const { choices } = response;
+        if (choices && choices[0]?.message?.content) {
+            const rawContent = choices[0].message.content;
+
+            // Trim the content to extract only the relevant parts between "Plagiarism Percentage" and "Originality Suggestions"
+            const trimmedContent = extractRelevantJSON(rawContent);
+            const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
+            return result;
+        } else {
+            console.log("No plagiarism found.");
+            return {
+                plagiarism: "No plagiarism detected.",
+            };
+        }
+    } catch (error) {
+        console.error('Error calling Groq API:', error);
+        throw new Error('Groq API error');
+    }
+};
+
+// Combined function to analyze resume and check plagiarism
+const analyzeResumeWithPlagCheck = async (resumeText, jobDescription) => {
+    try {
+        // Step 1: Perform resume analysis
+        const resumeAnalysis = await analyzeResume(resumeText, jobDescription);
+
+        // Step 2: Perform plagiarism check
+        const plagiarismCheck = await checkPlagiarism(resumeText);
+
+        // Step 3: Integrate the plagiarism check result into the resume analysis report
+        resumeAnalysis["Plagiarism Percentage"] = plagiarismCheck["Plagiarism Percentage"];
+        resumeAnalysis["Copied Sections"] = plagiarismCheck["Copied Sections"];
+        resumeAnalysis["Originality Suggestions"] = plagiarismCheck["Originality Suggestions"];
+
+        // Return the final report with both resume analysis and plagiarism check
+        return resumeAnalysis;
+    } catch (error) {
+        console.error('Error in combined resume analysis and plagiarism check:', error);
+        throw new Error('Combined analysis error');
+    }
+};
+
+// Helper function to extract JSON data from "Matched Skills" to "Score" or "Plagiarism Percentage"
 const extractRelevantJSON = (content) => {
-    // Define start and end markers
     const startMarker = '"Matched Skills"';
     const endMarker = '"Score"';
-
-    // Find the index positions of the start and end markers
     const startIndex = content.indexOf(startMarker);
-    const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // +5 to account for number in score
+    const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // Adjust to capture full content
 
     if (startIndex !== -1 && endIndex !== -1) {
         const trimmedContent = content.substring(startIndex, endIndex);
@@ -121,4 +208,4 @@ const extractRelevantJSON = (content) => {
     return '{}';
 };
 
-module.exports = { analyzeResume };
+module.exports = { analyzeResumeWithPlagCheck };
