@@ -29,7 +29,14 @@ Please evaluate and return ONLY a JSON object with the following fields.
 
 IMPORTANT: Do not provide any other explanations or responses, only return the JSON object strictly in this format:
 
-1. **matchedSkills**: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA), ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
+1. **Skills**: A dictionary/object where each skill from the JD is listed and marked as true or false based on whether it is present in the resume and contextually aligned. Example:
+{
+   "Python (DSA)": true,
+   "Java (API Development)": false,
+   "Communication Skills": true
+}
+Ensure that **all skills mentioned in the JD** are evaluated and listed, even if they do not appear in the resume.
+
 
 2. **suggestedSkills**: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and ensure that these suggestions include keywords that are critical in both the JD and resume.
 
@@ -55,7 +62,12 @@ IMPORTANT: Do not provide any other explanations or responses, only return the J
 The JSON object should follow this structure and be strictly formatted as follows:
 
 {
-    "Matched Skills": ["skill1", "skill2", "skill3", etc.],
+    "Skills": {
+        "skill1": true/false,
+        "skill2": true/false,
+        "skill3": true/false,
+        ...
+    },
     "Suggested Skills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3", etc.],
     "Matched Projects And Internships": [
         {
@@ -150,7 +162,7 @@ The JSON object should follow this structure and be strictly formatted as follow
 
 // Helper function to extract JSON data from "Matched Skills" to "Score"
 const extractRelevantJSON = (content) => {
-    const startMarker = '"Matched Skills"';
+    const startMarker = '"Skills"';
     const endMarker = '"Score"';
     const startIndex = content.indexOf(startMarker);
     const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // Adjust to capture full content
