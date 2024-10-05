@@ -136,7 +136,6 @@ const ResumeUpload = () => {
                     <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
                     <div className="space-y-6">
 
-                       {/* Score Section */}
                       {/* Score Section */}
                         {results.Score !== undefined && (
                             <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
