@@ -139,7 +139,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
                 },
             ],
             model: "llama3-70b-8192", // Adjust the model if needed
-            max_tokens: 1000, // Set token limit to 1000
+            // max_tokens: 1000, // Set token limit to 1000
         });
 
         // Log response to check the data structure
