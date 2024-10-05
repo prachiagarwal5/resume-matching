@@ -283,7 +283,7 @@ const ResumeUpload = () => {
 
 
 {/* Matched Projects And Internships Section */}
-{results['Matched Projects And Internships'] && (
+{results['Matched Projects And Internships'] && results['Matched Projects And Internships'].length > 0 && (
     <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
         <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
             <span className="text-purple-600 text-2xl mr-2">
@@ -303,8 +303,8 @@ const ResumeUpload = () => {
                 {results['Matched Projects And Internships'].map((project, index) => (
                     <tr key={index} className="border-t border-gray-300">
                         <td className="px-4 py-2 text-gray-700">{index + 1}</td>
-                        <td className="px-4 py-2 text-gray-800 font-semibold">{project.project}</td>
-                        <td className="px-4 py-2 text-gray-600">{project.description}</td>
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{project.Project}</td>
+                        <td className="px-4 py-2 text-gray-600">{project.Description}</td>
                     </tr>
                 ))}
             </tbody>
@@ -332,9 +332,9 @@ const ResumeUpload = () => {
             <tbody>
                 {results['Project Title Description Check'].map((item, index) => (
                     <tr key={index} className="border-t border-gray-300">
-                        <td className="px-4 py-2 text-gray-800 font-semibold">{item.project}</td>
-                        <td className="px-4 py-2 text-gray-700">{item.status}</td>
-                        <td className="px-4 py-2 text-gray-600">{item.explanation}</td>
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{item.Project}</td>
+                        <td className="px-4 py-2 text-gray-700">{item.Status}</td>
+                        <td className="px-4 py-2 text-gray-600">{item.Explanation}</td>
                     </tr>
                 ))}
             </tbody>
@@ -342,13 +342,12 @@ const ResumeUpload = () => {
     </div>
 )}
 
-
 {/* Rephrased Projects And Internships Section */}
-{results['Rephrased Projects And Internships'] && (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
+{results['Rephrased Projects And Internships'] && results['Rephrased Projects And Internships'].length > 0 && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 mt-5">
         <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
             <span className="text-purple-600 text-2xl mr-2">
-                <i className="fas fa-retweet"></i> {/* Changed icon for Rephrased Projects */}
+                <i className="fas fa-retweet"></i> {/* Icon for Rephrased Projects */}
             </span>
             Rephrased Projects And Internships
         </h2>
@@ -364,8 +363,8 @@ const ResumeUpload = () => {
                 {results['Rephrased Projects And Internships'].map((item, index) => (
                     <tr key={index} className="border-t border-gray-300">
                         <td className="px-4 py-2 text-gray-700">{index + 1}</td>
-                        <td className="px-4 py-2 text-gray-800 font-semibold">{item.originalProject}</td>
-                        <td className="px-4 py-2 text-gray-600">{item.rephrasedProject}</td>
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{item['Original Project']}</td>
+                        <td className="px-4 py-2 text-gray-600">{item['Rephrased Project']}</td>
                     </tr>
                 ))}
             </tbody>
@@ -457,7 +456,7 @@ const ResumeUpload = () => {
         {/* Word Count Section */}
         <div className="mb-6 font-semibold">
             {/* CHANGE FONT WEIGHT */}
-            <p>Word Count: {results['Recruiter Tips'].WordCount}</p>
+            <p>Word Count: {results['Recruiter Tips']['Word Count']}</p> {/* Corrected here */}
         </div>
 
         {/* Words to Avoid Section */}
@@ -485,6 +484,7 @@ const ResumeUpload = () => {
         </div>
     </div>
 )}
+
 </div>
                 </div>
             )}
