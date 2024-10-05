@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-// Register the required components
+
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ResumeUpload = () => {
@@ -165,124 +166,264 @@ const ResumeUpload = () => {
                             </div>
                         )}
                         
-                        {/* Skills Section */}
-                        {results.Skills && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Skills</h2>
-                                <div className="ml-4">
-                                    {Object.entries(results.Skills).map(([skillCategory, skills], index) => (
-                                        <div key={index} className="mb-4">
-                                            <h3 className="text-lg font-medium text-gray-700">{skillCategory}:</h3>
-                                            <table className="table-auto w-full text-left">
-                                                <tbody>
-                                                    {Object.entries(skills).map(([skill, matched], skillIndex) => (
-                                                        <tr key={skillIndex} className="border-t">
-                                                            <td className="px-4 py-2 text-gray-700">{skill}</td>
-                                                            <td className="px-4 py-2">
-                                                                {matched ? (
-                                                                    <span className="text-green-600 font-bold">&#10003;</span>
-                                                                ) : (
-                                                                    <span className="text-red-600 font-bold">&#10007;</span>
-                                                                )}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Suggested Skills Section */}
-                        {results['Suggested Skills'] && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Suggested Skills</h2>
-                                <ul className="list-disc ml-6">
-                                    {results['Suggested Skills'].map((skill, index) => (
-                                        <li key={index} className="text-gray-600">{skill}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-
-                        {/* Matched Projects And Internships Section */}
-                        {results['Matched Projects And Internships'] && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Matched Projects And Internships</h2>
-                                <div className="ml-4">
-                                    {results['Matched Projects And Internships'].map((project, index) => (
-                                        <div key={index} className="mb-4">
-                                            <h3 className="text-lg font-medium text-gray-700">Project {index + 1}:</h3>
-                                            <p className="text-gray-800 font-semibold">Project Name: {project.project}</p>
-                                            <p className="text-gray-600">Description: {project.description}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Rephrased Projects And Internships Section */}
-                        {results['Rephrased Projects And Internships'] && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Rephrased Projects And Internships</h2>
-                                <div className="ml-4">
-                                    {results['Rephrased Projects And Internships'].map((item, index) => (
-                                        <div key={index} className="mb-4">
-                                            <p className="text-gray-800 font-semibold">Original Project: {item.originalProject}</p>
-                                            <p className="text-gray-600">Rephrased Project: {item.rephrasedProject}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Resume Improvement Suggestions Section */}
-                        {results['Resume Improvement Suggestions'] && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Resume Improvement Suggestions</h2>
-                                <ul className="list-disc ml-6">
-                                    {results['Resume Improvement Suggestions'].map((suggestion, index) => (
-                                        <li key={index} className="text-gray-600">{suggestion}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-
-                        {/* Grammatical Check Section */}
-                        {results['Grammatical Check'] && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Grammatical Check</h2>
-                                <p className="text-gray-800">{results['Grammatical Check']}</p>
-                            </div>
-                        )}
-
-                        {/* Recruiter Tips Section */}
-      {results['Recruiter Tips'] && (
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 mt-5">
-          <h2 className="text-xl font-semibold text-purple-600 mb-4">Recruiter Tips</h2>
-          <h3 className="font-semibold">Suggestions:</h3>
-          <ul className="list-disc list-inside mb-2">
-            {results['Recruiter Tips'].Suggestions.map((suggestion, index) => (
-              <li key={index}>{suggestion}</li>
+                     {/* Skills Section */}
+{results.Skills && (
+    <div className="bg-gray-50 p-6 rounded-lg shadow-lg transition duration-300 hover:shadow-2xl">
+        <h2 className="text-2xl font-semibold text-purple-700 mb-6">Skills</h2>
+        <div className="ml-4">
+            {Object.entries(results.Skills).map(([skillCategory, skills], index) => (
+                <div key={index} className="mb-6">
+                    <div className="flex items-center mb-4">
+                        {/* Add an icon before each skill category */}
+                        <span className="text-purple-600 text-2xl mr-3">
+                            {/* Use different icons based on skill category */}
+                            {skillCategory === "TechnicalSkills" ? (
+                                <i className="fas fa-laptop-code"></i> // Laptop code icon for technical skills
+                            ) : skillCategory === "SoftSkills" ? (
+                                <i className="fas fa-comments"></i> // Comments icon for soft skills
+                            ) : skillCategory === "DesignSkills" ? (
+                                <i className="fas fa-paint-brush"></i> // Paint brush icon for design skills
+                            ) : skillCategory === "CommunicationSkills" ? (
+                                <i className="fas fa-volume-up"></i> // Volume up icon for communication skills
+                            ) : (
+                                <i className="fas fa-cogs"></i> // Default tools icon for other categories
+                            )}
+                        </span>
+                        <h3 className="text-xl font-medium text-purple-600">{skillCategory}:</h3>
+                    </div>
+                    <table className="table-auto w-full text-left bg-white rounded-lg shadow-sm border border-gray-200">
+                        <thead>
+                            <tr className="bg-purple-100">
+                                <th className="px-4 py-3 text-gray-700 font-semibold">Skill</th>
+                                <th className="px-4 py-3 text-gray-700 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Object.entries(skills).map(([skill, matched], skillIndex) => (
+                                <tr key={skillIndex} className={`border-t ${skillIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-purple-50 transition`}>
+                                    <td className="px-4 py-3 text-gray-700">{skill}</td>
+                                    <td className="px-4 py-3">
+                                        {matched ? (
+                                            <span className="inline-block px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full">
+                                                &#10003; Matched
+                                            </span>
+                                        ) : (
+                                            <span className="inline-block px-3 py-1 text-sm font-semibold text-red-700 bg-red-100 rounded-full">
+                                                &#10007; Not Matched
+                                            </span>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ))}
-          </ul>
-          <p><strong>Word Count:</strong> {results['Recruiter Tips'].WordCount}</p>
-          <h3 className="font-semibold">Words to Avoid:</h3>
-          <ul className="list-disc list-inside mb-2">
-            {results['Recruiter Tips'].WordsToAvoid.wordsToAvoid.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-          <h3 className="font-semibold">Suggested Alternatives:</h3>
-          <ul className="list-disc list-inside">
-            {results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives.map((alternative, index) => (
-              <li key={index}>{alternative}</li>
-            ))}
-          </ul>
         </div>
-      )}
+    </div>
+)}
+
+
+
+
+{/* Suggested Skills Section */}
+{results['Suggested Skills'] && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-star"></i> {/* Icon for Suggested Skills */}
+            </span>
+            Suggested Skills
+        </h2>
+        <ul className="grid grid-cols-2 gap-4 ml-4">
+            {results['Suggested Skills'].map((skill, index) => (
+                <li key={index} className="flex items-center text-gray-600">
+                    {/* Icon next to skill */}
+                    <span className="text-purple-600 text-lg mr-2">
+                        <i className="fas fa-check-circle"></i> {/* Font Awesome icon */}
+                    </span>
+                    {/* Skill Name */}
+                    {skill}
+                </li>
+            ))}
+        </ul>
+    </div>
+)}
+
+
+{/* Matched Projects And Internships Section */}
+{results['Matched Projects And Internships'] && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-project-diagram"></i> {/* Icon for Projects */}
+            </span>
+            Matched Projects And Internships
+        </h2>
+        <table className="min-w-full table-auto bg-white border-collapse">
+            <thead>
+                <tr className="bg-gray-200">
+                    <th className="px-4 py-2 text-left text-gray-700">Project No.</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Project Name</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {results['Matched Projects And Internships'].map((project, index) => (
+                    <tr key={index} className="border-t border-gray-300">
+                        <td className="px-4 py-2 text-gray-700">{index + 1}</td>
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{project.project}</td>
+                        <td className="px-4 py-2 text-gray-600">{project.description}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+)}
+
+
+{/* Rephrased Projects And Internships Section */}
+{results['Rephrased Projects And Internships'] && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-retweet"></i> {/* Changed icon for Rephrased Projects */}
+            </span>
+            Rephrased Projects And Internships
+        </h2>
+        <table className="min-w-full table-auto bg-white border-collapse">
+            <thead>
+                <tr className="bg-gray-200">
+                    <th className="px-4 py-2 text-left text-gray-700">Project No.</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Original Project</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Rephrased Project</th>
+                </tr>
+            </thead>
+            <tbody>
+                {results['Rephrased Projects And Internships'].map((item, index) => (
+                    <tr key={index} className="border-t border-gray-300">
+                        <td className="px-4 py-2 text-gray-700">{index + 1}</td>
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{item.originalProject}</td>
+                        <td className="px-4 py-2 text-gray-600">{item.rephrasedProject}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+)}
+
+
+
+{/* Resume Improvement Suggestions Section */}
+{results['Resume Improvement Suggestions'] && (
+    <div className="bg-gray-50 p-6 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
+        <h2 className="text-2xl font-semibold text-purple-700 mb-6 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-lightbulb"></i> {/* Icon for suggestions */}
+            </span>
+            Resume Improvement Suggestions
+        </h2>
+        <ul className="ml-6">
+            {results['Resume Improvement Suggestions'].map((suggestion, index) => (
+                <li
+                    key={index}
+                    className="flex items-start mb-4 text-gray-700 transition duration-200 hover:bg-purple-50 hover:shadow-sm p-3 rounded-lg"
+                >
+                    {/* Icon */}
+                    <span className="text-purple-600 text-xl mr-3">
+                        <i className="fas fa-lightbulb"></i> {/* Icon for suggestion */}
+                    </span>
+                    {/* Suggestion Text */}
+                    <p className="text-gray-700 text-base font-medium">
+                        {suggestion}
+                    </p>
+                </li>
+            ))}
+        </ul>
+    </div>
+)}
+
+
+{/* Grammatical Check Section */}
+{results['Grammatical Check'] && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-check-circle"></i> {/* Icon for grammatical check */}
+            </span>
+            Grammatical Check
+        </h2>
+        <div className="text-gray-800">
+            {/* Check if the grammatical check result is an array of issues */}
+            {Array.isArray(results['Grammatical Check']) ? (
+                <ul className="list-disc list-inside ml-6">
+                    {results['Grammatical Check'].map((issue, index) => (
+                        <li key={index} className="mb-2">
+                            {/* Highlight issues with potential errors */}
+                            <span className="text-red-600 font-semibold">{issue.error}</span>
+                            <span> - {issue.suggestion}</span>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>{results['Grammatical Check']}</p> // Fallback if not an array
+            )}
+        </div>
+    </div>
+)}
+
+
+{/* Recruiter Tips Section */}
+{results['Recruiter Tips'] && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 mt-5">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-user-tie"></i> {/* Icon for Recruiter Tips */}
+            </span>
+            Recruiter Tips
+        </h2>
+
+        {/* Suggestions Section */}
+        <div className="mb-6">
+            <h3 className="font-semibold">Suggestions:</h3>
+            <ul className="list-disc list-inside">
+                {results['Recruiter Tips'].Suggestions.map((suggestion, index) => (
+                    <li key={index}>{suggestion}</li>
+                ))}
+            </ul>
+        </div>
+
+        {/* Word Count Section */}
+        <div className="mb-6">
+            <p><strong>Word Count:</strong> {results['Recruiter Tips'].WordCount}</p>
+        </div>
+
+        {/* Words to Avoid Section */}
+        <div className="mb-6">
+            <h3 className="font-semibold">Words to Avoid:</h3>
+            <table className="min-w-full table-auto bg-white border-collapse">
+                <thead>
+                    <tr className="bg-gray-200">
+                        <th className="px-4 py-2 text-left text-gray-700">Word</th>
+                        <th className="px-4 py-2 text-left text-gray-700">Suggested Alternative</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {results['Recruiter Tips'].WordsToAvoid.wordsToAvoid.map((word, index) => (
+                        <tr key={index} className="border-t border-gray-300">
+                            <td className="px-4 py-2 text-gray-700">{word}</td>
+                            <td className="px-4 py-2 text-gray-700">
+                                {results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index]}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div>
+)}
+
+
                         
                     </div>
                 </div>
