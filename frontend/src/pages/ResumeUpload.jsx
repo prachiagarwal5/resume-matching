@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Animation } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
@@ -44,24 +45,11 @@ const ResumeUpload = () => {
         }
     };
 
-    // Function to determine score segments
-    const getScoreSegment = (score) => {
-        if (score < 40) return { color: 'bg-red-500', text: 'Low' };
-        if (score < 80) return { color: 'bg-yellow-500', text: 'Medium' };
-        return { color: 'bg-green-500', text: 'High' };
-    };
-
-    // Function to determine the widths of each segment
-    const getSegmentWidths = (score) => {
-        const lowWidth = Math.max(0, Math.min(score, 40));
-        const mediumWidth = Math.max(0, Math.min(score - 40, 40));
-        const highWidth = Math.max(0, score - 80);
-
-        return {
-            low: (lowWidth / 100) * 100,
-            medium: (mediumWidth / 100) * 100,
-            high: (highWidth / 100) * 100,
-        };
+    // Function to get the color based on score
+    const getScoreColor = (score) => {
+        if (score < 40) return 'rgba(255, 99, 132, 0.6)'; // Red
+        if (score < 80) return 'rgba(255, 206, 86, 0.6)'; // Yellow
+        return 'rgba(75, 192, 192, 0.6)'; // Green
     };
 
     return (
@@ -137,34 +125,77 @@ const ResumeUpload = () => {
                     <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">Analysis Results</h3>
                     <div className="space-y-6">
 
-                      {/* Score Section */}
-                        {results.Score !== undefined && (
-                            <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200">
-                                <h2 className="text-xl font-semibold text-purple-600 mb-4">Score</h2>
-                                
-                                {/* Progress Bar */}
-                                <div className="flex items-center justify-between">
-                                    <div className="relative w-full h-8 bg-gray-200 rounded-full overflow-hidden">
-                                        <div
-                                            className={`${getScoreSegment(results.Score).color} h-full rounded-full transition-all duration-1000`}
-                                            style={{ width: `${getSegmentWidths(results.Score).low}%` }}
-                                        />
-                                        <div
-                                            className={`${getScoreSegment(results.Score).color} h-full rounded-full transition-all duration-1000 absolute top-0 left-0`}
-                                            style={{ width: `${getSegmentWidths(results.Score).medium}%` }}
-                                        />
-                                        <div
-                                            className={`${getScoreSegment(results.Score).color} h-full rounded-full transition-all duration-1000 absolute top-0 left-0`}
-                                            style={{ width: `${getSegmentWidths(results.Score).high}%` }}
-                                        />
-                                    </div>
-                                </div>
-                                <p className="text-center mt-2 text-lg font-medium">
-                                    Score: <span className={`font-bold ${getScoreSegment(results.Score).color}`}>{results.Score}</span>
-                                </p>
-                                <p className="text-center text-gray-600">{getScoreSegment(results.Score).text}</p>
-                            </div>
-                        )}
+                      
+                   {/* Score Section */}
+                   {results.Score !== undefined && (
+    <div className="bg-gray-100 p-4 rounded-lg shadow-md transition duration-300 hover:bg-gray-200" style={{ height: '250px', position: 'relative' }}>
+        <h2 className="text-lg font-semibold text-purple-600 mb-2 absolute top-2 left-4">Score</h2> {/* Align to upper left */}
+        
+        {/* Circular Progress Chart */}
+        <Doughnut
+            data={{
+                labels: ['Score', 'Remaining'],
+                datasets: [{
+                    data: [results.Score, 100 - results.Score],
+                    backgroundColor: [getScoreColor(results.Score), 'rgba(211, 211, 211, 0.5)'], // Gray for remaining
+                    borderWidth: 0,
+                }],
+            }}
+            options={{
+                responsive: true,
+                maintainAspectRatio: false, // Allow for custom sizing
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (tooltipItem) => {
+                                const label = tooltipItem.label === 'Score' ? 'Score: ' : 'Remaining: ';
+                                const value = tooltipItem.raw;
+                                return `${label} ${value}%`;
+                            },
+                        },
+                    },
+                    legend: {
+                        display: false,
+                    },
+                },
+            }}
+            width={300}  // Set width to 300
+            height={200} // Set height to 200
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-2xl font-bold text-center">
+                <span className={`font-bold ${getScoreColor(results.Score)}`}>{results.Score}</span>%
+            </p>
+        </div>
+        <p className="text-center mt-2 text-sm font-medium">
+            {results.Score < 40 ? 'Low' : results.Score < 80 ? 'Medium' : 'High'}
+        </p>
+    </div>
+)}
+
+
+
+
+                        {/* Job Title Match Section */}
+{results['JobTitleMatch'] !== undefined && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 mt-5">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-check-circle"></i> {/* Icon for Job Title Match */}
+            </span>
+            Job Title Match
+        </h2>
+        <p className="text-gray-700">
+            {/* Display Match Status */}
+            {results['JobTitleMatch'] ? (
+                <span className="text-green-600 font-semibold">Matched</span>
+            ) : (
+                <span className="text-red-600 font-semibold">Not Matched</span>
+            )}
+        </p>
+    </div>
+)}
+
                         
                      {/* Skills Section */}
 {results.Skills && (
@@ -262,7 +293,7 @@ const ResumeUpload = () => {
         </h2>
         <table className="min-w-full table-auto bg-white border-collapse">
             <thead>
-                <tr className="bg-gray-200">
+                <tr className="bg-purple-100">
                     <th className="px-4 py-2 text-left text-gray-700">Project No.</th>
                     <th className="px-4 py-2 text-left text-gray-700">Project Name</th>
                     <th className="px-4 py-2 text-left text-gray-700">Description</th>
@@ -274,6 +305,36 @@ const ResumeUpload = () => {
                         <td className="px-4 py-2 text-gray-700">{index + 1}</td>
                         <td className="px-4 py-2 text-gray-800 font-semibold">{project.project}</td>
                         <td className="px-4 py-2 text-gray-600">{project.description}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+)}
+
+{/* Project Title Description Check Section */}
+{results['Project Title Description Check'] && results['Project Title Description Check'].length > 0 && (
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 mt-5">
+        <h2 className="text-xl font-semibold text-purple-600 mb-4 flex items-center">
+            <span className="text-purple-600 text-2xl mr-2">
+                <i className="fas fa-clipboard-list"></i> {/* Icon for Project Title Check */}
+            </span>
+            Project Title Description Check
+        </h2>
+        <table className="min-w-full table-auto bg-white border-collapse">
+            <thead>
+                <tr className="bg-purple-100">
+                    <th className="px-4 py-2 text-left text-gray-700">Project</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Status</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Explanation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {results['Project Title Description Check'].map((item, index) => (
+                    <tr key={index} className="border-t border-gray-300">
+                        <td className="px-4 py-2 text-gray-800 font-semibold">{item.project}</td>
+                        <td className="px-4 py-2 text-gray-700">{item.status}</td>
+                        <td className="px-4 py-2 text-gray-600">{item.explanation}</td>
                     </tr>
                 ))}
             </tbody>
@@ -293,7 +354,7 @@ const ResumeUpload = () => {
         </h2>
         <table className="min-w-full table-auto bg-white border-collapse">
             <thead>
-                <tr className="bg-gray-200">
+                <tr className="bg-purple-100">
                     <th className="px-4 py-2 text-left text-gray-700">Project No.</th>
                     <th className="px-4 py-2 text-left text-gray-700">Original Project</th>
                     <th className="px-4 py-2 text-left text-gray-700">Rephrased Project</th>
@@ -394,8 +455,9 @@ const ResumeUpload = () => {
         </div>
 
         {/* Word Count Section */}
-        <div className="mb-6">
-            <p><strong>Word Count:</strong> {results['Recruiter Tips'].WordCount}</p>
+        <div className="mb-6 font-semibold">
+            {/* CHANGE FONT WEIGHT */}
+            <p>Word Count: {results['Recruiter Tips'].WordCount}</p>
         </div>
 
         {/* Words to Avoid Section */}
@@ -403,7 +465,7 @@ const ResumeUpload = () => {
             <h3 className="font-semibold">Words to Avoid:</h3>
             <table className="min-w-full table-auto bg-white border-collapse">
                 <thead>
-                    <tr className="bg-gray-200">
+                    <tr className="bg-purple-100">
                         <th className="px-4 py-2 text-left text-gray-700">Word</th>
                         <th className="px-4 py-2 text-left text-gray-700">Suggested Alternative</th>
                     </tr>
@@ -413,7 +475,8 @@ const ResumeUpload = () => {
                         <tr key={index} className="border-t border-gray-300">
                             <td className="px-4 py-2 text-gray-700">{word}</td>
                             <td className="px-4 py-2 text-gray-700">
-                                {results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index]}
+                                {results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index] ? 
+                                    results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index] : 'No alternative available'}
                             </td>
                         </tr>
                     ))}
@@ -422,10 +485,7 @@ const ResumeUpload = () => {
         </div>
     </div>
 )}
-
-
-                        
-                    </div>
+</div>
                 </div>
             )}
 
