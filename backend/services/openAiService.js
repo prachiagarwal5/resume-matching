@@ -125,7 +125,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
         });
 
         // Log response to check the data structure
-        console.log(response);
+        //console.log(response);
         const { choices } = response;
         if (choices && choices[0]?.message?.content) {
             const rawContent = choices[0].message.content;
