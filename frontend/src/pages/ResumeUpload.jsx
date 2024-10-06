@@ -252,7 +252,7 @@ const ResumeUpload = () => {
         </h2>
         <p className="text-gray-700">
             {/* Display Match Status */}
-            {results['JobTitleMatch'] ? (
+            {results['Job Title Match'] ? (
                 <span className="text-green-600 font-semibold">Matched</span>
             ) : (
                 <span className="text-red-600 font-semibold">Not Matched</span>
@@ -398,7 +398,20 @@ const ResumeUpload = () => {
                 {results['Project Title Description Check'].map((item, index) => (
                     <tr key={index} className="border-t border-gray-300">
                         <td className="px-4 py-2 text-gray-800 font-semibold">{item.Project}</td>
-                        <td className="px-4 py-2 text-gray-700">{item.Status}</td>
+
+                        {/* Status with styled span */}
+                        <td className="px-4 py-2">
+                            {item.Status === 'Matched' ? (
+                                <span className="inline-block px-3 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full">
+                                    &#10003; Matched
+                                </span>
+                            ) : (
+                                <span className="inline-block px-3 py-1 text-sm font-semibold text-red-700 bg-red-100 rounded-full">
+                                    &#10007; Not Matched
+                                </span>
+                            )}
+                        </td>
+
                         <td className="px-4 py-2 text-gray-600">{item.Explanation}</td>
                     </tr>
                 ))}
@@ -406,6 +419,7 @@ const ResumeUpload = () => {
         </table>
     </div>
 )}
+
 
 {/* Rephrased Projects And Internships Section */}
 {results['Rephrased Projects And Internships'] && results['Rephrased Projects And Internships'].length > 0 && (
@@ -421,7 +435,7 @@ const ResumeUpload = () => {
                 <tr className="bg-purple-100">
                     <th className="px-4 py-2 text-left text-gray-700">Project No.</th>
                     <th className="px-4 py-2 text-left text-gray-700">Original Project</th>
-                    <th className="px-4 py-2 text-left text-gray-700">Rephrased Project</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Rephrased Project(s)</th>
                 </tr>
             </thead>
             <tbody>
@@ -429,13 +443,22 @@ const ResumeUpload = () => {
                     <tr key={index} className="border-t border-gray-300">
                         <td className="px-4 py-2 text-gray-700">{index + 1}</td>
                         <td className="px-4 py-2 text-gray-800 font-semibold">{item['Original Project']}</td>
-                        <td className="px-4 py-2 text-gray-600">{item['Rephrased Project']}</td>
+
+                        {/* Handle array of rephrased projects */}
+                        <td className="px-4 py-2 text-gray-600">
+                            <ul className="list-disc list-inside">
+                                {item['Rephrased Project'].map((rephrased, rephrasedIndex) => (
+                                    <li key={rephrasedIndex}>{rephrased}</li>
+                                ))}
+                            </ul>
+                        </td>
                     </tr>
                 ))}
             </tbody>
         </table>
     </div>
 )}
+
 
 
 
@@ -520,13 +543,12 @@ const ResumeUpload = () => {
 
         {/* Word Count Section */}
         <div className="mb-6 font-semibold">
-            {/* CHANGE FONT WEIGHT */}
             <p>Word Count: {results['Recruiter Tips']['Word Count']}</p> 
         </div>
 
-        {/* wordsToAvoid Section */}
+        {/* WordsToAvoid Section */}
         <div className="mb-6">
-            <h3 className="font-semibold">WordsToAvoid:</h3>
+            <h3 className="font-semibold">Words To Avoid:</h3>
             <table className="min-w-full table-auto bg-white border-collapse">
                 <thead>
                     <tr className="bg-purple-100">
@@ -535,20 +557,19 @@ const ResumeUpload = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {results['Recruiter Tips'] && results['Recruiter Tips'].wordsToAvoid && results['Recruiter Tips'].wordsToAvoid.wordsToAvoid && results['Recruiter Tips'].wordsToAvoid.wordsToAvoid.map((word, index) => (
-        <tr key={index} className="border-t border-gray-300">
-            <td className="px-4 py-2 text-gray-700">{word}</td>
-            <td className="px-4 py-2 text-gray-700">
-                {results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives && results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives[index] ? 
-                    results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives[index] : 'No alternative available'}
-                            </td>
-                        </tr>
-                    ))}
+                    {results['Recruiter Tips'].wordsToAvoid &&
+                        Object.entries(results['Recruiter Tips'].wordsToAvoid).map(([word, alternative], index) => (
+                            <tr key={index} className="border-t border-gray-300">
+                                <td className="px-4 py-2 text-gray-700">{word}</td>
+                                <td className="px-4 py-2 text-gray-700">{alternative}</td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
         </div>
     </div>
 )}
+
 
 </div>
                 </div>

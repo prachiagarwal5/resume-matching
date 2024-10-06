@@ -24,7 +24,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
       
       Please return ONLY a JSON object with the following structure:
       
-      1. **JobTitle Match**: Return **true** or **false** depending on whether the job title in the resume **exactly matches** the job title in the JD.
+      1. **JobTitle Match**: Return **Matchend** or **Not Matched** depending on whether the job title in the resume **exactly matches** the job title in the JD.
       
       2. **Skills**:
           - **Technical Skills**: Return a dictionary where each technical skill from the JD is listed as true or false based on **contextual relevance** in the resume.
@@ -52,16 +52,16 @@ const analyzeResume = async (resumeText, jobDescription) => {
       
           Example:
           {
-              "OriginalProject": "AI Intern",
-              "RephrasedProject": [
+              "Original Project": "AI Intern",
+              "Rephrased Project": [
                   "Developed an AI-powered interview system using ChatGPT API.",
                   "Integrated Text-to-Speech (TTS) and Whisper for voice processing.",
                   "Collaborated on optimizing interview AI models for scalability."
               ]
           },
           {
-              "OriginalProject": "Data Science Intern",
-              "RephrasedProject": [
+              "Original Project": "Data Science Intern",
+              "Rephrased Project": [
                   "Built hate speech detection models using Python and NLP techniques.",
                   "Enhanced accuracy through data pre-processing and feature engineering."
               ]
@@ -78,11 +78,11 @@ const analyzeResume = async (resumeText, jobDescription) => {
       9. **Recruiter Tips**: Provide highly specific suggestions from a recruiter’s perspective, focusing on improving clarity, word count limits, and keyword usage.
           - **Suggestions**: Advice on enhancing appeal to recruiters (e.g., using action verbs, quantifying results, etc.).
           - **Word Count**: Recommend concise descriptions (limit project descriptions to 20 words).
-          - **WordsToAvoid**: Suggest words to avoid (e.g., vague terms like "responsible for," "assisted with") and offer action-oriented alternatives (e.g., "Led," "Managed," "Developed").
+          - **wordsToAvoid**: Suggest words to avoid (e.g., vague terms like "responsible for," "assisted with") and offer action-oriented alternatives (e.g., "Led," "Managed," "Developed").
           
           Example:
           {
-              "WordsToAvoid": {
+              "wordsToAvoid": {
                   "responsible for": "Led",
                   "helped": "Assisted with"
               }
@@ -94,7 +94,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
       
       Return a JSON object with the following structure:
       {
-          "JobTitleMatch": true/false,
+          "Job Title Match":  "Matched/Not Matched",
           "Skills": {
               "TechnicalSkills": {
                   "skill1": true/false,
@@ -105,8 +105,8 @@ const analyzeResume = async (resumeText, jobDescription) => {
                   "skill2": true/false
               }
           },
-          "SuggestedSkills": ["skill1", "skill2"],
-          "MatchedProjectsAndInternships": [
+          "Suggested Skills": ["skill1", "skill2"],
+          "Matched Projects And Internships": [
               {
                   "Project": "Project Title 1",
                   "Description": "Explain why this project contextually aligns with the JD."
@@ -116,27 +116,29 @@ const analyzeResume = async (resumeText, jobDescription) => {
                   "Description": "Explain why this internship contextually aligns with the JD."
               }
           ],
-          "RephrasedProjectsAndInternships": [
+          "Rephrased Projects And Internships": [
               {
-                  "OriginalProject": "Original project description",
-                  "RephrasedProject": ["Rephrased point 1", "Rephrased point 2"]
+                  "Original Project": "Original project description",
+                  "Rephrased Project": ["Rephrased point 1", "Rephrased point 2", "Rephrased point 3",etc]
               }
           ],
-          "ResumeImprovementSuggestions": ["Suggestion 1", "Suggestion 2"],
-          "GrammaticalCheck": "Details on grammatical correctness",
-          "ProjectTitleDescriptionCheck": [
+          "Resume Improvement Suggestions": ["Suggestion 1", "Suggestion 2", "Suggestion 3","Suggestion 4","Suggestion 5"],
+          "Grammatical Check": "Details on grammatical correctness and professionalism",
+          "Project Title Description Check": [
               {
                   "Project": "Project Title 1",
                   "Status": "Matched/Not Matched",
                   "Explanation": "Explanation of consistency between title and description"
               }
           ],
-          "RecruiterTips": {
-              "Suggestions": ["Tip 1", "Tip 2"],
-              "WordCount": "Limit project descriptions to 20 words or less.",
-              "WordsToAvoid": {
-                  "responsible for": "Led",
-                  "helped": "Assisted with"
+          "Recruiter Tips": {
+              "Suggestions": ["Tip 1", "Tip 2", "Tip 3"],
+              "Word Count": "Limit project descriptions to 20 words or less.",
+              "wordsToAvoid": {
+                  "Incorrect1": "Correct1",
+                    "Incorrect2": "Correct2",
+                    "Incorrect3": "Correct3",
+                    "Incorrect4": "Correct4"
               }
           },
           "JScore": number between 0 and 100,
