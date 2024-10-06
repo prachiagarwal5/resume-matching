@@ -127,51 +127,114 @@ const ResumeUpload = () => {
 
                       
                    {/* Score Section */}
-                   {results.Score !== undefined && (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md transition duration-300 hover:bg-gray-200" style={{ height: '250px', position: 'relative' }}>
-        <h2 className="text-lg font-semibold text-purple-600 mb-2 absolute top-2 left-4">Score</h2> {/* Align to upper left */}
-        
-        {/* Circular Progress Chart */}
-        <Doughnut
-            data={{
-                labels: ['Score', 'Remaining'],
-                datasets: [{
-                    data: [results.Score, 100 - results.Score],
-                    backgroundColor: [getScoreColor(results.Score), 'rgba(211, 211, 211, 0.5)'], // Gray for remaining
-                    borderWidth: 0,
-                }],
-            }}
-            options={{
-                responsive: true,
-                maintainAspectRatio: false, // Allow for custom sizing
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: (tooltipItem) => {
-                                const label = tooltipItem.label === 'Score' ? 'Score: ' : 'Remaining: ';
-                                const value = tooltipItem.raw;
-                                return `${label} ${value}%`;
-                            },
-                        },
-                    },
-                    legend: {
-                        display: false,
-                    },
-                },
-            }}
-            width={300}  // Set width to 300
-            height={200} // Set height to 200
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-2xl font-bold text-center">
-                <span className={`font-bold ${getScoreColor(results.Score)}`}>{results.Score}</span>%
-            </p>
-        </div>
-        <p className="text-center mt-2 text-sm font-medium">
-            {results.Score < 40 ? 'Low' : results.Score < 80 ? 'Medium' : 'High'}
-        </p>
+                   {results.JScore !== undefined && results.GScore !== undefined && (
+    <div className="bg-gray-100 p-4 rounded-lg shadow-lg transition duration-300 hover:bg-gray-200" style={{ width: '100%' }}>
+        <table className="w-full">
+            <thead>
+                <tr>
+                    <th className="text-lg font-semibold text-purple-600 text-left">
+                        <i className="fas fa-chart-pie text-purple-600 text-2xl mr-2"></i>
+                        General Score (GScore)
+                    </th>
+                    <th className="text-lg font-semibold text-purple-600 text-left">
+                        <i className="fas fa-chart-pie text-purple-600 text-2xl mr-2"></i>
+                        Score on the Basis of JD (JScore)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td className="p-2" style={{ width: '50%' }}>
+                        <div className="relative" style={{ height: '200px' }}>
+                            <Doughnut
+                                data={{
+                                    labels: ['GScore', 'Remaining'],
+                                    datasets: [{
+                                        data: [results.GScore, 100 - results.GScore],
+                                        backgroundColor: [getScoreColor(results.GScore), 'rgba(211, 211, 211, 0.5)'],
+                                        borderWidth: 0,
+                                    }],
+                                }}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                label: (tooltipItem) => {
+                                                    const label = tooltipItem.label === 'GScore' ? 'GScore: ' : 'Remaining: ';
+                                                    return `${label} ${tooltipItem.raw}%`;
+                                                },
+                                            },
+                                        },
+                                        legend: {
+                                            display: false,
+                                        },
+                                    },
+                                }}
+                                width={200}
+                                height={200}
+                            />
+                            {/* GScore percentage in the center */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <p className="text-3xl font-bold text-center text-gray-800">
+                                    <span className={`font-bold ${getScoreColor(results.GScore)}`}>{results.GScore}</span>%
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td className="p-2" style={{ width: '50%' }}>
+                        <div className="relative" style={{ height: '200px' }}>
+                            <Doughnut
+                                data={{
+                                    labels: ['JScore', 'Remaining'],
+                                    datasets: [{
+                                        data: [results.JScore, 100 - results.JScore],
+                                        backgroundColor: [getScoreColor(results.JScore), 'rgba(211, 211, 211, 0.5)'],
+                                        borderWidth: 0,
+                                    }],
+                                }}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        tooltip: {
+                                            callbacks: {
+                                                label: (tooltipItem) => {
+                                                    const label = tooltipItem.label === 'JScore' ? 'JScore: ' : 'Remaining: ';
+                                                    return `${label} ${tooltipItem.raw}%`;
+                                                },
+                                            },
+                                        },
+                                        legend: {
+                                            display: false,
+                                        },
+                                    },
+                                }}
+                                width={200}
+                                height={200}
+                            />
+                            {/* JScore percentage in the center */}
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <p className="text-3xl font-bold text-center text-gray-800">
+                                    <span className={`font-bold ${getScoreColor(results.JScore)}`}>{results.JScore}</span>%
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 )}
+
+
+
+
+
+
+
+
 
 
 
@@ -456,12 +519,12 @@ const ResumeUpload = () => {
         {/* Word Count Section */}
         <div className="mb-6 font-semibold">
             {/* CHANGE FONT WEIGHT */}
-            <p>Word Count: {results['Recruiter Tips']['Word Count']}</p> {/* Corrected here */}
+            <p>Word Count: {results['Recruiter Tips']['Word Count']}</p> 
         </div>
 
-        {/* Words to Avoid Section */}
+        {/* wordsToAvoid Section */}
         <div className="mb-6">
-            <h3 className="font-semibold">Words to Avoid:</h3>
+            <h3 className="font-semibold">WordsToAvoid:</h3>
             <table className="min-w-full table-auto bg-white border-collapse">
                 <thead>
                     <tr className="bg-purple-100">
@@ -470,12 +533,12 @@ const ResumeUpload = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {results['Recruiter Tips'].WordsToAvoid.wordsToAvoid.map((word, index) => (
-                        <tr key={index} className="border-t border-gray-300">
-                            <td className="px-4 py-2 text-gray-700">{word}</td>
-                            <td className="px-4 py-2 text-gray-700">
-                                {results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index] ? 
-                                    results['Recruiter Tips'].WordsToAvoid.suggestedAlternatives[index] : 'No alternative available'}
+                {results['Recruiter Tips'] && results['Recruiter Tips'].wordsToAvoid && results['Recruiter Tips'].wordsToAvoid.wordsToAvoid && results['Recruiter Tips'].wordsToAvoid.wordsToAvoid.map((word, index) => (
+        <tr key={index} className="border-t border-gray-300">
+            <td className="px-4 py-2 text-gray-700">{word}</td>
+            <td className="px-4 py-2 text-gray-700">
+                {results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives && results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives[index] ? 
+                    results['Recruiter Tips'].wordsToAvoid.suggestedAlternatives[index] : 'No alternative available'}
                             </td>
                         </tr>
                     ))}
