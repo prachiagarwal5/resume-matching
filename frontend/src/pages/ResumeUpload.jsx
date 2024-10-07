@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -68,9 +69,16 @@ const ResumeUpload = () => {
             {/* Navbar */}
             <nav className="bg-white bg-opacity-80 text-purple-900 w-full p-4 shadow-lg flex justify-between items-center">
                 <div className="text-3xl font-extrabold tracking-wide">GLA Resume Fit</div>
-                <div className="flex items-center">
-                    <span className="text-lg font-semibold mr-4">Hi xyz</span>
-                    <div className="w-10 h-10 bg-purple-700 text-white rounded-full flex items-center justify-center">P</div>
+                <div className="flex items-center space-x-4">
+                    
+
+                    {/* Add the Create Resume button */}
+                    <Link
+                        to="/resume-creation"
+                        className="bg-purple-700 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 transition duration-300"
+                    >
+                        Create Resume
+                    </Link>
                 </div>
             </nav>
 
