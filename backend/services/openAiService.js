@@ -7,112 +7,146 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const analyzeResume = async (resumeText, jobDescription) => {
     try {
         const prompt = `I will provide you with two inputs:
-    Resume Text: A candidate's resume in text format. 
-    Job Description (JD): A job listing or description that the candidate is applying to.
+        - Resume Text: A candidate's resume in text format.
+        - Job Description (JD): A job listing or description that the candidate is applying to.
+      
+      Your task is to **evaluate strictly** the resume based on the JD and return a detailed, precise report. The evaluation must adhere to **strict guidelines**, penalizing vague or irrelevant details that do not directly align with the JD.
+      
+      IMPORTANT:
+      - Match skills contextually, not just by keyword. Only mark a skill as present if it **exactly matches the context** required by the JD. For example, if the JD mentions "Python for Data Structures and Algorithms (DSA)," it should only be marked as present if Python is used explicitly for DSA in the resume.
+      - Be **extremely strict** in evaluating how well the resume demonstrates qualifications for the **specific role** outlined in the JD.
+      - Gaps, vagueness, or irrelevant content should significantly lower the JD-aligned score.
+      - Also provide a **general resume quality** score independent of the JD, focusing on grammar, professionalism, and overall clarity.
+      
+      Below is the Resume Text: "${resumeText}"
+      
+      Below is the Job Description: "${jobDescription}"
+      
+      Please return ONLY a JSON object with the following structure:
+      
+      1. **JobTitle Match**: Return **Matchend** or **Not Matched** depending on whether the job title in the resume **exactly matches** the job title in the JD.
+      
+      2. **Skills**:
+          - **Technical Skills**: Return a dictionary where each technical skill from the JD is listed as true or false based on **contextual relevance** in the resume.
+          - **Soft Skills**: Return a dictionary where each soft skill from the JD is marked as true or false based on its appearance in the resume in the relevant context.
+          
+          Example:
+          {
+              "TechnicalSkills": {
+                  "Python (DSA)": true,
+                  "Java (API Development)": false
+              },
+              "SoftSkills": {
+                  "Communication Skills": true,
+                  "Teamwork": false
+              }
+          }
+          
+          Every skill mentioned in the JD must be evaluated. Missing skills or incorrect context should be marked as "false."
+      
+      3. **Suggested Skills**: List technical and soft skills the candidate could add to better match the JD. Suggestions should be **specific** and avoid general recommendations. Focus on skills that are **directly related** to the JD.
+      
+      4. **Matched Projects And Internships**: Identify **relevant projects and internships** from the resume that align with the JD. Provide a detailed explanation for why they match, focusing on the specific context in which the skills and technologies were used. Exclude projects that do not **strictly align** with the JD.
+      
+      5. **Rephrased Projects And Internships**: Provide **multiple concise rephrased points** for relevant projects or internships that better align with the JD. Each point should focus on critical, JD-relevant skills, achievements, and outcomes, while keeping descriptions **concise (20 words or less)**.
+      
+          Example:
+          {
+              "Original Project": "AI Intern",
+              "Rephrased Project": [
+                  "Developed an AI-powered interview system using ChatGPT API.",
+                  "Integrated Text-to-Speech (TTS) and Whisper for voice processing.",
+                  "Collaborated on optimizing interview AI models for scalability."
+              ]
+          },
+          {
+              "Original Project": "Data Science Intern",
+              "Rephrased Project": [
+                  "Built hate speech detection models using Python and NLP techniques.",
+                  "Enhanced accuracy through data pre-processing and feature engineering."
+              ]
+          }
+      
+          **IMPORTANT**: Each project should return **multiple concise points** highlighting distinct achievements relevant to the JD.
+      
+      6. **Resume Improvement Suggestions**: Offer specific suggestions to improve the resume's structure, clarity, and alignment with the JD. These suggestions should target content relevance, use of JD-specific keywords, and the overall readability of the resume.
+      
+      7. **Grammatical Check**: Review the resume for grammatical accuracy and professionalism. Identify areas where language can be improved to ensure clarity and correctness.
+      
+      8. **Project Title Description Check**: Ensure that the project titles and their descriptions match. For example, if the project is titled "E-commerce Web App," the description should clearly reflect the work done for that system. Penalize vague or mismatched descriptions.
+      
+      9. **Recruiter Tips**: Provide highly specific suggestions from a recruiter’s perspective, focusing on improving clarity, word count limits, and keyword usage.
+          - **Suggestions**: Advice on enhancing appeal to recruiters (e.g., using action verbs, quantifying results, etc.).
+          - **Word Count**: Recommend concise descriptions (limit project descriptions to 20 words).
+          - **wordsToAvoid**: Suggest words to avoid (e.g., vague terms like "responsible for," "assisted with") and offer action-oriented alternatives (e.g., "Led," "Managed," "Developed").
+          
+          Example:
+          {
+              "wordsToAvoid": {
+                  "responsible for": "Led",
+                  "helped": "Assisted with"
+              }
+          }
+      
+      10. **Score**:
+          - **JScore**: A **strict score** between 0 and 100, evaluating the alignment between the resume and the JD, based on context-appropriate skills, project alignment, and grammatical accuracy.
+          - **GScore**: A general score between 0 and 100 evaluating the overall quality and professionalism of the resume, regardless of JD alignment.
+      
+      Return a JSON object with the following structure:
+      {
+          "Job Title Match":  "Matched/Not Matched",
+          "Skills": {
+              "TechnicalSkills": {
+                  "skill1": true/false,
+                  "skill2": true/false
+              },
+              "SoftSkills": {
+                  "skill1": true/false,
+                  "skill2": true/false
+              }
+          },
+          "Suggested Skills": ["skill1", "skill2"],
+          "Matched Projects And Internships": [
+              {
+                  "Project": "Project Title 1",
+                  "Description": "Explain why this project contextually aligns with the JD."
+              },
+              {
+                  "Internship": "Internship Title 1",
+                  "Description": "Explain why this internship contextually aligns with the JD."
+              }
+          ],
+          "Rephrased Projects And Internships": [
+              {
+                  "Original Project": "Original project description",
+                  "Rephrased Project": ["Rephrased point 1", "Rephrased point 2", "Rephrased point 3",etc]
+              }
+          ],
+          "Resume Improvement Suggestions": ["Suggestion 1", "Suggestion 2", "Suggestion 3","Suggestion 4","Suggestion 5"],
+          "Grammatical Check": "Details on grammatical correctness and professionalism",
+          "Project Title Description Check": [
+              {
+                  "Project": "Project Title 1",
+                  "Status": "Matched/Not Matched",
+                  "Explanation": "Explanation of consistency between title and description"
+              }
+          ],
+          "Recruiter Tips": {
+              "Suggestions": ["Tip 1", "Tip 2", "Tip 3"],
+              "Word Count": "Limit project descriptions to 20 words or less.",
+              "wordsToAvoid": {
+                  "Incorrect1": "Correct1",
+                    "Incorrect2": "Correct2",
+                    "Incorrect3": "Correct3",
+                    "Incorrect4": "Correct4"
+              }
+          },
+          "JScore": number between 0 and 100,
+          "GScore": number between 0 and 100
+      }`; 
+      
 
-Your task is to evaluate the resume in relation to the JD and return a detailed, constructive report covering the following areas.
 
-Be sure to match skills not just by keyword, but by context.
-
-IMPORTANT: For example, if the JD mentions "Python" for Data Structures and Algorithms (DSA), match it only if Python was used for DSA in the resume, not for machine learning or other unrelated contexts.
-
-IMPORTANT: Focus on contextual alignment between the resume and JD, ensuring skills are matched based on the context in which they are mentioned and demonstrated.
-
-Be strict in evaluating how well the resume demonstrates suitability for the specific role mentioned in the JD.
-
-IMPORTANT: Check if the project title and its description are aligned. For example, if the project is titled "Movie Recommendation System," the description must clearly discuss a movie recommendation system. Flag any mismatches.
-
-Here is the Resume Text: "${resumeText}"
-Here is the Job Description: "${jobDescription}"
-
-Please evaluate and return ONLY a JSON object with the following fields.
-
-IMPORTANT: Do not provide any other explanations or responses, only return the JSON object strictly in this format:
-
-1. **matchedSkills**: A list of skills from the resume that match the JD based on context. If the JD mentions a skill in a specific context (e.g., Python for DSA), ensure the skill is only matched if it appears in that context in the resume. Provide contextual explanations for each match.
-
-2. **suggestedSkills**: A list of additional skills that the candidate could add to their resume to make it more aligned with the JD. Suggest both technical and soft skills if relevant, and ensure that these suggestions include keywords that are critical in both the JD and resume.
-
-3. **matchedProjectsAndInternships**: Identify multiple specific projects and internships from the resume that align most closely with the JD. Explain why they match based on the context in which skills or technologies were used. For example, if a project involved Python for DSA and the JD requests Python for DSA, explain this alignment, etc.
-
-4. **rephrasedProjectsAndInternships**: Provide examples of how to rephrase certain project or internship descriptions in the resume to better align with the JD. Ensure that rephrased versions emphasize relevant skills, technologies, and outcomes in the appropriate context, making them more impactful. Each rephrased project or internship must have a word limit of 20 words.
-
-5. **resumeImprovementSuggestions**: Offer multiple suggestions for how the candidate can enhance their resume to make it more professional and tailored to the JD. This should include advice on structure, formatting, and content. Focus on improving clarity, readability, and how effectively skills are presented in relation to the JD's requirements. Additionally, include key JD-related keywords and phrases that the candidate should incorporate in their resume, etc.
-
-6. **grammaticalCheck**: Assess the grammatical correctness of the resume. Identify any language issues or improvements, focusing on ensuring the grammar is professional, precise, and appropriate for the role.
-
-7. **projectTitleDescriptionCheck**: Verify that the project titles and their descriptions match contextually. If a project title, such as "Movie Recommendation System," is given, the description should be aligned with the concept of a movie recommendation system. Flag any inconsistencies and provide a brief explanation, and evaluate multiple projects/internships for alignment.
-
-8. **score**: Provide a score between 0 and 100 that evaluates how well the resume aligns with the JD. Consider the following factors in scoring:
-    - How closely the matched skills align with the context in the JD.
-    - The quality and relevance of matched projects and internships.
-    - Overall presentation, clarity, and impact of the resume.
-    - **Role specificity**: Check whether the resume explicitly demonstrates experience or skills relevant to the specific role mentioned in the JD.
-    - **Keyword inclusion**: Ensure that important keywords from the JD are either present in the resume or are included in the suggested improvements. The score should reflect how well the resume captures these critical terms.
-    - The extent to which the resume meets the specific requirements and expectations outlined in the JD.
-    - **Grammatical level**: Evaluate the grammatical professionalism of the language and terminology used in the resume.
-
-The JSON object should follow this structure and be strictly formatted as follows:
-
-{
-    "Matched Skills": ["skill1", "skill2", "skill3", etc.],
-    "Suggested Skills": ["suggestedSkill1", "suggestedSkill2", "suggestedSkill3", etc.],
-    "Matched Projects And Internships": [
-        {
-            "project": "Project Title 1",
-            "description": "Explain how this project aligns contextually with the JD and what was achieved"
-        },
-        {
-            "project": "Project Title 2",
-            "description": "Explain how this project aligns contextually with the JD and what was achieved"
-        },
-        {
-            "internship": "Internship Title 1",
-            "description": "Explain how this internship aligns contextually with the JD"
-        },
-        {
-            "internship": "Internship Title 2",
-            "description": "Explain how this internship aligns contextually with the JD"
-        }
-    ],
-    "Rephrased Projects And Internships": [
-        {
-            "originalProject": "Original project description1",
-            "rephrasedProject": "Rephrased project description aligning more professionally and contextually with the JD"
-        },
-        {
-            "originalProject": "Original project description2",
-            "rephrasedProject": "Rephrased project description to highlight key skills and outcomes relevant to the JD"
-        },
-        {
-            "originalInternship": "Original internship description1",
-            "rephrasedInternship": "Rephrased internship description to align with the JD and highlight key outcomes"
-        },
-        {
-            "originalInternship": "Original internship description2",
-            "rephrasedInternship": "Rephrased internship description to emphasize relevant skills and achievements"
-        }
-    ],
-    "Project Title Description Check": [
-        {
-            "project": "Project Title 1",
-            "status": "Matched/Not Matched",
-            "explanation": "Explain if the project description is consistent with the title"
-        },
-        {
-            "project": "Project Title 2",
-            "status": "Matched/Not Matched",
-            "explanation": "Explain if the project description is consistent with the title"
-        }
-    ],
-    "Resume Improvement Suggestions": [
-        "Suggestion 1 for improving the overall professionalism and structure of the resume, with key keywords from the JD",
-        "Suggestion 2 for highlighting skills and achievements more clearly, while ensuring important JD-related terms are included",
-        "Suggestion 3 for enhancing readability and impact, incorporating relevant JD terms"
-    ],
-    "Grammatical Check": "Evaluation of how grammatically correct and professional the resume is for the role, including suggestions for improvement if needed",
-    "Score": "A number between 0 and 100 that reflects the overall match between the resume and JD, considering role specificity, keyword alignment, and grammatical level"
-}`;
 
 
         const response = await groq.chat.completions.create({
@@ -123,15 +157,15 @@ The JSON object should follow this structure and be strictly formatted as follow
                 },
             ],
             model: "llama3-70b-8192", // Adjust the model if needed
-            max_tokens: 1000, // Set token limit to 1000
+            // max_tokens: 1000, // Set token limit to 1000
         });
 
         // Log response to check the data structure
-        console.log(response);
+        //console.log(response);
         const { choices } = response;
         if (choices && choices[0]?.message?.content) {
             const rawContent = choices[0].message.content;
-
+            console.log("Raw Content: ", rawContent);
             // Now we'll trim the content to extract only the relevant parts between "Matched Skills" and "Score"
             const trimmedContent = extractRelevantJSON(rawContent);
             const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
@@ -150,8 +184,8 @@ The JSON object should follow this structure and be strictly formatted as follow
 
 // Helper function to extract JSON data from "Matched Skills" to "Score"
 const extractRelevantJSON = (content) => {
-    const startMarker = '"Matched Skills"';
-    const endMarker = '"Score"';
+    const startMarker = '"Skills"';
+    const endMarker = '"GScore"';
     const startIndex = content.indexOf(startMarker);
     const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // Adjust to capture full content
 
