@@ -33,7 +33,11 @@ const ResumeUpload = () => {
         formData.append('jobDescription', jobDescription);
 
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://gla-fit-backend.onrender.com/api/analyze', formData, {
+=======
+            const response = await axios.post('https://resume-matching-backend.onrender.com/api/analyze', formData, {
+>>>>>>> d4b6e9a (add links)
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
