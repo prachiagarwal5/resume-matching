@@ -8,7 +8,7 @@ const app = express();
 
 app.use(cors({
     // origin: 'https://nexcarrier.onrender.com/', // Ensure this matches your frontend URL
-    origin: 'http://localhost:5173',
+    origin: 'https://resume-matching-frontend.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
