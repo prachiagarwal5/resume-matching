@@ -55,33 +55,33 @@ const ResumeUpload = () => {
 
     return (
         <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center w-screen">
-            {/* Navbar */}
-            <nav className="bg-white bg-opacity-80 text-purple-900 w-full p-4 shadow-lg flex justify-between items-center">
-                <div className="text-3xl font-extrabold tracking-wide">GLA Resume Fit</div>
-                <div className="flex items-center space-x-4">
-                    
+    {/* Navbar */}
+    <nav className="bg-white bg-opacity-80 text-purple-900 w-full p-4 shadow-lg flex justify-between items-center">
+        <div className="text-2xl md:text-3xl font-extrabold tracking-wide">GLA Resume Fit</div>
+        <div className="flex items-center space-x-4">
+            {/* Create Resume button */}
+            <Link
+                to="/resume-creation"
+                className="bg-purple-700 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 transition duration-300"
+            >
+                Create Resume
+            </Link>
+        </div>
+    </nav>
 
-                    {/* Add the Create Resume button */}
-                    <Link
-                        to="/resume-creation"
-                        className="bg-purple-700 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 transition duration-300"
-                    >
-                        Create Resume
-                    </Link>
-                </div>
-            </nav>
-
-            {/* Content Area */}
-            <div className="w-full max-w-7xl mt-12 grid grid-cols-2 gap-8 bg-white shadow-2xl rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300">
+    {/* Content Area */}
+    <div className="w-full max-w-7xl mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white shadow-2xl rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300 p-4">
         {/* Resume Preview */}
-        <div className="p-6 flex flex-col items-center">
+        <div className="p-4 flex flex-col items-center">
             {resumeUrl ? (
-                <iframe
-                    src={resumeUrl}
-                    title="Resume Preview"
-                    className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
-                    style={{ minHeight: '600px' }}
-                />
+                <div className="w-full h-0 pb-[75%] relative">
+                    <iframe
+                        src={`${resumeUrl}#zoom=150`} 
+                        //  {/* Default zoom for larger screens */}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
+                        title="Resume Preview"
+                    />
+                </div>
             ) : (
                 <img
                     src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
@@ -91,28 +91,27 @@ const ResumeUpload = () => {
             )}
         </div>
 
-
-                {/* Upload Section */}
-                <div className="bg-gray-50 p-8 flex flex-col justify-center items-center rounded-lg shadow-lg transition duration-300 hover:shadow-2xl">
-            <h2 className="text-purple-700 text-4xl font-bold mb-6 transform transition-transform duration-300 hover:scale-105">Upload Your Resume</h2>
-            <p className="text-gray-700 mb-6 text-center text-lg">
+        {/* Upload Section */}
+        <div className="bg-gray-50 p-6 md:p-8 flex flex-col justify-center items-center rounded-lg shadow-lg transition duration-300 hover:shadow-2xl">
+            <h2 className="text-purple-700 text-3xl md:text-4xl font-bold mb-4 transform transition-transform duration-300 hover:scale-105 text-center">Upload Your Resume</h2>
+            <p className="text-gray-700 mb-4 text-center text-base md:text-lg">
                 Get a detailed analysis report matching your job description by parsing your resume.
             </p>
 
-            <div className="w-full mb-6">
+            <div className="w-full mb-4">
                 <label className="block mb-2 text-gray-700 font-semibold">Upload Resume (PDF)</label>
                 <input
                     type="file"
                     onChange={handleFileChange}
                     accept=".pdf"
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500"
+                    className="w-full px-3 py-2 md:px-4 md:py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500"
                 />
             </div>
 
-            <div className="w-full mb-6">
+            <div className="w-full mb-4">
                 <label className="block mb-2 text-gray-700 font-semibold">Job Description</label>
                 <textarea
-                    className="w-full h-32 px-4 py-3 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500"
+                    className="w-full h-24 md:h-32 px-3 py-2 md:px-4 md:py-3 bg-gray-200 border border-gray-300 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500"
                     value={jobDescription}
                     onChange={(e) => setJobDescription(e.target.value)}
                     placeholder="Paste the job description here"
@@ -121,7 +120,7 @@ const ResumeUpload = () => {
 
             <button
                 onClick={handleSubmit}
-                className="w-full bg-purple-700 text-white py-3 rounded-lg shadow hover:bg-purple-800 transition duration-300 transform hover:scale-105"
+                className="w-full bg-purple-700 text-white py-2 md:py-3 rounded-lg shadow hover:bg-purple-800 transition duration-300 transform hover:scale-105"
             >
                 {loading ? 'Analyzing...' : 'Analyze'}
             </button>
