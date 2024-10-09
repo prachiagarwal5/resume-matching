@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const CreateResume = () => {
   const [formData, setFormData] = useState({
@@ -84,9 +85,15 @@ const CreateResume = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Resume Data Submitted: ', formData);
+    try {
+      const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
+      console.log('Data sent successfully:', response.data);
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
     // Here, you can send the data to the backend or any other logic
   };
   const addExperienceInput = () => {
