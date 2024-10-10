@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,6 +38,7 @@ const CreateResume = () => {
     achievements:[{achieve:''}],
     experience: [{ designation: '', companyName: '', description: '' }],
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (e, section, field) => {
     if (section) {
@@ -112,6 +112,7 @@ const CreateResume = () => {
     } catch (error) {
       console.error('Error sending data:', error);
     }
+      navigate('/template-selection');
     // Here, you can send the data to the backend or any other logic
   };
   const addExperienceInput = () => {
@@ -119,11 +120,6 @@ const CreateResume = () => {
       ...formData,
       experience: [...formData.experience, { designation: '', companyName: '', description: '' }],
     });
-  };
-  const navigate = useNavigate();
-  const handleResumeCreation = () => {
-   
-    navigate('/resume'); // Redirect to the resume page
   };
 
   const handleExperienceChange = (index, field, value) => {
@@ -680,7 +676,7 @@ const CreateResume = () => {
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
-             onClick={handleResumeCreation}
+             onClick={handleSubmit}
               type="submit"
               className="bg-purple-700 text-white px-6 py-2 rounded-lg hover:bg-purple-800 transition duration-300"
             >
