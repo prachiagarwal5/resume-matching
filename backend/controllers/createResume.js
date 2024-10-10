@@ -1,10 +1,11 @@
 const{generateResume} = require('../services/createResume');
-const createResume = (req, res) => {
+const createResume = async(req, res) => {
     try {
         console.log('Received form data:', req.body);
         const formData = req.body;        
         // Send the data to generateResume function
-        const resume = generateResume({ formData });
+        const resume = await generateResume({ formData });
+        // res.status(200).json(resume);
         console.log('Generated resume:', resume);
 
         // Process the form data here (e.g., store in the database)

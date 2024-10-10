@@ -35,10 +35,9 @@ const CreateResume = () => {
     technicalSkills: [''],
     softSkills: [''],
     projects: [{ title: '', description: '' }], // Initialize with one empty project
-    certification:[{point:''}],
-    achievements:[{achieve:''}],
+    certification:[""],
+    achievements:[""],
     experience: [{ designation: '', companyName: '', description: '' }],
-    
   });
   const navigate = useNavigate();
 
@@ -77,11 +76,20 @@ const CreateResume = () => {
     });
   };
   const handleCertificationChange = (index, field, value) => {
-    const updatedProjects = [...formData.projects];
-    updatedProjects[index][field] = value;
+    const updatedCertifications = [...formData.certification];
+    updatedCertifications[index] = value;
     setFormData({
       ...formData,
-      projects: updatedProjects,
+      certification: updatedCertifications,
+    });
+  };
+
+  const handleAchieveChange = (index, field, value) => {
+    const updatedAchievements = [...formData.achievements];
+    updatedAchievements[index] = value;
+    setFormData({
+      ...formData,
+      achievements: updatedAchievements,
     });
   };
 
@@ -99,11 +107,25 @@ const CreateResume = () => {
     });
   };
   const addCertification= () => {
+    // setFormData({
+    //   ...formData,
+    //   projects: [...formData.certification, { title: ''}], // Add an empty project object
+    // });
     setFormData({
       ...formData,
-      projects: [...formData.certification, { title: ''}], // Add an empty project object
+      certification: [...formData.certification, ''],
     });
   };
+  const addAchieveInput = () => {
+//     setFormData({
+//       ...formData,
+//       achievements: [...formData.achievements,""], // Add an empty project object
+//     });
+setFormData({
+  ...formData,
+  achievements: [...formData.achievements, ''],
+});
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +133,6 @@ const CreateResume = () => {
     try {
       const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
       console.log('Data sent successfully:', response.data);
-      navigate('/template-selection', { state: { formData: response.data } });
     } catch (error) {
       console.error('Error sending data:', error);
     }
@@ -546,14 +567,14 @@ const CreateResume = () => {
   ))}
 </div>
 
-
+{/* Certification */}
 <div>
   <div className='flex justify-between'>
   <h3 className="text-xl font-semibold text-purple-600 mb-4">Certification</h3>
   <button
         type="button"
         className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addCertification}
+        onClick={() => addCertification('certification')}
       >
         <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
       </button>
@@ -568,8 +589,8 @@ const CreateResume = () => {
             <input
               type="text"
               className="w-full px-4 py-2 focus:outline-none"
-              value={certifications.point}
-              onChange={(e) => handleCertificationChange(index, 'title', e.target.value)}
+              value={certifications}
+              onChange={(e) => handleCertificationChange(index, null, e.target.value)}
               required
             />
           </div>
@@ -588,7 +609,7 @@ const CreateResume = () => {
   <button
         type="button"
         className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addProjectInput}
+        onClick={addAchieveInput}
       >
         <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
       </button>
@@ -604,7 +625,7 @@ const CreateResume = () => {
               type="text"
               className="w-full px-4 py-2 focus:outline-none"
               value={achievements.achieve}
-              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+              onChange={(e) => handleAchieveChange(index, null, e.target.value)}
               required
             />
           </div>
