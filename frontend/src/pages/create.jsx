@@ -35,8 +35,8 @@ const CreateResume = () => {
     technicalSkills: [''],
     softSkills: [''],
     projects: [{ title: '', description: '' }], // Initialize with one empty project
-    certification: [{ title: ''}],
-    Achievements:[{title:''}],
+    certification:[{point:''}],
+    achievements:[{achieve:''}],
     experience: [{ designation: '', companyName: '', description: '' }],
     
   });
@@ -76,6 +76,14 @@ const CreateResume = () => {
       projects: updatedProjects,
     });
   };
+  const handleCertificationChange = (index, field, value) => {
+    const updatedProjects = [...formData.projects];
+    updatedProjects[index][field] = value;
+    setFormData({
+      ...formData,
+      projects: updatedProjects,
+    });
+  };
 
   const addSkillInput = (type) => {
     setFormData({
@@ -88,6 +96,12 @@ const CreateResume = () => {
     setFormData({
       ...formData,
       projects: [...formData.projects, { title: '', description: '' }], // Add an empty project object
+    });
+  };
+  const addCertification= () => {
+    setFormData({
+      ...formData,
+      projects: [...formData.certification, { title: ''}], // Add an empty project object
     });
   };
 
@@ -209,8 +223,8 @@ const CreateResume = () => {
         <input
           type="text"
           className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.location}
-          onChange={(e) => handleInputChange(e, 'graduation', 'location')}
+          value={formData.location}
+          onChange={(e) => handleInputChange(e, null, 'location')}
           required
         />
       </div>
@@ -262,7 +276,7 @@ const CreateResume = () => {
       </div>
     </div>
     <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Year Span</label>
+      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
         <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
         <input
@@ -335,7 +349,7 @@ const CreateResume = () => {
       </div>
     </div>
     <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Year Span</label>
+      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
         <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
         <input
@@ -395,7 +409,7 @@ const CreateResume = () => {
       </div>
     </div>
     <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Year Span</label>
+      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
         <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
         <input
@@ -532,50 +546,6 @@ const CreateResume = () => {
   ))}
 </div>
 
-<div>
-            <div className='flex justify-between'>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Position Of Responsibility</h3>
-  <button
-        type="button"
-        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addProjectInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
-      </button>
-      </div>
-  {formData.projects.map((project, index) => (
-    <div key={index} className="grid grid-cols-1 mb-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2"> Title</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
-            <input
-              type="text"
-              className="w-full px-4 py-2 focus:outline-none"
-              value={project.title}
-              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
-              required
-            />
-          </div>
-        </div>
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">Description</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-            <i className="fas fa-info-circle text-gray-400 mx-2"></i> {/* Description icon */}
-            <textarea
-              className="w-full px-4 py-2 focus:outline-none"
-              value={project.description}
-              onChange={(e) => handleProjectChange(index, 'description', e.target.value)}
-              required
-            />
-          </div>
-        </div>
-      </div>
-     
-    </div>
-  ))}
-</div>
 
 <div>
   <div className='flex justify-between'>
@@ -583,12 +553,12 @@ const CreateResume = () => {
   <button
         type="button"
         className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addProjectInput}
+        onClick={addCertification}
       >
         <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
       </button>
       </div>
-  {formData.projects.map((project, index) => (
+  {formData.certification.map((certifications, index) => (
     <div key={index} className="grid grid-cols-1 mb-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
@@ -598,8 +568,8 @@ const CreateResume = () => {
             <input
               type="text"
               className="w-full px-4 py-2 focus:outline-none"
-              value={project.title}
-              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+              value={certifications.point}
+              onChange={(e) => handleCertificationChange(index, 'title', e.target.value)}
               required
             />
           </div>
@@ -623,7 +593,7 @@ const CreateResume = () => {
         <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
       </button>
       </div>
-  {formData.projects.map((project, index) => (
+  {formData.achievements.map((achievements, index) => (
     <div key={index} className="grid grid-cols-1 mb-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
@@ -633,7 +603,7 @@ const CreateResume = () => {
             <input
               type="text"
               className="w-full px-4 py-2 focus:outline-none"
-              value={project.title}
+              value={achievements.achieve}
               onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
               required
             />
