@@ -6,7 +6,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // Function to generate resume from raw JSON data
 const generateResume = async (candidateData) => {
 try {const prompt = `I will provide you with raw JSON data of a candidate's information. Your task is to generate a well-structured, ATS-compliant resume in JSON format, ensuring that it is formatted to pass ATS software checks effectively.
-        
+  Below is the Candidate data:"${candidateData}"
     ### Instructions:
     1. **Format**: Follow the exact structure as defined below, ensuring that all sections are clearly labeled and appropriately formatted.
     2. **Keywords**: Highlight and include the skills, achievements, and experiences in a way that optimizes for ATS keyword matching.
@@ -21,17 +21,16 @@ try {const prompt = `I will provide you with raw JSON data of a candidate's info
     {
       "contactInformation": {
         "name": "Candidate's Name",
-        "email": "Candidate's Email",
-        "phone": "Candidate's Phone Number",
+        "gmail": "Candidate's Email",
+        "phoneNumber": "Candidate's Phone Number",
         "linkedin": "LinkedIn Profile (if available)",
         "github": "GitHub Profile (if available)",
-        "location": "City, Country"
       },
       "objective": "A concise, ATS-optimized summary of the candidate’s strengths and career goals (2-3 sentences).",
       "education": [
         {
           "degree": "Degree Name",
-          "institution": "Institution Name",
+          " universityName": "Institution Name",
           "location": "Institution Location",
           "startDate": "Start Date (Month, Year)",
           "endDate": "End Date (Month, Year)",
@@ -91,9 +90,18 @@ const response = await groq.chat.completions.create({
     model: "llama3-70b-8192", // Adjust the model if needed
     max_tokens: 3000, // Set token limit for detailed JSON output
 });
+// console.log("************************************");
+// console.log("Candidate Data:", candidateData);
+console.log("************************************");
+console.log("Generated resume JSON:", response.data);
+console.log("************************************");
+
 
 return response.data;
 } catch (error) {
     console.error("Error generating resume JSON:", error);
 }
 };
+
+
+module.exports = { generateResume };

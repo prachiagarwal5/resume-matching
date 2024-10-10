@@ -15,7 +15,7 @@ const CreateResume = () => {
     graduation: {
       universityName: '',
       cpi: '',
-      stream: '',
+      degree: '',
       yearSpan: '',
       location: '',
     },
@@ -248,14 +248,14 @@ const CreateResume = () => {
       </div>
     </div>
     <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Stream</label>
+      <label className="block text-gray-700 font-semibold mb-2">Degree</label>
       <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-book text-gray-400 mx-2"></i> {/* Stream icon */}
+        <i className="fas fa-book text-gray-400 mx-2"></i> {/* Degree icon */}
         <input
           type="text"
           className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.stream}
-          onChange={(e) => handleInputChange(e, 'graduation', 'stream')}
+          value={formData.graduation.degree}
+          onChange={(e) => handleInputChange(e, 'graduation', 'degree')}
           required
         />
       </div>
