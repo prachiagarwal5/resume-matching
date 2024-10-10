@@ -5,71 +5,81 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // Function to generate resume from raw JSON data
 const generateResume = async (candidateData) => {
-try {
-const prompt = `I will provide you with raw JSON data of a candidate's information. Your task is to generate a structured JSON response representing the candidate's resume.
+try {const prompt = `I will provide you with raw JSON data of a candidate's information. Your task is to generate a well-structured, ATS-compliant resume in JSON format, ensuring that it is formatted to pass ATS software checks effectively.
         
-- Parse the candidate’s information to construct a resume in JSON format.
-- Ensure all sections like contact details, education, work experience, projects, and skills are properly structured.
-- Include all **skills** listed in the raw data under a separate "Skills" section, ensuring they are categorized as **technical** and **soft skills**.
-- Return the response in **strict JSON format** as outlined below.
-
-### JSON Structure:
-
-{
-  "contactInformation": {
-    "name": "Candidate's Name",
-    "email": "Candidate's Email",
-    "phone": "Candidate's Phone Number",
-    "linkedin": "LinkedIn Profile (if available)",
-    "github": "GitHub Profile (if available)"
-  },
-  "objective": "A concise summary of the candidate’s strengths and career goals (2-3 sentences).",
-  "education": [
+    ### Instructions:
+    1. **Format**: Follow the exact structure as defined below, ensuring that all sections are clearly labeled and appropriately formatted.
+    2. **Keywords**: Highlight and include the skills, achievements, and experiences in a way that optimizes for ATS keyword matching.
+    3. **Skills Categorization**: Ensure all skills are divided into **technical** and **soft skills**.
+    4. **Consistency**: Ensure consistency in date formats and section titles to adhere to ATS standards.
+    5. **Avoid Graphics or Special Characters**: Keep the content simple and avoid using special characters or complex formatting.
+    6. **Completion**: Ensure no section is left blank if data is available; otherwise, omit empty sections.
+    7. **ATS Optimization**: Use commonly accepted keywords for job roles and responsibilities to enhance resume ranking for ATS systems.
+    
+    ### JSON Structure:
+    
     {
-      "degree": "Degree Name",
-      "institution": "Institution Name",
-      "location": "Institution Location",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "relevantCoursework": ["Course 1", "Course 2"]
+      "contactInformation": {
+        "name": "Candidate's Name",
+        "email": "Candidate's Email",
+        "phone": "Candidate's Phone Number",
+        "linkedin": "LinkedIn Profile (if available)",
+        "github": "GitHub Profile (if available)",
+        "location": "City, Country"
+      },
+      "objective": "A concise, ATS-optimized summary of the candidate’s strengths and career goals (2-3 sentences).",
+      "education": [
+        {
+          "degree": "Degree Name",
+          "institution": "Institution Name",
+          "location": "Institution Location",
+          "startDate": "Start Date (Month, Year)",
+          "endDate": "End Date (Month, Year)",
+          "relevantCoursework": ["Course 1", "Course 2"]
+        }
+      ],
+      "workExperience": [
+        {
+          "jobTitle": "Job Title",
+          "company": "Company Name",
+          "location": "Company Location",
+          "startDate": "Start Date (Month, Year)",
+          "endDate": "End Date (Month, Year)",
+          "achievements": [
+            "Action-oriented achievement 1 with quantifiable results (e.g., 'Increased X by Y% using Z')",
+            "Action-oriented achievement 2 focusing on job-relevant tasks"
+          ]
+        }
+      ],
+      "skills": {
+        "technicalSkills": ["Technical Skill 1", "Technical Skill 2", "Technical Skill 3"],
+        "softSkills": ["Soft Skill 1", "Soft Skill 2"]
+      },
+      "projects": [
+        {
+          "projectTitle": "Project Title",
+          "description": [
+            "• Brief description point 1 about the project's purpose and goal.",
+            "• Detailed point 2 explaining specific technologies used.",
+            "• Point 3 about the candidate’s role and responsibilities in the project.",
+            "• Point 4 describing the results or outcomes achieved (e.g., 'Reduced processing time by X%')."
+          ],
+          "technologies": ["Tech 1", "Tech 2"]
+        }
+      ],
+      "certifications": [
+        {
+          "name": "Certification Name",
+          "date": "Date of Completion (Month, Year)"
+        }
+      ],
+      "keywords": {
+        "keywordsToHighlight": ["Keyword 1", "Keyword 2", "Keyword 3"]
+      }
     }
-  ],
-  "workExperience": [
-    {
-      "jobTitle": "Job Title",
-      "company": "Company Name",
-      "location": "Company Location",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "achievements": [
-        "Bullet point 1 detailing an achievement or responsibility",
-        "Bullet point 2 detailing another achievement"
-      ]
-    }
-  ],
-  "skills": {
-    "technicalSkills": ["Skill 1", "Skill 2", "Skill 3"],
-    "softSkills": ["Skill 1", "Skill 2"]
-  },
-  "projects": [
-    {
-      "projectTitle": "Project Title",
-      "description": "A brief description of the project, focusing on technologies used and outcomes.",
-      "technologies": ["Tech 1", "Tech 2"]
-    }
-  ],
-  "certifications": [
-    {
-      "name": "Certification Name",
-      "date": "Date of Completion"
-    }
-  ]
-}
+    
+    Return the JSON object strictly following the structure mentioned above.`;
 
-Here is the candidate's raw JSON data: 
-${JSON.stringify(candidateData)}
-
-Return the JSON object strictly following the structure mentioned above.`;
 
 const response = await groq.chat.completions.create({
     messages: [
