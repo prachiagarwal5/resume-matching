@@ -13,6 +13,8 @@ function App() {
         <Route path="/resume-creation" element={<CreateResume />} />
         <Route path="/template-selection" element={<TemplateSelection />} />
         <Route path="/resume-preview" element={<ResumePreview />} />
+        <Route path="/resume-creation" element={<CreateResume />} /> {/* Home page route */}
+        <Route path="/resume" element={< Resume/>} />
       </Routes>
     </Router>
   );
