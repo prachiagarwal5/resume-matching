@@ -11,6 +11,7 @@ const CreateResume = () => {
     gmail: '',
     linkedIn: '',
     github: '',
+    location: '',
     graduation: {
       universityName: '',
       cpi: '',
@@ -34,7 +35,10 @@ const CreateResume = () => {
     technicalSkills: [''],
     softSkills: [''],
     projects: [{ title: '', description: '' }], // Initialize with one empty project
+    certification: [{ title: ''}],
+    Achievements:[{title:''}],
     experience: [{ designation: '', companyName: '', description: '' }],
+    
   });
   const navigate = useNavigate();
 
@@ -93,6 +97,7 @@ const CreateResume = () => {
     try {
       const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
       console.log('Data sent successfully:', response.data);
+      navigate('/template-selection', { state: { formData: response.data } });
     } catch (error) {
       console.error('Error sending data:', error);
     }
