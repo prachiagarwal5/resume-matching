@@ -429,7 +429,16 @@ const CreateResume = () => {
   <div className="grid grid-cols-2 gap-4">
     {/* Technical Skills */}
     <div>
+      <div className='flex justify-between'>
       <label className="block text-gray-700 font-semibold mb-2">Technical Skills</label>
+      <button
+            type="button"
+            className="mb-4 text-black  rounded-full hover:bg-purple-800 transition duration-200"
+            onClick={() => addSkillInput('technicalSkills')}
+          >
+            +
+          </button>
+          </div>
       {formData.technicalSkills.map((skill, index) => (
         <div key={index} className="flex items-center mb-2">
           <div className="flex items-center border border-gray-300 rounded-lg shadow-sm w-full">
@@ -441,19 +450,22 @@ const CreateResume = () => {
               onChange={(e) => handleSkillChange(index, 'technicalSkills', e.target.value)}
             />
           </div>
-          <button
-            type="button"
-            className="ml-2 bg-purple-700 text-white p-2 rounded-full"
-            onClick={() => addSkillInput('technicalSkills')}
-          >
-            +
-          </button>
+          
         </div>
       ))}
     </div>
     {/* Soft Skills */}
     <div>
+      <div className='flex justify-between'>
       <label className="block text-gray-700 font-semibold mb-2">Soft Skills</label>
+      <button
+            type="button"
+            className="mb-4  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+            onClick={() => addSkillInput('softSkills')}
+          >
+            +
+          </button>
+          </div>
       {formData.softSkills.map((skill, index) => (
         <div key={index} className="flex items-center mb-2">
           <div className="flex items-center border border-gray-300 rounded-lg shadow-sm w-full">
@@ -465,13 +477,7 @@ const CreateResume = () => {
               onChange={(e) => handleSkillChange(index, 'softSkills', e.target.value)}
             />
           </div>
-          <button
-            type="button"
-            className="ml-2 bg-purple-700 text-white p-2 rounded-full"
-            onClick={() => addSkillInput('softSkills')}
-          >
-            +
-          </button>
+         
         </div>
       ))}
     </div>
@@ -481,7 +487,16 @@ const CreateResume = () => {
 
           {/* Projects Section */}
           <div>
+            <div className='flex justify-between'>
   <h3 className="text-xl font-semibold text-purple-600 mb-4">Projects</h3>
+  <button
+        type="button"
+        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+        onClick={addProjectInput}
+      >
+        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
+      </button>
+      </div>
   {formData.projects.map((project, index) => (
     <div key={index} className="grid grid-cols-1 mb-4">
       <div className="grid grid-cols-2 gap-4">
@@ -511,20 +526,137 @@ const CreateResume = () => {
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        className="mt-2 bg-purple-700 text-white p-2 rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addProjectInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
-      </button>
+     
     </div>
   ))}
 </div>
 
+<div>
+            <div className='flex justify-between'>
+  <h3 className="text-xl font-semibold text-purple-600 mb-4">Position Of Responsibility</h3>
+  <button
+        type="button"
+        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+        onClick={addProjectInput}
+      >
+        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
+      </button>
+      </div>
+  {formData.projects.map((project, index) => (
+    <div key={index} className="grid grid-cols-1 mb-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2"> Title</label>
+          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none"
+              value={project.title}
+              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">Description</label>
+          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+            <i className="fas fa-info-circle text-gray-400 mx-2"></i> {/* Description icon */}
+            <textarea
+              className="w-full px-4 py-2 focus:outline-none"
+              value={project.description}
+              onChange={(e) => handleProjectChange(index, 'description', e.target.value)}
+              required
+            />
+          </div>
+        </div>
+      </div>
+     
+    </div>
+  ))}
+</div>
+
+<div>
+  <div className='flex justify-between'>
+  <h3 className="text-xl font-semibold text-purple-600 mb-4">Certification</h3>
+  <button
+        type="button"
+        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+        onClick={addProjectInput}
+      >
+        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
+      </button>
+      </div>
+  {formData.projects.map((project, index) => (
+    <div key={index} className="grid grid-cols-1 mb-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-gray-700 font-semibold mb-2">Certification </label>
+          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none"
+              value={project.title}
+              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+              required
+            />
+          </div>
+        </div>
+      
+      </div>
+    
+    </div>
+  ))}
+   
+</div>
+{/* extracircular */}
+<div>
+  <div className='flex justify-between'>
+  <h3 className="text-xl font-semibold text-purple-600 mb-4">Extra-curricular Activites And Achievements</h3>
+  <button
+        type="button"
+        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+        onClick={addProjectInput}
+      >
+        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
+      </button>
+      </div>
+  {formData.projects.map((project, index) => (
+    <div key={index} className="grid grid-cols-1 mb-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          
+          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none"
+              value={project.title}
+              onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+              required
+            />
+          </div>
+        </div>
+      
+      </div>
+    
+    </div>
+  ))}
+   
+</div>
 {/* Work Experience */}
 <div>
+  <div className='flex justify-between'>
   <h3 className="text-xl font-semibold text-purple-600 mb-4">Work Experience</h3>
+  <button
+        type="button"
+        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
+        onClick={addExperienceInput}
+      >
+        <i className="fas fa-plus"></i> {/* Plus icon for adding experience */}
+      </button>
+      </div>
   {formData.experience.map((exp, index) => (
     <div key={index} className="grid grid-cols-1 mb-4">
       <div className="grid grid-cols-3 gap-4">
@@ -567,13 +699,7 @@ const CreateResume = () => {
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        className="mt-2 bg-purple-700 text-white p-2 rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addExperienceInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding experience */}
-      </button>
+     
     </div>
   ))}
 </div>
