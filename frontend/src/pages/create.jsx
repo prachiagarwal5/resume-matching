@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,6 +36,7 @@ const CreateResume = () => {
     projects: [{ title: '', description: '' }], // Initialize with one empty project
     experience: [{ designation: '', companyName: '', description: '' }],
   });
+  const navigate = useNavigate();
 
   const handleInputChange = (e, section, field) => {
     if (section) {
@@ -94,6 +96,7 @@ const CreateResume = () => {
     } catch (error) {
       console.error('Error sending data:', error);
     }
+      navigate('/template-selection');
     // Here, you can send the data to the backend or any other logic
   };
   const addExperienceInput = () => {

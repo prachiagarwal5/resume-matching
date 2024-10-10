@@ -100,6 +100,7 @@ console.log("************************************");
 return response.data;
 } catch (error) {
     console.error("Error generating resume JSON:", error);
+    throw new Error('Groq API error');
 }
 };
 
