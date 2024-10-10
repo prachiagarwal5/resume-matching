@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -102,6 +104,11 @@ const CreateResume = () => {
       experience: [...formData.experience, { designation: '', companyName: '', description: '' }],
     });
   };
+  const navigate = useNavigate();
+  const handleResumeCreation = () => {
+   
+    navigate('/resume'); // Redirect to the resume page
+  };
 
   const handleExperienceChange = (index, field, value) => {
     const newExperience = [...formData.experience];
@@ -169,7 +176,7 @@ const CreateResume = () => {
 
 
           {/* LinkedIn and GitHub profile in one row */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
   <div className="relative">
     <label className="block text-gray-700 font-semibold mb-2">LinkedIn Profile</label>
     <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
@@ -194,6 +201,19 @@ const CreateResume = () => {
       />
     </div>
   </div>
+  <div className="relative">
+      <label className="block text-gray-700 font-semibold mb-2">Location</label>
+      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+        <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i> {/* Location icon */}
+        <input
+          type="text"
+          className="w-full px-4 py-2 focus:outline-none"
+          value={formData.graduation.location}
+          onChange={(e) => handleInputChange(e, 'graduation', 'location')}
+          required
+        />
+      </div>
+    </div>
 </div>
 
 
@@ -562,6 +582,7 @@ const CreateResume = () => {
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
+             onClick={handleResumeCreation}
               type="submit"
               className="bg-purple-700 text-white px-6 py-2 rounded-lg hover:bg-purple-800 transition duration-300"
             >
