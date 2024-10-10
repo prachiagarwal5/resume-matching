@@ -105,10 +105,6 @@ const CreateResume = () => {
       experience: [...formData.experience, { designation: '', companyName: '', description: '' }],
     });
   };
-  const handleResumeCreation = () => {
-   
-    navigate('/resume'); // Redirect to the resume page
-  };
 
   const handleExperienceChange = (index, field, value) => {
     const newExperience = [...formData.experience];
@@ -708,7 +704,7 @@ const CreateResume = () => {
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
-             onClick={handleResumeCreation}
+             onClick={handleSubmit}
               type="submit"
               className="bg-purple-700 text-white px-6 py-2 rounded-lg hover:bg-purple-800 transition duration-300"
             >
