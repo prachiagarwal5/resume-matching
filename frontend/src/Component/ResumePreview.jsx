@@ -1,18 +1,24 @@
 import React from 'react';
 import TemplateOne from './templates/TemplateOne';
-// import TemplateTwo from './templates/TemplateTwo';
-// Import other templates here
+import { useLocation } from 'react-router-dom';
 
-const ResumePreview = ({ formData, selectedTemplateId }) => {
+const ResumePreview = () => {
+  const location = useLocation();
+  const { formData, selectedTemplate } = location.state || {}; // Destructure state from location
+
+  console.log('Received formData:', formData); // Debugging
+
+  if (!formData || !formData.success) {
+    return <div>No valid data received. Please check your form submission.</div>; 
+  }
+
   const renderTemplate = () => {
-    switch (selectedTemplateId) {
+    switch (selectedTemplate) {
       case 1:
-        return <TemplateOne formData={formData} />;
-      case 2:
-        return <TemplateOne formData={formData} />;
-      // Add cases for other templates here
+        return <TemplateOne formData={formData.resume} />;
+      // Additional cases for other templates
       default:
-        return <TemplateOne formData={formData} />; // Fallback to TemplateOne
+        return <TemplateOne formData={formData.resume} />;
     }
   };
 

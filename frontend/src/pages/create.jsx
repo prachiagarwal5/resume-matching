@@ -127,18 +127,22 @@ setFormData({
 });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Resume Data Submitted: ', formData);
-    try {
-      const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
-      console.log('Data sent successfully:', response.data);
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
-      navigate('/template-selection');
-    // Here, you can send the data to the backend or any other logic
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log('Resume Data Submitted: ', formData);
+  
+  try {
+    const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
+    console.log('Data sent successfully:', response.data);
+
+    // Navigate to the TemplateSelection page and pass the received data
+    navigate('/template-selection', { state: { formData: response.data } });
+  } catch (error) {
+    console.error('Error sending data:', error);
+  }
+};
+
+
   const addExperienceInput = () => {
     setFormData({
       ...formData,
