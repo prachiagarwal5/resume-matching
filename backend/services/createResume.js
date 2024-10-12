@@ -23,8 +23,8 @@ const trimResumeData = (data) => {
     try {
         const parsedData = extractValidJson(data);
 
-        // Allowed keys in the JSON structure
-        const validKeys = ['contactInformation', 'objective', 'education', 'skills', 'workExperience', 'achievements','projects','certifications'];
+        // Allowed keys in the JSON structure, now including 'projects' and 'certifications'
+        const validKeys = ['contactInformation', 'objective', 'education', 'skills', 'workExperience', 'achievements', 'projects'];
 
         // Filter out any unnecessary fields
         const trimmedData = {};
@@ -55,101 +55,90 @@ const generateResume = async (candidateData) => {
           This is the Candidate data: "${candidateDataString}"
 
           ### Instructions:
-          1. Include only the following sections: **contactInformation, objective, education, skills, workExperience, achievements**.
+          1. Include only the following sections: **contactInformation, objective, education, skills, workExperience, achievements, projects, certifications**.
           2. Use bullet points for **achievements** and **work experience** responsibilities to enhance clarity and ATS parsing.
           3. Fill out empty fields with the label "Empty".
-          4. For date ranges, use a consistent format (e.g., "MM/YYYY - MM/YYYY").
-          5. Ensure that the summary and work experience sections are tailored to ATS, using key action verbs and industry-relevant terms.
-          6. Keep the descriptions short and keyword-focused, highlighting relevant technologies, skills, and experiences.
-          7. Eliminate irrelevant details; focus only on the most important aspects for the ATS system.
+          4. Ensure that the summary and work experience sections are tailored to ATS, using key action verbs and industry-relevant terms.
+          5. Keep the descriptions short and keyword-focused, highlighting relevant technologies, skills, and experiences.
+          6. Eliminate irrelevant details; focus only on the most important aspects for the ATS system.
 
           ### Desired JSON Structure for the Output:
           const candidateResume = {
-   "contactInformation": {
-     "name": "Your Full Name" || "Empty",
-     "email": "Your Email Address" || "Empty",
-     "phone": "Your Phone Number" || "Empty",
-     "linkedin": "Your LinkedIn Profile URL" || "Empty",
-     "github": "Your GitHub Profile URL" || "Empty",
-     "location": "Your Current Location" || "Empty"
-   },
-   "objective": "A concise, ATS-optimized summary of the candidate’s strengths and career goals (2-3 sentences)." || "Empty",
-   "education": {
-     "graduation": {
-       "degree": "Your Degree" || "Empty",
-       "institution": "Your University Name" || "Empty",
-       "location": "University Location" || "Empty",
-       "yearSpan": "Years Attended" || "Empty",
-       "CPI": "Your GPA/Grade" || "Empty"
-     },
-     "intermediate": {
-       "schoolName": "Your Intermediate School Name" || "Empty",
-       "percentage": "Your Percentage/Grade" || "Empty",
-       "stream": "Your Stream/Discipline" || "Empty",
-       "yearSpan": "Years Attended" || "Empty",
-       "location": "School Location" || "Empty"
-     },
-     "highSchool": {
-       "schoolName": "Your High School Name" || "Empty",
-       "percentage": "Your High School Percentage/Grade" || "Empty",
-       "yearSpan": "Years Attended" || "Empty",
-       "location": "School Location" || "Empty"
-     }
-   },
-   "workExperience": [
-     {
-       "jobTitle": "Your Designation" || "Empty",
-       "company": "Company Name" || "Empty",
-       "description": [
-         "• Description point 1 of the candidate's role and responsibilities." || "Empty",
-         "• Point 2 elaborating on achievements and specific results obtained." || "Empty"
-       ]
-     }
-   ],
-   "projects": [
-     {
-       "projectTitle": "Project Title 1" || "Empty",
-       "description": [
-         "• Project objective and role." || "Empty",
-         "• Technologies used." || "Empty",
-         "• Key results achieved." || "Empty"
-       ]
-     },
-     {
-       "projectTitle": "Project Title 2" || "Empty",
-       "description": [
-         "• Project objective and role." || "Empty",
-         "• Technologies used." || "Empty",
-         "• Key results achieved." || "Empty"
-       ]
-     }
-   ],
-   "skills": {
-     "technicalSkills": [
-       "Technical Skill 1" || "Empty",
-       "Technical Skill 2" || "Empty"
-     ],
-     "softSkills": [
-       "Soft Skill 1" || "Empty",
-       "Soft Skill 2" || "Empty",
-       "Soft Skill 3" || "Empty"
-     ]
-   },
-   "certifications": [
-     {
-       "name": "Certification 1" || "Empty",
-       "date": "Date of Completion" || "Empty"
-     },
-     {
-       "name": "Certification 2" || "Empty",
-       "date": "Date of Completion" || "Empty"
-     }
-   ],
-   "achievements": [
-     "Achievement 1" || "Empty",
-     "Achievement 2" || "Empty"
-   ]
-}`;
+            "contactInformation": {
+              "name": "Your Full Name" || "Empty",
+              "email": "Your Email Address" || "Empty",
+              "phone": "Your Phone Number" || "Empty",
+              "linkedin": "Your LinkedIn Profile URL" || "Empty",
+              "github": "Your GitHub Profile URL" || "Empty",
+              "location": "Your Current Location" || "Empty"
+            },
+            "objective": "A concise, ATS-optimized summary of the candidate’s strengths and career goals (2-3 sentences)." || "Empty",
+            "education": {
+              "graduation": {
+                "degree": "Your Degree" || "Empty",
+                "institution": "Your University Name" || "Empty",
+                "location": "University Location" || "Empty",
+                "yearSpan": "Years Attended" || "Empty",
+                "CPI": "Your GPA/Grade" || "Empty"
+              },
+              "intermediate": {
+                "schoolName": "Your Intermediate School Name" || "Empty",
+                "percentage": "Your Percentage/Grade" || "Empty",
+                "stream": "Your Stream/Discipline" || "Empty",
+                "yearSpan": "Years Attended" || "Empty",
+                "location": "School Location" || "Empty"
+              },
+              "highSchool": {
+                "schoolName": "Your High School Name" || "Empty",
+                "percentage": "Your High School Percentage/Grade" || "Empty",
+                "yearSpan": "Years Attended" || "Empty",
+                "location": "School Location" || "Empty"
+              }
+            },
+            "workExperience": [
+              {
+                "jobTitle": "Your Designation" || "Empty",
+                "company": "Company Name" || "Empty",
+                "description": [
+                  "• Description point 1 of the candidate's role and responsibilities." || "Empty",
+                  "• Point 2 elaborating on achievements and specific results obtained." || "Empty"
+                ]
+              }
+            ],
+            "projects": [
+              {
+                "projectTitle": "Project Title 1" || "Empty",
+                "description": [
+                  "• Project objective and role." || "Empty",
+                  "• Technologies used." || "Empty",
+                  "• Key results achieved." || "Empty"
+                ]
+              }
+            ],
+            "skills": {
+              "technicalSkills": [
+                "Technical Skill 1" || "Empty",
+                "Technical Skill 2" || "Empty"
+              ],
+              "softSkills": [
+                "Soft Skill 1" || "Empty",
+                "Soft Skill 2" || "Empty",
+                "Soft Skill 3" || "Empty"
+              ]
+            },
+            "certifications": [
+              {
+                "name": "Certification 1" || "Empty"
+              },
+              {
+                "name": "Certification 2" || "Empty"
+              }
+            ],
+            "achievements": [
+              "Achievement 1" || "Empty",
+              "Achievement 2" || "Empty"
+            ]
+          }`;
 
         const response = await groq.chat.completions.create({
             messages: [
