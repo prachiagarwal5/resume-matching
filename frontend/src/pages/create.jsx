@@ -157,367 +157,281 @@ const handleSubmit = async (e) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col items-center w-screen">
-      {/* Navbar */}
-      <nav className="bg-white bg-opacity-80 text-purple-900 w-full p-4 shadow-lg flex justify-between items-center">
-        <div className="text-3xl font-extrabold tracking-wide">GLA Resume Fit</div>
-        <div className="flex items-center">
-          <span className="text-lg font-semibold mr-4">Hi xyz</span>
-          <div className="w-10 h-10 bg-purple-700 text-white rounded-full flex items-center justify-center">P</div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gray-200 dark:bg-gray-900 flex flex-col items-center w-screen">
+  {/* Navbar */}
+  <nav className="bg-white dark:bg-gray-800 bg-opacity-80 text-purple-900 dark:text-white w-full p-4 shadow-lg flex justify-between items-center">
+    <div className="text-3xl font-extrabold tracking-wide transition duration-300 hover:text-purple-700 dark:hover:text-purple-400">
+      GLA Resume Fit
+    </div>
+    <div className="flex items-center">
+      <span className="text-lg font-semibold mr-4">Hi, xyz</span>
+      <div className="w-12 h-12 bg-purple-700 dark:bg-purple-600 text-white rounded-full flex items-center justify-center shadow-md transition duration-300 hover:shadow-lg">
+        P
+      </div>
+    </div>
+  </nav>
 
       {/* Form */}
-      <div className="w-full max-w-4xl mt-12 bg-white p-8 shadow-2xl rounded-lg">
-        <h2 className="text-2xl font-bold text-center text-purple-700 mb-8">Create Your Resume</h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name, Phone Number, and Gmail in one row */}
-          <div className="grid grid-cols-3 gap-4">
-  <div className="relative">
-    <label className="block text-gray-700 font-semibold mb-2">Name</label>
-    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-      <i className="fas fa-user text-gray-400 mx-2"></i>
-      <input
-        type="text"
-        className="w-full px-4 py-2 focus:outline-none"
-        value={formData.name}
-        onChange={(e) => handleInputChange(e, null, 'name')}
-        required
-      />
+      <div className="w-full max-w-4xl mt-12 bg-white dark:bg-gray-800 p-8 shadow-2xl rounded-lg">
+  <h2 className="text-2xl font-bold text-center text-purple-700 dark:text-purple-400 mb-8">
+    Create Your Resume
+  </h2>
+  <form onSubmit={handleSubmit} className="space-y-6">
+    {/* Name, Phone Number, and Gmail in one row */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Name</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-user text-gray-400 mx-2"></i>
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.name}
+            onChange={(e) => handleInputChange(e, null, 'name')}
+            required
+          />
+        </div>
+      </div>
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Phone Number</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-phone text-gray-400 mx-2"></i>
+          <input
+            type="tel"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.phoneNumber}
+            onChange={(e) => handleInputChange(e, null, 'phoneNumber')}
+            required
+          />
+        </div>
+      </div>
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Gmail</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-envelope text-gray-400 mx-2"></i>
+          <input
+            type="email"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.gmail}
+            onChange={(e) => handleInputChange(e, null, 'gmail')}
+            required
+          />
+        </div>
+      </div>
     </div>
-  </div>
-  <div className="relative">
-    <label className="block text-gray-700 font-semibold mb-2">Phone Number</label>
-    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-      <i className="fas fa-phone text-gray-400 mx-2"></i>
-      <input
-        type="tel"
-        className="w-full px-4 py-2 focus:outline-none"
-        value={formData.phoneNumber}
-        onChange={(e) => handleInputChange(e, null, 'phoneNumber')}
-        required
-      />
-    </div>
-  </div>
-  <div className="relative">
-    <label className="block text-gray-700 font-semibold mb-2">Gmail</label>
-    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-      <i className="fas fa-envelope text-gray-400 mx-2"></i>
-      <input
-        type="email"
-        className="w-full px-4 py-2 focus:outline-none"
-        value={formData.gmail}
-        onChange={(e) => handleInputChange(e, null, 'gmail')}
-        required
-      />
-    </div>
-  </div>
-</div>
 
+    {/* LinkedIn and GitHub profile in one row */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">LinkedIn Profile</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fab fa-linkedin text-gray-400 mx-2"></i>
+          <input
+            type="url"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.linkedIn}
+            onChange={(e) => handleInputChange(e, null, 'linkedIn')}
+          />
+        </div>
+      </div>
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">GitHub Profile</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fab fa-github text-gray-400 mx-2"></i>
+          <input
+            type="url"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.github}
+            onChange={(e) => handleInputChange(e, null, 'github')}
+          />
+        </div>
+      </div>
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Location</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i>
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.location}
+            onChange={(e) => handleInputChange(e, null, 'location')}
+            required
+          />
+        </div>
+      </div>
+    </div>
 
-          {/* LinkedIn and GitHub profile in one row */}
-          <div className="grid grid-cols-3 gap-4">
-  <div className="relative">
-    <label className="block text-gray-700 font-semibold mb-2">LinkedIn Profile</label>
-    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-      <i className="fab fa-linkedin text-gray-400 mx-2"></i> {/* LinkedIn icon */}
-      <input
-        type="url"
-        className="w-full px-4 py-2 focus:outline-none"
-        value={formData.linkedIn}
-        onChange={(e) => handleInputChange(e, null, 'linkedIn')}
-      />
-    </div>
-  </div>
-  <div className="relative">
-    <label className="block text-gray-700 font-semibold mb-2">GitHub Profile</label>
-    <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-      <i className="fab fa-github text-gray-400 mx-2"></i> {/* GitHub icon */}
-      <input
-        type="url"
-        className="w-full px-4 py-2 focus:outline-none"
-        value={formData.github}
-        onChange={(e) => handleInputChange(e, null, 'github')}
-      />
-    </div>
-  </div>
-  <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Location</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i> {/* Location icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.location}
-          onChange={(e) => handleInputChange(e, null, 'location')}
-          required
-        />
-      </div>
-    </div>
-</div>
-
-
-          {/* Graduation */}
-          <div>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Graduation</h3>
-  <div className="grid grid-cols-2 gap-4">
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">University Name</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-university text-gray-400 mx-2"></i> {/* University icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.universityName}
-          onChange={(e) => handleInputChange(e, 'graduation', 'universityName')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">CPI</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-graduation-cap text-gray-400 mx-2"></i> {/* CPI icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.cpi}
-          onChange={(e) => handleInputChange(e, 'graduation', 'cpi')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Degree</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-book text-gray-400 mx-2"></i> {/* Degree icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.degree}
-          onChange={(e) => handleInputChange(e, 'graduation', 'degree')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.yearSpan}
-          onChange={(e) => handleInputChange(e, 'graduation', 'yearSpan')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Location</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i> {/* Location icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.graduation.location}
-          onChange={(e) => handleInputChange(e, 'graduation', 'location')}
-          required
-        />
-      </div>
-    </div>
-  </div>
-</div>
-
-
-          {/* Intermediate */}
-          <div>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Intermediate</h3>
-  <div className="grid grid-cols-2 gap-4">
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">School Name</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-school text-gray-400 mx-2"></i> {/* School icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.intermediate.schoolName}
-          onChange={(e) => handleInputChange(e, 'intermediate', 'schoolName')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Percentage</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-percent text-gray-400 mx-2"></i> {/* Percentage icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.intermediate.percentage}
-          onChange={(e) => handleInputChange(e, 'intermediate', 'percentage')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Stream</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-book text-gray-400 mx-2"></i> {/* Stream icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.intermediate.stream}
-          onChange={(e) => handleInputChange(e, 'intermediate', 'stream')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.intermediate.yearSpan}
-          onChange={(e) => handleInputChange(e, 'intermediate', 'yearSpan')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Location</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i> {/* Location icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.intermediate.location}
-          onChange={(e) => handleInputChange(e, 'intermediate', 'location')}
-          required
-        />
-      </div>
-    </div>
-  </div>
-</div>
-
-
-          {/* High School */}
-          <div>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">High School</h3>
-  <div className="grid grid-cols-2 gap-4">
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">School Name</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-school text-gray-400 mx-2"></i> {/* School icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.highSchool.schoolName}
-          onChange={(e) => handleInputChange(e, 'highSchool', 'schoolName')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Percentage</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-percent text-gray-400 mx-2"></i> {/* Percentage icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.highSchool.percentage}
-          onChange={(e) => handleInputChange(e, 'highSchool', 'percentage')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">End Date</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-calendar-alt text-gray-400 mx-2"></i> {/* Year Span icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.highSchool.yearSpan}
-          onChange={(e) => handleInputChange(e, 'highSchool', 'yearSpan')}
-          required
-        />
-      </div>
-    </div>
-    <div className="relative">
-      <label className="block text-gray-700 font-semibold mb-2">Location</label>
-      <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-        <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i> {/* Location icon */}
-        <input
-          type="text"
-          className="w-full px-4 py-2 focus:outline-none"
-          value={formData.highSchool.location}
-          onChange={(e) => handleInputChange(e, 'highSchool', 'location')}
-          required
-        />
-      </div>
-    </div>
-  </div>
-</div>
-
-
-          {/* Skills Section */}
-          <div>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Skills</h3>
-  <div className="grid grid-cols-2 gap-4">
-    {/* Technical Skills */}
+    {/* Graduation */}
     <div>
-      <div className='flex justify-between'>
-      <label className="block text-gray-700 font-semibold mb-2">Technical Skills</label>
-      <button
-            type="button"
-            className="mb-4 text-black  rounded-full hover:bg-purple-800 transition duration-200"
-            onClick={() => addSkillInput('technicalSkills')}
-          >
-            +
-          </button>
-          </div>
-      {formData.technicalSkills.map((skill, index) => (
-        <div key={index} className="flex items-center mb-2">
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm w-full">
-            <i className="fas fa-code text-gray-400 mx-2"></i> {/* Technical skills icon */}
+      <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Graduation</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">University Name</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+            <i className="fas fa-university text-gray-400 mx-2"></i>
             <input
               type="text"
-              className="w-full px-4 py-2 focus:outline-none"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+              value={formData.graduation.universityName}
+              onChange={(e) => handleInputChange(e, 'graduation', 'universityName')}
+              required
+            />
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">CPI</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+            <i className="fas fa-graduation-cap text-gray-400 mx-2"></i>
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+              value={formData.graduation.cpi}
+              onChange={(e) => handleInputChange(e, 'graduation', 'cpi')}
+              required
+            />
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Degree</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+            <i className="fas fa-book text-gray-400 mx-2"></i>
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+              value={formData.graduation.degree}
+              onChange={(e) => handleInputChange(e, 'graduation', 'degree')}
+              required
+            />
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">End Date</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+            <i className="fas fa-calendar-alt text-gray-400 mx-2"></i>
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+              value={formData.graduation.yearSpan}
+              onChange={(e) => handleInputChange(e, 'graduation', 'yearSpan')}
+              required
+            />
+          </div>
+        </div>
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Location</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+            <i className="fas fa-map-marker-alt text-gray-400 mx-2"></i>
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+              value={formData.graduation.location}
+              onChange={(e) => handleInputChange(e, 'graduation', 'location')}
+              required
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+         {/* Intermediate */}
+<div>
+  <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Intermediate</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {['schoolName', 'percentage', 'stream', 'yearSpan', 'location'].map((field, index) => (
+      <div className="relative" key={index}>
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2 capitalize">{field}</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className={`fas ${field === 'schoolName' ? 'fa-school' : field === 'percentage' ? 'fa-percent' : field === 'stream' ? 'fa-book' : field === 'yearSpan' ? 'fa-calendar-alt' : 'fa-map-marker-alt'} text-gray-400 mx-2`}></i>
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.intermediate[field]}
+            onChange={(e) => handleInputChange(e, 'intermediate', field)}
+            required
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* High School */}
+<div>
+  <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">High School</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {['schoolName', 'percentage', 'yearSpan', 'location'].map((field, index) => (
+      <div className="relative" key={index}>
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2 capitalize">{field}</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className={`fas ${field === 'schoolName' ? 'fa-school' : field === 'percentage' ? 'fa-percent' : field === 'yearSpan' ? 'fa-calendar-alt' : 'fa-map-marker-alt'} text-gray-400 mx-2`}></i>
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={formData.highSchool[field]}
+            onChange={(e) => handleInputChange(e, 'highSchool', field)}
+            required
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+{/* Skills Section */}
+<div>
+  <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Skills</h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Technical Skills */}
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold">Technical Skills</label>
+        <button
+          type="button"
+          className="text-black bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200"
+          onClick={() => addSkillInput('technicalSkills')}
+        >
+          <i className="fas fa-plus text-white"></i>
+        </button>
+      </div>
+      {formData.technicalSkills.map((skill, index) => (
+        <div key={index} className="flex items-center mb-2">
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm w-full">
+            <i className="fas fa-code text-gray-400 mx-2"></i>
+            <input
+              type="text"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
               value={skill}
               onChange={(e) => handleSkillChange(index, 'technicalSkills', e.target.value)}
             />
           </div>
-          
         </div>
       ))}
     </div>
+    
     {/* Soft Skills */}
     <div>
-      <div className='flex justify-between'>
-      <label className="block text-gray-700 font-semibold mb-2">Soft Skills</label>
-      <button
-            type="button"
-            className="mb-4  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-            onClick={() => addSkillInput('softSkills')}
-          >
-            +
-          </button>
-          </div>
+      <div className="flex justify-between items-center mb-4">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold">Soft Skills</label>
+        <button
+          type="button"
+          className="text-black bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200"
+          onClick={() => addSkillInput('softSkills')}
+        >
+          <i className="fas fa-plus text-white"></i>
+        </button>
+      </div>
       {formData.softSkills.map((skill, index) => (
         <div key={index} className="flex items-center mb-2">
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm w-full">
-            <i className="fas fa-comments text-gray-400 mx-2"></i> {/* Soft skills icon */}
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm w-full">
+            <i className="fas fa-comments text-gray-400 mx-2"></i>
             <input
               type="text"
-              className="w-full px-4 py-2 focus:outline-none"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
               value={skill}
               onChange={(e) => handleSkillChange(index, 'softSkills', e.target.value)}
             />
           </div>
-         
         </div>
       ))}
     </div>
@@ -525,28 +439,29 @@ const handleSubmit = async (e) => {
 </div>
 
 
-          {/* Projects Section */}
-          <div>
-            <div className='flex justify-between'>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Projects</h3>
-  <button
-        type="button"
-        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addProjectInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
-      </button>
-      </div>
+
+         {/* Projects Section */}
+<div className="mt-8">
+  <div className='flex justify-between items-center'>
+    <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Projects</h3>
+    <button
+      type="button"
+      className="text-white bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200 shadow-md"
+      onClick={addProjectInput}
+    >
+      <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
+    </button>
+  </div>
   {formData.projects.map((project, index) => (
-    <div key={index} className="grid grid-cols-1 mb-4">
-      <div className="grid grid-cols-2 gap-4">
+    <div key={index} className="relative mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">Project Title</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Project Title</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
             <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
             <input
               type="text"
-              className="w-full px-4 py-2 focus:outline-none"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
               value={project.title}
               onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
               required
@@ -554,8 +469,8 @@ const handleSubmit = async (e) => {
           </div>
         </div>
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">Project Description</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Project Description</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
             <i className="fas fa-info-circle text-gray-400 mx-2"></i> {/* Description icon */}
             <textarea
               className="w-full px-4 py-2 focus:outline-none"
@@ -566,125 +481,117 @@ const handleSubmit = async (e) => {
           </div>
         </div>
       </div>
-     
     </div>
   ))}
 </div>
 
+
 {/* Certification */}
-<div>
-  <div className='flex justify-between'>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Certification</h3>
-  <button
-        type="button"
-        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={() => addCertification('certification')}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
-      </button>
-      </div>
-  {formData.certification.map((certifications, index) => (
-    <div key={index} className="grid grid-cols-1 mb-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">Certification </label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
-            <input
-              type="text"
-              className="w-full px-4 py-2 focus:outline-none"
-              value={certifications}
-              onChange={(e) => handleCertificationChange(index, null, e.target.value)}
-              required
-            />
-          </div>
+<div className="mt-8">
+  <div className='flex justify-between items-center'>
+    <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Certification</h3>
+    <button
+      type="button"
+      className="text-white bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200 shadow-md"
+      onClick={() => addCertification('certification')}
+    >
+      <i className="fas fa-plus"></i> {/* Plus icon for adding certifications */}
+    </button>
+  </div>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {formData.certification.map((certifications, index) => (
+      <div key={index} className="relative mb-6">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Certification</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-certificate text-gray-400 mx-2"></i> {/* Certificate icon */}
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={certifications}
+            onChange={(e) => handleCertificationChange(index, null, e.target.value)}
+            required
+          />
         </div>
-      
       </div>
-    
-    </div>
-  ))}
-   
+    ))}
+  </div>
 </div>
+
 {/* extracircular */}
-<div>
-  <div className='flex justify-between'>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Extra-curricular Activites And Achievements</h3>
-  <button
-        type="button"
-        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addAchieveInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding projects */}
-      </button>
-      </div>
-  {formData.achievements.map((achievements, index) => (
-    <div key={index} className="grid grid-cols-1 mb-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
-            <i className="fas fa-project-diagram text-gray-400 mx-2"></i> {/* Project icon */}
-            <input
-              type="text"
-              className="w-full px-4 py-2 focus:outline-none"
-              value={achievements.achieve}
-              onChange={(e) => handleAchieveChange(index, null, e.target.value)}
-              required
-            />
-          </div>
+<div className="mt-8">
+  <div className='flex justify-between items-center'>
+    <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Extra-curricular Activities and Achievements</h3>
+    <button
+      type="button"
+      className="text-white bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200 shadow-md"
+      onClick={addAchieveInput}
+    >
+      <i className="fas fa-plus"></i> {/* Plus icon for adding achievements */}
+    </button>
+  </div>
+  {formData.achievements.map((achievement, index) => (
+    <div key={index} className="grid grid-cols-1 mb-6">
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Achievement</label>
+        <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
+          <i className="fas fa-trophy text-gray-400 mx-2"></i> {/* Trophy icon for achievements */}
+          <input
+            type="text"
+            className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
+            value={achievement.achieve}
+            onChange={(e) => handleAchieveChange(index, null, e.target.value)}
+            required
+          />
         </div>
-      
       </div>
-    
     </div>
   ))}
-   
 </div>
+
 {/* Work Experience */}
-<div>
-  <div className='flex justify-between'>
-  <h3 className="text-xl font-semibold text-purple-600 mb-4">Work Experience</h3>
-  <button
-        type="button"
-        className="mt-2  text-black  rounded-full hover:bg-purple-800 transition duration-200"
-        onClick={addExperienceInput}
-      >
-        <i className="fas fa-plus"></i> {/* Plus icon for adding experience */}
-      </button>
-      </div>
+<div className="mt-8">
+  <div className='flex justify-between items-center'>
+    <h3 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Work Experience</h3>
+    <button
+      type="button"
+      className="text-white bg-purple-600 hover:bg-purple-700 rounded-full p-2 transition duration-200 shadow-md"
+      onClick={addExperienceInput}
+    >
+      <i className="fas fa-plus"></i> {/* Plus icon for adding experience */}
+    </button>
+  </div>
   {formData.experience.map((exp, index) => (
-    <div key={index} className="grid grid-cols-1 mb-4">
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">Designation</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+    <div key={index} className="grid grid-cols-1 mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Designation</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
             <i className="fas fa-briefcase text-gray-400 mx-2"></i> {/* Briefcase icon */}
             <input
               type="text"
-              className="w-full px-4 py-2 focus:outline-none"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
               value={exp.designation}
               onChange={(e) => handleExperienceChange(index, 'designation', e.target.value)}
               required
             />
           </div>
         </div>
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">Company Name</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Company Name</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
             <i className="fas fa-building text-gray-400 mx-2"></i> {/* Building icon */}
             <input
               type="text"
-              className="w-full px-4 py-2 focus:outline-none"
+              className="w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600 dark:focus:ring-purple-400"
               value={exp.companyName}
               onChange={(e) => handleExperienceChange(index, 'companyName', e.target.value)}
               required
             />
           </div>
         </div>
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">Description</label>
-          <div className="flex items-center border border-gray-300 rounded-lg shadow-sm">
+        <div className="relative">
+          <label className="block text-gray-700 dark:text-gray-200 font-semibold mb-2">Description</label>
+          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm transition duration-300 ease-in-out focus-within:border-purple-600 dark:focus-within:border-purple-400">
             <i className="fas fa-info-circle text-gray-400 mx-2"></i> {/* Info icon */}
             <textarea
               className="w-full px-4 py-2 focus:outline-none"
@@ -695,10 +602,10 @@ const handleSubmit = async (e) => {
           </div>
         </div>
       </div>
-     
     </div>
   ))}
 </div>
+
 
 
           {/* Submit Button */}

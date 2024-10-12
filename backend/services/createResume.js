@@ -1,7 +1,6 @@
 require('dotenv').config();
 const Groq = require('groq-sdk');
 
-// Initialize the Groq API client
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // Function to generate resume from raw JSON data
@@ -10,8 +9,8 @@ const generateResume = async (candidateData) => {
     const candidateDataString = JSON.stringify(candidateData);
     const prompt = `
       I will provide you with raw JSON data of a candidate's information. 
-      Your task is to generate a well-structured, ATS-compliant resume in JSON format that includes *only relevant sections*.
-      Specifically, the output should contain only **contactInformation**, **objective**, **education**, **skills**, **workExperience**, and **achievements**.
+      Your task is to generate a well-structured, ATS-compliant resume in JSON format that includes only relevant sections.
+      Specifically, the output should contain only *contactInformation, **objective, **education, **skills, **workExperience, and **achievements*.
       All other sections should be excluded from the output.
 
       This is the Candidate data: "${candidateDataString}"
@@ -69,83 +68,41 @@ const generateResume = async (candidateData) => {
            },
            "achievements"
          ]
-      }
-    `;
+      }`;
 
-    const response = await groq.chat.completions.create({
-      messages: [
+  const response = await groq.chat.completions.create({
+    messages: [
         {
-          role: "user",
-          content: prompt,
+            role: "user",
+            content: prompt,
         },
-      ],
-      model: "llama3-70b-8192", // Adjust the model if needed
-    });
+    ],
+    model: "llama3-70b-8192",
+    max_tokens: 3000,
+});
 
-    // Log response to check the data structure
-    const { choices } = response;
-    if (choices && choices[0]?.message?.content) {
-      const rawContent = choices[0].message.content;
-      console.log("Raw Content: ", rawContent);
+console.log("Response:", response.choices[0].message.content);
 
-      // Trim extra data and only return from contactInformation to achievements
-      const trimmedContent = extractRelevantSections(rawContent);
-      console.log("----------------------");
-      console.log("Trimmed Content: ", trimmedContent);
-      console.log("----------------------");
 
-      // Validate and parse the JSON content
-      const isValidJSON = validateJSON(trimmedContent);
-      if (isValidJSON) {
-        return JSON.parse(trimmedContent); // Return valid parsed JSON
-      } else {
-        console.log("Invalid JSON format detected.");
-        return { message: "Invalid JSON format" };
-      }
-    } else {
-      console.log("No valid resume found.");
-      return { message: "No valid resume generated." };
-    }
-  } catch (error) {
-    console.error('Error calling Groq API:', error);
+console.log("************************************");
+console.log("Candidate Data:", candidateData);
+console.log("************************************");
+console.log("Response:", response);
+console.log("************************************");
+console.log("Generated Resume Data:", response.data);
+console.log("************************************");
+console.log("Generated Resume Data:", response.choices[0].message.content);
+
+
+
+
+// return response.data;
+return response.choices[0].message.content;
+} catch (error) {
+    console.error("Error generating resume JSON:", error);
     throw new Error('Groq API error');
-  }
+}
 };
 
-// Helper function to extract relevant sections (contactInformation to achievements)
-const extractRelevantSections = (content) => {
-  const startMarker = '"contactInformation"';
-  const endMarker = '"achievements"';
-  const startIndex = content.indexOf(startMarker);
-  const endIndex = content.indexOf(endMarker) + endMarker.length;
 
-  if (startIndex !== -1 && endIndex !== -1) {
-    const trimmedContent = content.substring(startIndex, endIndex);
-
-    // Ensure there are no dangling or extra characters outside the JSON structure
-    const openingBraces = content.substring(0, startIndex).match(/{/g)?.length || 0;
-    const closingBraces = content.substring(endIndex).match(/}/g)?.length || 0;
-
-    // Close the JSON structure by adding the necessary closing braces
-    const jsonContent = `{${trimmedContent}${'}'.repeat(openingBraces - closingBraces)}`;
-
-    return jsonContent; // Return a valid JSON object as a string
-  }
-
-  return '{}'; // If no valid markers found, return empty JSON object
-};
-
-// Helper function to validate if a string is valid JSON
-const validateJSON = (jsonString) => {
-  try {
-    JSON.parse(jsonString);
-    console.log('Valid JSON detected.');
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
-
-module.exports = {
-  generateResume,
-};
+module.exports = { generateResume };
