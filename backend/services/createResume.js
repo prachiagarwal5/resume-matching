@@ -7,31 +7,23 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // Function to generate resume from raw JSON data
 const generateResume = async (candidateData) => {
   try {
+    const candidateDataString = JSON.stringify(candidateData);
+    const prompt = `
+      I will provide you with raw JSON data of a candidate's information. 
+      Your task is to generate a well-structured, ATS-compliant resume in JSON format that includes *only relevant sections*.
+      Specifically, the output should contain only **contactInformation**, **objective**, **education**, **skills**, **workExperience**, and **achievements**.
+      All other sections should be excluded from the output.
 
-    console.log("Received Candidate Data:", candidateData);
+      This is the Candidate data: "${candidateDataString}"
 
-        // Check if candidateData is defined and is an object
-        if (!candidateData || typeof candidateData !== 'object') {
-            throw new Error("Invalid candidate data provided.");
-        }
-    const candidateDataString = JSON.stringify(candidateData, null, 2);
-    const prompt = `I will provide you with raw JSON data of a candidate's information it  Your task is to generate a well-structured, ATS-compliant resume in JSON format that includes all fields provided in the input data, and for any empty field, explicitly mention that the field is empty. Ensure the output is formatted to pass ATS software checks effectively and is free of errors:
-
-    This is the Candidate data:"${candidateDataString}"
-    
-      
       ### Instructions:
-      1. Format: Follow the exact structure provided, clearly labeling and formatting each section appropriately.
-      2. Keywords: Optimize skills, achievements, and experiences for ATS keyword matching.
-      3. *Skills Categorization: Clearly separate skills into *technical and soft skills.
-      4. Consistency: Use consistent date formats and section titles to adhere to ATS standards.
-      5. Simplicity: Avoid graphics or special characters; keep the content straightforward.
-      6. Completion: Include all fields from the candidate's data in the output, and if any field is empty, specifically mention it with the label "Empty".
-      7. ATS Optimization: Use commonly accepted keywords relevant to job roles to enhance the resume's ranking in ATS systems.
-      
+      1. Include only the relevant sections: contactInformation, objective, education, skills, workExperience, and achievements.
+      2. For any empty fields, explicitly mention them with the label "Empty."
+      3. Ensure the output is formatted for ATS compatibility, including appropriate keywords and proper formatting.
+      4. Use consistent date formats and section titles to adhere to ATS standards.
+
       ### Desired JSON Structure for the Output:
-      
-      const candidateResume = {
+      {
          "contactInformation": {
            "name": "Your Full Name" || "Empty",
            "email": "Your Email Address" || "Empty",
@@ -63,95 +55,97 @@ const generateResume = async (candidateData) => {
              "location": "School Location" || "Empty"
            }
          },
+         "skills": {
+           "technicalSkills": ["Skill1", "Skill2"] || "Empty",
+           "softSkills": ["Skill1", "Skill2"] || "Empty"
+         },
          "workExperience": [
            {
              "jobTitle": "Your Designation" || "Empty",
              "company": "Company Name" || "Empty",
-             "description": [
-               "• Description point 1 of the candidate's role and responsibilities." || "Empty",
-               "• Point 2 elaborating on achievements and specific results obtained." || "Empty"
-             ]
-           }
-         ],
-         "projects": [
-           {
-             "projectTitle": "Project Title 1" || "Empty",
-             "description": [
-               "• Project objective and role." || "Empty",
-               "• Technologies used." || "Empty",
-               "• Key results achieved." || "Empty"
-             ]
+             "location": "Company Location" || "Empty",
+             "yearSpan": "Years Worked" || "Empty",
+             "responsibilities": ["Responsibility1", "Responsibility2"] || "Empty"
            },
-           {
-             "projectTitle": "Project Title 2" || "Empty",
-             "description": [
-               "• Project objective and role." || "Empty",
-               "• Technologies used." || "Empty",
-               "• Key results achieved." || "Empty"
-             ]
-           }
-         ],
-         "skills": {
-           "technicalSkills": [
-             "Technical Skill 1" || "Empty",
-             "Technical Skill 2" || "Empty"
-           ],
-           "softSkills": [
-             "Soft Skill 1" || "Empty",
-             "Soft Skill 2" || "Empty",
-             "Soft Skill 3" || "Empty"
-           ]
-         },
-         "certifications": [
-           {
-             "name": "Certification 1" || "Empty",
-             "date": "Date of Completion" || "Empty"
-           },
-           {
-             "name": "Certification 2" || "Empty",
-             "date": "Date of Completion" || "Empty"
-           }
-         ],
-         "achievements": [
-           "Achievement 1" || "Empty",
-           "Achievement 2" || "Empty"
+           "achievements"
          ]
       }
-      
-      Return the JSON object strictly following this structure, ensuring that the output is ATS-friendly, error-free, and specifically mentions "Empty" for any field that lacks input. Use effective language and rephrase project descriptions and other fields to enhance clarity and professionalism.`;
+    `;
 
-        // Call the Groq API to generate a resume
-        const response = await groq.chat.completions.create({
-            messages: [
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
-            model: "llama3-70b-8192", // Make sure the model name is correct
-            max_tokens: 3000, // Limit the response to avoid token overflow
-        });
+    const response = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      model: "llama3-70b-8192", // Adjust the model if needed
+    });
 
-        // Simplify logging the response structure for debugging
-        console.log("Response from Groq API:", response);
+    // Log response to check the data structure
+    const { choices } = response;
+    if (choices && choices[0]?.message?.content) {
+      const rawContent = choices[0].message.content;
+      console.log("Raw Content: ", rawContent);
 
-        // Check if the response contains the data in the expected format
-        if (response && response.choices && response.choices.length > 0) {
-            const generatedResume = response.choices[0].message.content;
+      // Trim extra data and only return from contactInformation to achievements
+      const trimmedContent = extractRelevantSections(rawContent);
+      console.log("----------------------");
+      console.log("Trimmed Content: ", trimmedContent);
+      console.log("----------------------");
 
-            // Log the generated resume
-            console.log("Generated Resume:", generatedResume);
-
-            // Return the generated resume
-            return generatedResume;
-        } else {
-            throw new Error("Unexpected response structure from Groq API");
-        }
-    } catch (error) {
-        // Log the error message with details
-        console.error("Error generating resume JSON:", error.message);
-        throw new Error('Groq API error: ' + error.message);
+      // Validate and parse the JSON content
+      const isValidJSON = validateJSON(trimmedContent);
+      if (isValidJSON) {
+        return JSON.parse(trimmedContent); // Return valid parsed JSON
+      } else {
+        console.log("Invalid JSON format detected.");
+        return { message: "Invalid JSON format" };
+      }
+    } else {
+      console.log("No valid resume found.");
+      return { message: "No valid resume generated." };
     }
+  } catch (error) {
+    console.error('Error calling Groq API:', error);
+    throw new Error('Groq API error');
+  }
 };
 
-module.exports = { generateResume };
+// Helper function to extract relevant sections (contactInformation to achievements)
+const extractRelevantSections = (content) => {
+  const startMarker = '"contactInformation"';
+  const endMarker = '"achievements"';
+  const startIndex = content.indexOf(startMarker);
+  const endIndex = content.indexOf(endMarker) + endMarker.length;
+
+  if (startIndex !== -1 && endIndex !== -1) {
+    const trimmedContent = content.substring(startIndex, endIndex);
+
+    // Ensure there are no dangling or extra characters outside the JSON structure
+    const openingBraces = content.substring(0, startIndex).match(/{/g)?.length || 0;
+    const closingBraces = content.substring(endIndex).match(/}/g)?.length || 0;
+
+    // Close the JSON structure by adding the necessary closing braces
+    const jsonContent = `{${trimmedContent}${'}'.repeat(openingBraces - closingBraces)}`;
+
+    return jsonContent; // Return a valid JSON object as a string
+  }
+
+  return '{}'; // If no valid markers found, return empty JSON object
+};
+
+// Helper function to validate if a string is valid JSON
+const validateJSON = (jsonString) => {
+  try {
+    JSON.parse(jsonString);
+    console.log('Valid JSON detected.');
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+module.exports = {
+  generateResume,
+};
