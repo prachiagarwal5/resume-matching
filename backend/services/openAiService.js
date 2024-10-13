@@ -9,7 +9,6 @@ const analyzeResume = async (resumeText, jobDescription) => {
         const prompt = `I will provide you with two inputs:
         - Resume Text: A candidate's resume in text format.
         - Job Description (JD): A job listing or description that the candidate is applying to.
-      
       Your task is to **evaluate strictly** the resume based on the JD and return a detailed, precise report. The evaluation must adhere to **strict guidelines**, penalizing vague or irrelevant details that do not directly align with the JD.
       
       IMPORTANT:
@@ -17,19 +16,17 @@ const analyzeResume = async (resumeText, jobDescription) => {
       - Be **extremely strict** in evaluating how well the resume demonstrates qualifications for the **specific role** outlined in the JD.
       - Gaps, vagueness, or irrelevant content should significantly lower the JD-aligned score.
       - Also provide a **general resume quality** score independent of the JD, focusing on grammar, professionalism, and overall clarity.
-      
+
       Below is the Resume Text: "${resumeText}"
-      
       Below is the Job Description: "${jobDescription}"
       
       Please return ONLY a JSON object with the following structure:
-      
-      1. **JobTitle Match**: Return **Matchend** or **Not Matched** depending on whether the job title in the resume **exactly matches** the job title in the JD.
-      
+
+      1. **Job Title Match**: Return **Matched** or **Not Matched** depending on whether the job title in the resume **exactly matches** the job title in the JD.
+
       2. **Skills**:
           - **Technical Skills**: Return a dictionary where each technical skill from the JD is listed as true or false based on **contextual relevance** in the resume.
           - **Soft Skills**: Return a dictionary where each soft skill from the JD is marked as true or false based on its appearance in the resume in the relevant context.
-          
           Example:
           {
               "TechnicalSkills": {
@@ -41,15 +38,12 @@ const analyzeResume = async (resumeText, jobDescription) => {
                   "Teamwork": false
               }
           }
-          
-          Every skill mentioned in the JD must be evaluated. Missing skills or incorrect context should be marked as "false."
-      
+
       3. **Suggested Skills**: List technical and soft skills the candidate could add to better match the JD. Suggestions should be **specific** and avoid general recommendations. Focus on skills that are **directly related** to the JD.
-      
+
       4. **Matched Projects And Internships**: Identify **relevant projects and internships** from the resume that align with the JD. Provide a detailed explanation for why they match, focusing on the specific context in which the skills and technologies were used. Exclude projects that do not **strictly align** with the JD.
-      
+
       5. **Rephrased Projects And Internships**: Provide **multiple concise rephrased points** for relevant projects or internships that better align with the JD. Each point should focus on critical, JD-relevant skills, achievements, and outcomes, while keeping descriptions **concise (20 words or less)**.
-      
           Example:
           {
               "Original Project": "AI Intern",
@@ -58,36 +52,34 @@ const analyzeResume = async (resumeText, jobDescription) => {
                   "Integrated Text-to-Speech (TTS) and Whisper for voice processing.",
                   "Collaborated on optimizing interview AI models for scalability."
               ]
-          },
-          {
-              "Original Project": "Data Science Intern",
-              "Rephrased Project": [
-                  "Built hate speech detection models using Python and NLP techniques.",
-                  "Enhanced accuracy through data pre-processing and feature engineering."
-              ]
           }
-      
-          **IMPORTANT**: Each project should return **multiple concise points** highlighting distinct achievements relevant to the JD.
-      
+
       6. **Resume Improvement Suggestions**: Offer specific suggestions to improve the resume's structure, clarity, and alignment with the JD. These suggestions should target content relevance, use of JD-specific keywords, and the overall readability of the resume.
-      
+
       7. **Grammatical Check**: Review the resume for grammatical accuracy and professionalism. Identify areas where language can be improved to ensure clarity and correctness.
-      
+
       8. **Project Title Description Check**: Ensure that the project titles and their descriptions match. For example, if the project is titled "E-commerce Web App," the description should clearly reflect the work done for that system. Penalize vague or mismatched descriptions.
-      
-      9. **Recruiter Tips**: Provide highly specific suggestions from a recruiter’s perspective, focusing on improving clarity, word count limits, and keyword usage.
-          - **Suggestions**: Advice on enhancing appeal to recruiters (e.g., using action verbs, quantifying results, etc.).
-          - **Word Count**: Recommend concise descriptions (limit project descriptions to 20 words).
-          - **wordsToAvoid**: Suggest words to avoid (e.g., vague terms like "responsible for," "assisted with") and offer action-oriented alternatives (e.g., "Led," "Managed," "Developed").
-          
+
+      9. **Recruiter Tips**: Dynamically generate **personalized tips** based on the resume's strengths and weaknesses. Focus on how the candidate can improve clarity, word usage, and alignment with recruiter expectations. Adapt the tips to:
+          - Use of **Action Verbs**: Suggest action-oriented words based on the role the candidate is applying for, such as "Led," "Developed," or "Engineered" to replace weaker phrases like "responsible for" or "assisted with."
+          - **Keyword Usage**: Highlight important JD-relevant keywords the candidate can use more effectively or where they are missing.
+          - **Tailored Word Count**: Suggest concise project descriptions, limiting word count based on the context of the role. This limit can vary depending on the complexity of the project or internship, dynamically adjusting for brevity.
+          - **Skills Relevance**: Provide specific suggestions on how to better highlight key technical or soft skills in relevant sections (e.g., "Add details on leadership or team collaboration in the 'Project X' description").
+          - **Presentation Style**: Recommend formatting or structural improvements for better readability and recruiter engagement.
+          - **Personalized Words to Avoid**: Generate a list of words or phrases the candidate should avoid based on their resume (e.g., “handled,” “involved in”), and provide alternatives.
           Example:
           {
-              "wordsToAvoid": {
-                  "responsible for": "Led",
-                  "helped": "Assisted with"
-              }
+              "Suggestions": [
+                  "Use action verbs like 'Developed,' 'Led,' or 'Managed' instead of 'responsible for.'",
+                  "Highlight specific outcomes in Project X to show quantifiable results.",
+                  "Avoid vague terms like 'worked on' and replace with more active descriptions."
+              ],
+             "Word Count": "Your recommendation for project description length goes here, based on the resume's content.",
+        "Words To Avoid": {
+            "Original Word/Phrase": "Suggested Alternative"
+        }
           }
-      
+
       10. **Score**:
           - **JScore**: A **strict score** between 0 and 100, evaluating the alignment between the resume and the JD, based on context-appropriate skills, project alignment, and grammatical accuracy.
           - **GScore**: A general score between 0 and 100 evaluating the overall quality and professionalism of the resume, regardless of JD alignment.
@@ -119,11 +111,11 @@ const analyzeResume = async (resumeText, jobDescription) => {
           "Rephrased Projects And Internships": [
               {
                   "Original Project": "Original project description",
-                  "Rephrased Project": ["Rephrased point 1", "Rephrased point 2", "Rephrased point 3",etc]
+                  "Rephrased Project": ["Rephrased point 1", "Rephrased point 2", "Rephrased point 3"]
               }
           ],
-          "Resume Improvement Suggestions": ["Suggestion 1", "Suggestion 2", "Suggestion 3","Suggestion 4","Suggestion 5"],
-          "Grammatical Check": "Details on grammatical correctness and professionalism",
+          "Resume Improvement Suggestions": ["Suggestion 1", "Suggestion 2"],           
+          "Grammatical Check": "Provide a detailed review of grammatical accuracy and professionalism. Identify specific areas for improvement, offering relevant corrections aligned with the JD. Each correction should include an example of the original sentence and a rephrased version, focusing on clarity and precision. Return multiple examples, each on a new line. Example:\n- Original: 'Responsible for managing team projects.'\n- Suggested: 'Led and managed cross-functional team projects in line with JD requirements.'\n\n- Original: 'Worked on API development.'\n- Suggested: 'Developed RESTful APIs using Java for scalable microservices.'"
           "Project Title Description Check": [
               {
                   "Project": "Project Title 1",
@@ -132,18 +124,17 @@ const analyzeResume = async (resumeText, jobDescription) => {
               }
           ],
           "Recruiter Tips": {
-              "Suggestions": ["Tip 1", "Tip 2", "Tip 3"],
-              "Word Count": "Limit project descriptions to 20 words or less.",
+              "Suggestions": ["Dynamic tip 1", "Dynamic tip 2", "Dynamic tip 3",....],
+              "Word Count": "Dynamically adjust word count based on project complexity.",
               "wordsToAvoid": {
-                  "Incorrect1": "Correct1",
-                    "Incorrect2": "Correct2",
-                    "Incorrect3": "Correct3",
-                    "Incorrect4": "Correct4"
+                  "Original Word": "Suggested Alternative",
+                  "Original Word": "Suggested Alternative",...and so on
               }
           },
           "JScore": number between 0 and 100,
           "GScore": number between 0 and 100
-      }`; 
+      }`;
+
       
 
 
