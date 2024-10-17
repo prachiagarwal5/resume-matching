@@ -62,7 +62,7 @@ const generateResume = async (candidateData) => {
           5. Keep the descriptions short and keyword-focused, highlighting relevant technologies, skills, and experiences.
           6. Eliminate irrelevant details; focus only on the most important aspects for the ATS system.
 
-          ### Desired JSON Structure for the Output:
+          ### IMPORTANT The response should be in JSON format and must follow this structure. Do not add any additional information, and ensure the keys are exactly as shown below. Ensure there are no symbols like tilde so that I can parse it as JSON:
           const candidateResume = {
             "contactInformation": {
               "name": "Your Full Name" || "Empty",

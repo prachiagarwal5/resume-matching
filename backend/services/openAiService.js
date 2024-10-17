@@ -22,7 +22,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
       
       Please return ONLY a JSON object with the following structure:
 
-      1. **Job Title Match**: Return **Matched** or **Not Matched** depending on whether the job title in the resume **exactly matches** the job title in the JD.
+      1. **Job Title Match**: Return **Matched** or **Not Matched** depending on whether the JD "${jobDescription}" iS MACHING WITH THE "${resumeText}" for example if jd is for web and the resume focus on web then macthed outherwise unmachned.
 
       2. **Skills**:
           - **Technical Skills**: Return a dictionary where each technical skill from the JD is listed as true or false based on **contextual relevance** in the resume.
@@ -84,9 +84,9 @@ const analyzeResume = async (resumeText, jobDescription) => {
           - **JScore**: A **strict score** between 0 and 100, evaluating the alignment between the resume and the JD, based on context-appropriate skills, project alignment, and grammatical accuracy.
           - **GScore**: A general score between 0 and 100 evaluating the overall quality and professionalism of the resume, regardless of JD alignment.
       
-      Return a JSON object with the following structure:
+          ### IMPORTANT The response should be in JSON format and must follow this structure. **Do not add any additional information**, and ensure the keys are exactly as shown below. Ensure there are no symbols like tilde  so that I can parse it as JSON:
       {
-          "Job Title Match":  "Matched/Not Matched",
+          "Job Title Match": "Matched/Not Matched",
           "Skills": {
               "TechnicalSkills": {
                   "skill1": true/false,
@@ -135,7 +135,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
           "GScore": number between 0 and 100
       }`;
 
-      
+
 
 
 
@@ -159,8 +159,11 @@ const analyzeResume = async (resumeText, jobDescription) => {
             console.log("Raw Content: ", rawContent);
             // Now we'll trim the content to extract only the relevant parts between "Matched Skills" and "Score"
             const trimmedContent = extractRelevantJSON(rawContent);
-            const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
-            return result;
+            console.log("-----------------trimmed-----------------")
+            console.log("Trimmed Content: ", trimmedContent);
+            console.log("-----------------trimmed-----------------")
+           // const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
+            return trimmedContent;
         } else {
             console.log("No matches found.");
             return {
@@ -173,15 +176,20 @@ const analyzeResume = async (resumeText, jobDescription) => {
     }
 };
 
+
+
 // Helper function to extract JSON data from "Matched Skills" to "Score"
 const extractRelevantJSON = (content) => {
-    const startMarker = '"Skills"';
+    const startMarker = '"Job Title Match"';
     const endMarker = '"GScore"';
     const startIndex = content.indexOf(startMarker);
     const endIndex = content.indexOf(endMarker) + endMarker.length + 5; // Adjust to capture full content
 
     if (startIndex !== -1 && endIndex !== -1) {
         const trimmedContent = content.substring(startIndex, endIndex);
+        console.log("---------------trim--------------------")
+        console.log(trimmedContent)
+        console.log("----------------trim-------------------")
         return `{${trimmedContent}}`; // Wrap it in curly braces to make it a valid JSON object
     }
 
