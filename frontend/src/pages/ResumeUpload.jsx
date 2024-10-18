@@ -38,6 +38,7 @@ const ResumeUpload = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            
             setResults(response.data);
         } catch (error) {
             console.error('Error uploading resume:', error);
@@ -45,7 +46,6 @@ const ResumeUpload = () => {
             setLoading(false);
         }
     };
-
     // Function to get the color based on score
     const getScoreColor = (score) => {
         if (score < 40) return 'rgba(255, 99, 132, 0.6)'; // Red
