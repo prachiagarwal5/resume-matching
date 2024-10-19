@@ -235,24 +235,28 @@ const ResumeUpload = () => {
 )}
 
 
-                       {/* Job Title Match Section */}
-            {results['Job Title Match'] !== undefined && (
-                <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg shadow-md transition duration-300 hover:bg-gray-200 dark:hover:bg-gray-600 mt-5">
-                    <h2 className="text-xl font-semibold text-purple-600 dark:text-purple-300 mb-4 flex items-center">
-                        <span className="text-purple-600 dark:text-purple-300 text-2xl mr-2">
-                            <i className="fas fa-check-circle"></i>
-                        </span>
-                        Job Title Match
-                    </h2>
-                    <p className="text-gray-700 dark:text-gray-200">
-                        {results['Job Title Match'] ? (
-                            <span className="text-green-600 dark:text-green-400 font-semibold">Matched</span>
-                        ) : (
-                            <span className="text-red-600 dark:text-red-400 font-semibold">Not Matched</span>
-                        )}
-                    </p>
-                </div>
+{/* Job Title Match Section */}
+{results['Job Title Match'] !== undefined && (
+    <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg transition duration-300 hover:shadow-2x">
+        <h2 className="text-xl font-semibold text-purple-600 dark:text-purple-300 mb-4 flex items-center">
+            <span className="text-2xl mr-2">
+                <i className={`fas fa-${results['Job Title Match'] === 'Matched' ? 'check-circle' : 'times-circle'} text-${results['Job Title Match'] === 'Matched' ? 'green-500 dark:text-green-400' : 'red-500 dark:text-red-400'}`}></i>
+            </span>
+            Job Title Match
+        </h2>
+        <p className="text-gray-700 dark:text-gray-200 text-lg">
+            {results['Job Title Match'] === 'Matched' ? (
+                <span className="text-green-600 dark:text-green-400 font-semibold flex items-center">
+                    <i className="fas fa-thumbs-up mr-2"></i> Matched
+                </span>
+            ) : (
+                <span className="text-red-600 dark:text-red-400 font-semibold flex items-center">
+                    <i className="fas fa-thumbs-down mr-2"></i> Not Matched
+                </span>
             )}
+        </p>
+    </div>
+)}
 
                         
                      {/* Skills Section */}

@@ -163,6 +163,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
             console.log("Trimmed Content: ", trimmedContent);
             console.log("-----------------trimmed-----------------")
             const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
+            console.log("Result: ", result);
             return result;
         } else {
             console.log("No matches found.");
