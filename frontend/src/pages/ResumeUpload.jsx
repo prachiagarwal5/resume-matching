@@ -70,7 +70,7 @@ const ResumeUpload = () => {
     </nav>
 
     {/* Content Area */}
-    <div className="w-full max-w-7xl mt-12 grid grid-cols-2 gap-8 bg-white dark:bg-gray-900 shadow-2xl rounded-lg overflow-hidden transition-transform transform hover:scale-105 duration-300">
+    <div className="w-full max-w-7xl mt-12 grid grid-cols-2 gap-8 bg-white dark:bg-gray-900 shadow-2xl rounded-lg overflow-hidden transition-transform transform">
         {/* Resume Preview */}
         <div className="p-6 flex flex-col items-center">
             {resumeUrl ? (

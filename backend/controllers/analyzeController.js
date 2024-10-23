@@ -17,12 +17,12 @@ const analyzeResumeController = async (req, res) => {
         // Log the job description and resume for debugging
         console.log("Job Description:", jobDescription);
         console.log("Resume Text:", resumeText);
-        console.log("_________________________________________________________________");
+        console.log("_________________________Resume_Text____________________________________");
 
         // Call the OpenAI (Groq) service to analyze resume and job description
          const result = await analyzeResume(resumeText, jobDescription);
 
-        console.log("*****************************");
+        console.log("**************Result_receive***************");
 
         console.log("Analysis Result:", result);
 

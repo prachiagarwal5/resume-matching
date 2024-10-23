@@ -1,14 +1,17 @@
 import React from 'react';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
-const TemplateOne = ({ formData }) => {
+const TemplateOne = React.forwardRef((props, ref) => {
+  const { formData } = props;
   console.log("Form Data received in TemplateOne:", formData);
 
   if (!formData) {
-    return <div className="text-center text-gray-500">No data available for this template.</div>; 
+    return <div className="text-center text-gray-500">No data available for this template.</div>;
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg dark:bg-gray-800 transition duration-300 ease-in-out lg:mx-20">
+    <div ref={ref} className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg dark:bg-gray-800 transition duration-300 ease-in-out lg:mx-20  w-screen">
 
   {/* Header Section */}
   <header className="text-center mb-8">
@@ -120,6 +123,6 @@ const TemplateOne = ({ formData }) => {
 </div>
 
   );
-};
+});
 
 export default TemplateOne;
