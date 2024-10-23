@@ -76,7 +76,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
               ],
              "Word Count": "Your recommendation for project description length goes here, based on the resume's content.",
         "Words To Avoid": {
-            "Original Word/Phrase": "Suggested Alternative"
+            "Original Word": "Suggested Alternative"
         }
           }
 
@@ -159,9 +159,9 @@ const analyzeResume = async (resumeText, jobDescription) => {
             console.log("Raw Content: ", rawContent);
             // Now we'll trim the content to extract only the relevant parts between "Matched Skills" and "Score"
             const trimmedContent = extractRelevantJSON(rawContent);
-            console.log("-----------------trimmed-----------------")
+            console.log("-----------------trimmed_data_receive-----------------")
             console.log("Trimmed Content: ", trimmedContent);
-            console.log("-----------------trimmed-----------------")
+            console.log("-----------------trimmed_data_send-----------------")
             const result = JSON.parse(trimmedContent); // Parse the trimmed JSON content
             console.log("Result: ", result);
             return result;
