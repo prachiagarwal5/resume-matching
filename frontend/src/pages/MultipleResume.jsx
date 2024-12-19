@@ -55,24 +55,31 @@ function MultipleResume() {
     }
   };
 
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    if (selectedFiles.length > 20) {
-      alert("Maximum 20 files allowed");
-      return;
+  const handleFolderChange = (event) => {
+    const selectedFiles = event.target.files; // FileList containing all files
+    const fileArray = Array.from(selectedFiles);
+
+    // Check if the file count exceeds the limit
+    if (fileArray.length > 50) {
+        setError("You can upload a maximum of 50 files only.");
+        setFiles([]);
+        event.target.value = ""; // Clear the input
+        return;
     }
-    const validFiles = selectedFiles.filter((file) => {
-      if (file.type !== "application/pdf") {
-        alert(`${file.name} is not a PDF file`);
-        return false;
-      }
-      if (file.size > 10 * 1024 * 1024) {
-        alert(`${file.name} exceeds 10MB size limit`);
-        return false;
-      }
-      return true;
-    });
-    setFiles(validFiles);
+
+    setError(""); // Clear any previous error
+    setFiles(fileArray); // Store the files for further processing
+
+    const folderContents = fileArray.map((file) => ({
+        name: file.name,
+        path: file.webkitRelativePath, // Path relative to the folder
+        size: file.size, // File size in bytes
+        type: file.type, // MIME type
+    }));
+
+    // Example: Filter only PDF files
+    const pdfFiles = folderContents.filter((file) => file.type === "application/pdf");
+    
   };
 
   return (
@@ -131,29 +138,24 @@ function MultipleResume() {
               Select Resumes:
             </label>
             <input
-              type="file"
-              multiple
-              accept=".pdf"
-              onChange={handleFileChange}
-              ref={fileInputRef}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500 dark:hover:border-purple-300"
+                type="file"
+                webkitdirectory="true"
+                onChange={handleFolderChange}
+                accept=".pdf"
+                ref={fileInputRef}
+                className="w-full px-4 py-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500 dark:hover:border-purple-300"
             />
             {error && <p className="text-red-500 mt-2">{error}</p>}
             {files.length > 0 && (
-              <div className="mt-4">
-                <h3 className="text-gray-800 dark:text-gray-200 font-semibold">
-                  Selected Files:
-                </h3>
-                <ul className="list-disc pl-5">
-                  {files.map((file) => (
-                    <li
-                      key={file.name}
-                      className="text-gray-700 dark:text-gray-300"
-                    >
-                      {file.name}
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-4">
+                    <h3 className="text-gray-800 dark:text-gray-200 font-semibold">Selected Files:</h3>
+                    <ul className="list-disc pl-5">
+                        {files.map((file) => (
+                            <li key={file.name} className="text-gray-700 dark:text-gray-300">
+                                {file.webkitRelativePath}
+                            </li>
+                        ))}
+                    </ul>
               </div>
             )}
           </div>
