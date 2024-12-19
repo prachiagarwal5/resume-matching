@@ -201,3 +201,4 @@ const extractRelevantJSON = (content) => {
 module.exports = {
     analyzeResume,
 };
+
