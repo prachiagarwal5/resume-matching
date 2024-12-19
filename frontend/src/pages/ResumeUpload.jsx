@@ -61,6 +61,12 @@ const ResumeUpload = () => {
         <div className="flex items-center space-x-4">
             {/* Add the Create Resume button */}
             <Link
+                to="/multiple-resume"
+                className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+            >
+                ATS Analyzer
+            </Link>
+            <Link
                 to="/resume-creation"
                 className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
             >
@@ -93,7 +99,7 @@ const ResumeUpload = () => {
         <div className="bg-gray-50 dark:bg-gray-700 p-8 flex flex-col justify-center items-center rounded-lg shadow-lg transition duration-300 hover:shadow-2xl">
             <h2 className="text-purple-700 dark:text-purple-300 text-4xl font-bold mb-6 transform transition-transform duration-300 hover:scale-105">Upload Your Resume</h2>
             <p className="text-gray-700 dark:text-gray-300 mb-6 text-center text-lg">
-                Get a detailed analysis report matching your job description by parsing your resume.
+                Compare resumes to the job description and highlight the top-scoring candidate
             </p>
             <div className="w-full mb-6">
                 <label className="block mb-2 text-gray-700 dark:text-gray-300 font-semibold">Upload Resume (PDF)</label>
