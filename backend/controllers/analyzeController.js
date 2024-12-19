@@ -1,39 +1,167 @@
-const { analyzeResume } = require('../services/openAiService');
-const fs = require('fs');
-const pdfParse = require('pdf-parse');
+// const { analyzeResume } = require('../services/openAiService');
+// const fs = require('fs');
+// const pdfParse = require('pdf-parse');
 
-const analyzeResumeController = async (req, res) => {
-    try {
-        const resumeFile = req.file; // The uploaded resume file
-        const pdfPath = resumeFile.path;
+// const analyzeResumeController = async (req, res) => {
+//     try {
+//         const resumeFile = req.file; // The uploaded resume file
+//         const pdfPath = resumeFile.path;
 
-        // Convert the resume PDF file to text
-        const dataBuffer = fs.readFileSync(pdfPath);
-        const pdfData = await pdfParse(dataBuffer); // Extract text from PDF
+//         // Convert the resume PDF file to text
+//         const dataBuffer = fs.readFileSync(pdfPath);
+//         const pdfData = await pdfParse(dataBuffer); // Extract text from PDF
 
-        const resumeText = pdfData.text; // Extracted text from resume
-        const jobDescription = req.body.jobDescription; // Job description text
+//         const resumeText = pdfData.text; // Extracted text from resume
+//         const jobDescription = req.body.jobDescription; // Job description text
 
-        // Log the job description and resume for debugging
-        console.log("Job Description:", jobDescription);
-        console.log("Resume Text:", resumeText);
-        console.log("_________________________Resume_Text____________________________________");
+//         // Log the job description and resume for debugging
+//         console.log("Job Description:", jobDescription);
+//         console.log("Resume Text:", resumeText);
+//         console.log("_________________________Resume_Text____________________________________");
 
-        // Call the OpenAI (Groq) service to analyze resume and job description
-         const result = await analyzeResume(resumeText, jobDescription);
+//         // Call the OpenAI (Groq) service to analyze resume and job description
+//          const result = await analyzeResume(resumeText, jobDescription);
 
-        console.log("**************Result_receive***************");
+//         console.log("**************Result_receive***************");
 
-        console.log("Analysis Result:", result);
+//         console.log("Analysis Result:", result);
 
-        console.log("*****************************");
+//         console.log("*****************************");
 
-        // Send the analysis result as JSON response
-        res.json(result);
-    } catch (error) {
-        console.error('Error analyzing resume:', error);
-        res.status(500).send('Error analyzing resume');
+//         // Send the analysis result as JSON response
+//         res.json(result);
+//     } catch (error) {
+//         console.error('Error analyzing resume:', error);
+//         res.status(500).send('Error analyzing resume');
+//     }
+// };
+
+// module.exports = { analyzeResumeController };
+
+const { analyzeResume } = require("../services/openAiService");
+const { atsScore } = require("../services/atsscore");
+const PdfService = require("../services/pdfService");
+const ExcelService = require("../services/excelServices");
+
+const analyzeSingleResume = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
     }
+
+    const jobDescription = req.body.jobDescription;
+    if (!jobDescription) {
+      return res.status(400).json({ error: "Job description is required" });
+    }
+
+    // Extract text from PDF
+    const resumeText = await PdfService.extractText(req.file.path);
+
+    // Analyze resume
+    const analysis = await analyzeResume(resumeText, jobDescription);
+
+    // Clean up uploaded file
+    PdfService.cleanup(req.file.path);
+
+    res.json(analysis);
+  } catch (error) {
+    console.error("Error analyzing resume:", error);
+    res.status(500).json({ error: "Error analyzing resume" });
+  }
 };
 
-module.exports = { analyzeResumeController };
+const analyzeMultipleResumes = async (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files uploaded" });
+    }
+
+    const jobDescription = req.body.jobDescription;
+    if (!jobDescription) {
+      return res.status(400).json({ error: "Job description is required" });
+    }
+
+    const results = [];
+    let processedCount = 0;
+    const totalFiles = req.files.length;
+
+    // Process files sequentially
+    for (const file of req.files) {
+      try {
+        console.log(
+          `Processing file ${++processedCount} of ${totalFiles}: ${file.originalname}`,
+        );
+
+        // Extract text from PDF
+        const resumeText = await PdfService.extractText(file.path);
+        console.log(`PDF text extracted successfully for ${file.originalname}`);
+
+        // Process with atsscore.js
+        console.log(`Analyzing resume with ATS Score system...`);
+        const analysis = await atsScore(resumeText, jobDescription);
+        console.log(`Analysis completed for ${file.originalname}:`, analysis);
+
+        // Format and store result
+        const result = {
+          fileName: file.originalname,
+          name: analysis.name || "Unknown",
+          email: analysis.email || "Unknown",
+          jScore: analysis.jScore || 0,
+          gScore: analysis.gScore || 0,
+          status: "Completed",
+          processingTime: new Date().toISOString(),
+        };
+
+        results.push(result);
+        console.log(`Added result for ${file.originalname}`);
+
+        // Clean up the processed file
+        PdfService.cleanup(file.path);
+        console.log(`Cleaned up temporary file for ${file.originalname}`);
+      } catch (fileError) {
+        console.error(`Error processing ${file.originalname}:`, fileError);
+        results.push({
+          fileName: file.originalname,
+          name: "Error",
+          email: "Error",
+          jScore: 0,
+          gScore: 0,
+          status: "Failed",
+          error: fileError.message,
+          processingTime: new Date().toISOString(),
+        });
+      }
+
+      // Optional: Add a small delay between processing files
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    console.log("All files processed. Generating Excel file...");
+
+    // Generate Excel file with detailed results
+    const { fileName, filePath } = ExcelService.generateExcelFile(results);
+    console.log(`Excel file generated: ${fileName}`);
+
+    // Send the Excel file to client
+    res.download(filePath, fileName, (err) => {
+      if (err) {
+        console.error("Error sending Excel file:", err);
+        return res.status(500).json({ error: "Error sending file" });
+      }
+      console.log(`Excel file sent successfully: ${fileName}`);
+      // Clean up the Excel file after sending
+      ExcelService.cleanup(filePath);
+    });
+  } catch (error) {
+    console.error("Error in analyzeMultipleResumes:", error);
+    res.status(500).json({
+      error: "Error processing resumes",
+      details: error.message,
+    });
+  }
+};
+
+module.exports = {
+  analyzeSingleResume,
+  analyzeMultipleResumes,
+};
