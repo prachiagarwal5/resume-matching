@@ -10,6 +10,6 @@ const {
 router.post("/", upload.single("resume"), analyzeSingleResume);
 
 // Multiple files upload route
-router.post("/multiple", upload.array("resumes", 20), analyzeMultipleResumes);
+router.post("/multiple", upload.array("resumes", 50), analyzeMultipleResumes);
 
 module.exports = router;
