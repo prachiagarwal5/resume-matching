@@ -75,7 +75,8 @@ web_modules/
 .env.production
 
 #uplaod files
-uploads
+uploads/*
+output/*
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
