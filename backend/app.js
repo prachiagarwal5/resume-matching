@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://resume-matching-hr2o.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),

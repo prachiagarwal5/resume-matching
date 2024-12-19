@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
   console.log('Resume Data Submitted: ', formData);
   
   try {
-    const response = await axios.post('http://localhost:5001/api/form/submit', formData); 
+    const response = await axios.post('https://gla-fit-backend.onrender.com/api/form/submit', formData); 
     console.log('Data sent successfully:', response.data);
 
     // Navigate to the TemplateSelection page and pass the received data

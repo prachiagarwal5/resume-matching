@@ -33,7 +33,7 @@ const ResumeUpload = () => {
         formData.append('jobDescription', jobDescription);
 
         try {
-            const response = await axios.post('http://localhost:5001/api/analyze', formData, {
+            const response = await axios.post('https://gla-fit-backend.onrender.com/api/analyze', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
