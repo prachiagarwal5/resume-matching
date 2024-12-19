@@ -4,6 +4,7 @@ import CreateResume from './pages/create'; // Your report page
 import ResumeUpload from './pages/ResumeUpload';
 import TemplateSelection from './pages/TemplateSelection';
 import ResumePreview from './Component/ResumePreview';
+import MultipleResume from './pages/MultipleResume';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/template-selection" element={<TemplateSelection />} />
         <Route path="/resume-preview" element={<ResumePreview />} />
         <Route path="/resume-creation" element={<CreateResume />} /> {/* Home page route */}
+        <Route path="/multiple-resume" element={<MultipleResume />} /> 
         {/* <Route path="/resume" element={< Resume/>} /> */}
       </Routes>
     </Router>
