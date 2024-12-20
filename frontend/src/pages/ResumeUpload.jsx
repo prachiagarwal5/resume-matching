@@ -459,8 +459,6 @@ const ResumeUpload = () => {
 )}
 
 
-
-{/* Rephrased Projects And Internships Section */}
 {results['Rephrased Projects And Internships'] && results['Rephrased Projects And Internships'].length > 0 && (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md transition duration-300 hover:shadow-lg mt-5">
         <h2 className="text-2xl font-semibold text-purple-600 dark:text-purple-300 mb-6 flex items-center">
@@ -484,6 +482,17 @@ const ResumeUpload = () => {
                         </span>
                     </div>
                     
+                    {/* Matched Project */}
+                    {results['Matched Projects And Internships']?.map((matchedItem, matchedIndex) => (
+                        <div key={matchedIndex} className="mb-3">
+                            <p className="mb-2">
+                                <span className="font-medium text-gray-700 dark:text-gray-300">Matched Project:</span>
+                                <span className="ml-2 text-gray-600 dark:text-gray-400">{matchedItem.Project}</span>
+                            </p>
+                            <p className="text-gray-600 dark:text-gray-400">{matchedItem.Description}</p>
+                        </div>
+                    ))}
+
                     {/* Original Project */}
                     <p className="mb-2">
                         <span className="font-medium text-gray-700 dark:text-gray-300">Original:</span>
@@ -504,7 +513,6 @@ const ResumeUpload = () => {
         </div>
     </div>
 )}
-
 
 
 
