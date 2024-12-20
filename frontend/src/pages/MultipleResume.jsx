@@ -24,7 +24,7 @@ function MultipleResume() {
 
     try {
       const response = await axios.post(
-        "https://gla-fit-backend.onrender.com/api/analyze/multiple",
+        "https://resumeanalyser-nhai.onrender.com/api/analyze/multiple",
         formData,
         {
           responseType: "blob",
