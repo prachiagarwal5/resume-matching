@@ -49,7 +49,7 @@ const analyzeMultipleResumes = async (req, res) => {
     for (const file of req.files) {
       try {
         console.log(
-          `Processing file ${++processedCount} of ${totalFiles}: ${file.originalname}`,
+          `Processing file ${++processedCount} of ${totalFiles}: ${file.originalname}`
         );
 
         // Extract text from PDF
@@ -98,6 +98,9 @@ const analyzeMultipleResumes = async (req, res) => {
 
     console.log("All files processed. Generating Excel file...");
 
+    // Sort results by jScore in descending order
+    results.sort((a, b) => b.jScore - a.jScore);
+
     // Generate Excel file with detailed results
     const { fileName, filePath } = ExcelService.generateExcelFile(results);
     console.log(`Excel file generated: ${fileName}`);
@@ -120,6 +123,7 @@ const analyzeMultipleResumes = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   analyzeSingleResume,
