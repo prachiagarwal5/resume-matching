@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AnalyzeImage from './Analyze-rafiki.svg';
+
 
 function MultipleResume() {
   const [files, setFiles] = useState([]);
@@ -91,6 +93,12 @@ function MultipleResume() {
         </div>
         <div className="flex items-center space-x-4">
           <Link
+                          to="/resume"
+                          className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+                      >
+                          Resume Analyzer
+                      </Link>
+          <Link
             to="/resume-creation"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
@@ -104,7 +112,7 @@ function MultipleResume() {
         {/* Resume Preview */}
         <div className="p-6 flex flex-col items-center">
         <img
-              src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
+              src={AnalyzeImage}
               alt="Resume Preview"
               className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
             />
@@ -134,31 +142,27 @@ function MultipleResume() {
             candidate.
           </p>
           <div className="folder-input">
-            <label className="block text-gray-700 dark:text-gray-300">
-              Select Resumes:
-            </label>
-            <input
-                type="file"
-                webkitdirectory="true"
-                onChange={handleFolderChange}
-                accept=".pdf"
-                ref={fileInputRef}
-                className="w-full px-4 py-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500 dark:hover:border-purple-300"
-            />
-            {error && <p className="text-red-500 mt-2">{error}</p>}
-            {files.length > 0 && (
-                <div className="mt-4">
-                    <h3 className="text-gray-800 dark:text-gray-200 font-semibold">Selected Files:</h3>
-                    <ul className="list-disc pl-5">
-                        {files.map((file) => (
-                            <li key={file.name} className="text-gray-700 dark:text-gray-300">
-                                {file.webkitRelativePath}
-                            </li>
-                        ))}
-                    </ul>
-              </div>
-            )}
-          </div>
+    <label className="block text-gray-700 dark:text-gray-300">
+        Select Resumes(50 resumes only)
+    </label>
+    <input
+        type="file"
+        webkitdirectory="true"
+        onChange={handleFolderChange}
+        accept=".pdf"
+        ref={fileInputRef}
+        className="w-full px-4 py-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm focus:outline-none transition duration-200 hover:border-purple-500 dark:hover:border-purple-300"
+    />
+    {error && <p className="text-red-500 mt-2">{error}</p>}
+    {files.length > 0 && (
+        <div className="mt-4">
+            <h3 className="text-gray-800 dark:text-gray-200 font-semibold">Selected Folder:</h3>
+            <p className="text-gray-700 dark:text-gray-300">
+                {files[0].webkitRelativePath.split('/')[0]}
+            </p>
+        </div>
+    )}
+</div>
           <div className="w-full mb-6">
             <label className="block mb-2 text-gray-700 dark:text-gray-300 font-semibold">
               Job Description
