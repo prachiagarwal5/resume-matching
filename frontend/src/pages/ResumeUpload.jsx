@@ -61,7 +61,7 @@ const ResumeUpload = () => {
         <div className="flex items-center space-x-4">
             {/* Add the Create Resume button */}
             <Link
-                to="/multiple-resume"
+                to="/"
                 className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
             >
                 ATS Analyzer
@@ -90,7 +90,7 @@ const ResumeUpload = () => {
                 </div>
             ) : (
                 <img
-                    src="https://resumekraft.com/wp-content/uploads/2022/07/Computer-Engineer-Resume-1.jpg"
+                    src="https://assets.website-files.com/5ffd61d36b01f7a71eb30509/60364829a7907272fdada1d1_DevOps%20Engineer-1.png"
                     alt="Resume Preview"
                     className="w-full h-auto object-cover rounded-lg shadow-lg hover:shadow-2xl transition duration-300"
                 />

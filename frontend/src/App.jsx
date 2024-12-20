@@ -10,12 +10,12 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ResumeUpload />} /> 
+        <Route path="/resume" element={<ResumeUpload />} /> 
         <Route path="/resume-creation" element={<CreateResume />} />
         <Route path="/template-selection" element={<TemplateSelection />} />
         <Route path="/resume-preview" element={<ResumePreview />} />
         <Route path="/resume-creation" element={<CreateResume />} /> {/* Home page route */}
-        <Route path="/multiple-resume" element={<MultipleResume />} /> 
+        <Route path="/" element={<MultipleResume />} /> 
         {/* <Route path="/resume" element={< Resume/>} /> */}
       </Routes>
     </Router>
