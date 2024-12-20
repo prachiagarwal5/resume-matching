@@ -20,8 +20,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
       Below is the Resume Text: "${resumeText}"
       Below is the Job Description: "${jobDescription}"
       
-           only provide the jason object with the following structure with no expaltion or any other thing starting with Job Title Match and ending with GScore .:
-
+     only provide the jason object with the following structure with no expaltion or any other thing:
 
       1. **Job Title Match**: Return **Matched** or **Not Matched** depending on whether the JD "${jobDescription}" iS MACHING WITH THE "${resumeText}" for example if jd is for web and the resume focus on web then macthed outherwise unmachned.
 
