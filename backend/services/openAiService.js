@@ -21,7 +21,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
       Below is the Job Description: "${jobDescription}"
       
     
-      only provide the jason object with the following structure with no expaltion or any other thing starting with Job Title Match and ending with GScore .:
+      only provide the jason object with the following structure with no expaltion or any other thing starting with Job Title Match and ending with GScore. #IMPORTANT DONT PROVIDE SUCH THING WITH THE JASON:- # Here is the JSON response: :
 
 
       1. **Job Title Match**: Return **Matched** or **Not Matched** depending on whether the JD "${jobDescription}" iS MACHING WITH THE "${resumeText}" for example if jd is for web and the resume focus on web then macthed outherwise unmachned.
@@ -117,7 +117,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
               }
           ],
           "Resume Improvement Suggestions": ["Suggestion 1", "Suggestion 2"],           
-          "Grammatical Check": "Provide a detailed review of grammatical accuracy and professionalism. Identify specific areas for improvement, offering relevant corrections aligned with the JD. Each correction should include an example of the original sentence and a rephrased version, focusing on clarity and precision. Return multiple examples, each on a new line. Example:\n- Original: 'Responsible for managing team projects.'\n- Suggested: 'Led and managed cross-functional team projects in line with JD requirements.'\n\n- Original: 'Worked on API development.'\n- Suggested: 'Developed RESTful APIs using Java for scalable microservices.'"
+          "Grammatical Check": "Provide a detailed review of grammatical accuracy and professionalism. Identify specific areas for improvement, offering relevant corrections aligned with the JD. Each correction should include an example of the original sentence and a rephrased version, focusing on clarity and precision. Return multiple examples, each on a new line. Example:\n Original: 'Responsible for managing team projects.'\n Suggested: 'Led and managed cross-functional team projects in line with JD requirements.'\n\n Original: 'Worked on API development.'\n Suggested: 'Developed RESTful APIs using Java for scalable microservices.'"
           "Project Title Description Check": [
               {
                   "Project": "Project Title 1",
@@ -174,8 +174,8 @@ const analyzeResume = async (resumeText, jobDescription) => {
             };
         }
     } catch (error) {
-        console.error('Error calling Groq API:', error);
-        throw new Error('Groq API error');
+        console.error( error);
+   
     }
 };
 
