@@ -33,7 +33,7 @@ const ResumeUpload = () => {
         formData.append('jobDescription', jobDescription);
 
         try {
-            const response = await axios.post('https://resume-matching-backend.onrender.com/api/analyze', formData, {
+          const response = await axios.post('https://resume-matching-backend.onrender.com/api/analyze', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

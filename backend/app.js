@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Configure CORS
 app.use(
   cors({
-    origin: "https://resume-matching-hr2o.onrender.com",
+    origin: "https://gla-fit.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
