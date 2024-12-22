@@ -28,6 +28,16 @@ const atsScore = async (resumeText, jobDescription) => {
         - Be **extremely strict** in evaluating how well the resume demonstrates qualifications for the **specific role** outlined in the JD.
         - Gaps, vagueness, or irrelevant content should significantly lower the JD-aligned score.
         - Also provide a **general resume quality** score independent of the JD, focusing on grammar, professionalism, and overall clarity.
+        and keep this in mind while evaluating the resume:- Scoring Guidelines:
+    - JScore (0-100): Strict evaluation of JD alignment
+      70-100: Excellent match with specific skills and experience
+      40-69: Partial match with some relevant experience
+      0-39: Poor match with significant gaps
+
+    - GScore (0-100): Overall resume quality
+      70-100: Professional, well-structured, clear achievements
+      40-69: Decent structure, needs minor improvements
+      0-39: Major improvements needed
 
         Below is the Resume Text: "${resumeText}"
         Below is the Job Description: "${jobDescription}"`;
