@@ -124,7 +124,6 @@ const analyzeMultipleResumes = async (req, res) => {
   }
 };
 
-
 module.exports = {
   analyzeSingleResume,
   analyzeMultipleResumes,
