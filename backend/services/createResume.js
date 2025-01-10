@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Groq = require('groq-sdk');
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY2 });
 
 // Helper function to extract valid JSON from response
 const extractValidJson = (data) => {
