@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const path = require("path"); // Correct import for path
-const fs = require("fs"); // Separate import for fs
+const path = require("path"); 
+const fs = require("fs"); 
 const analyzeRoutes = require("./routes/analyzeRoutes");
 const formRoutes = require("./routes/formRoutes");
 
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://gla-fit.onrender.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
