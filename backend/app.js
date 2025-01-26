@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs"); 
 const analyzeRoutes = require("./routes/analyzeRoutes");
 const formRoutes = require("./routes/formRoutes");
+const commRoutes = require("./routes/commRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ const outputDir = path.join(__dirname, "output");
 // Routes
 app.use("/api/analyze", analyzeRoutes);
 app.use("/api/form", formRoutes);
+app.use("api/communication",commRoutes)
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
