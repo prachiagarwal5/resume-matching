@@ -1,28 +1,33 @@
-const service = require('../services/groupdiscussion');
-const {speech2text} = require('../middleware/speech2text');
+const service = require("../services/groupdiscussion");
 
 const commController = async (req, res) => {
-    try {
-        console.log('Received form data:', req.body);
-        const speechData = req.body;
-        let data;
+  try {
+    const { text } = req.body;
 
-        try {
-            data = await speech2text(speechData);
-            console.log('Data:', data);
-        } catch (error) {
-            console.error('Error in speech to text conversion:', error);
-            throw error;
-        }
-    
-        const modifiedData = await service(data); 
-        console.log('Modified Data', modifiedData);
-    
-        res.status(200).json({ success: true, message: 'Data received successfully', modifiedData });
-    } catch (error) {
-        console.error('Error processing form data:', error);
-        res.status(500).json({ success: false, message: 'Error processing data', error });
+    if (!text) {
+      return res.status(400).json({
+        success: false,
+        message: "No text provided",
+      });
     }
-    };
+
+    // Process with group discussion service
+    const analysisResult = await service(text);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        text: text,
+        analysis: analysisResult,
+      },
+    });
+  } catch (error) {
+    console.error("Controller error:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Error processing text",
+    });
+  }
+};
 
 module.exports = commController;

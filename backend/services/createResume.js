@@ -1,53 +1,61 @@
-require('dotenv').config();
-const Groq = require('groq-sdk');
+require("dotenv").config();
+const Groq = require("groq-sdk");
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY2 });
 
 // Helper function to extract valid JSON from response
 const extractValidJson = (data) => {
-    try {
-        // Regular expression to capture valid JSON structure from the response
-        const jsonMatch = data.match(/{.*}/s);
-        if (jsonMatch) {
-            return JSON.parse(jsonMatch[0]); // Parse only the JSON part
-        }
-        throw new Error('No valid JSON found in the response');
-    } catch (error) {
-        console.error("Error extracting JSON:", error);
-        throw error;  // Rethrow to handle it in the main function
+  try {
+    // Regular expression to capture valid JSON structure from the response
+    const jsonMatch = data.match(/{.*}/s);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0]); // Parse only the JSON part
     }
+    throw new Error("No valid JSON found in the response");
+  } catch (error) {
+    console.error("Error extracting JSON:", error);
+    throw error; // Rethrow to handle it in the main function
+  }
 };
 
 // Helper function to trim and validate the JSON structure
 const trimResumeData = (data) => {
-    try {
-        const parsedData = extractValidJson(data);
+  try {
+    const parsedData = extractValidJson(data);
 
-        // Allowed keys in the JSON structure, now including 'projects' and 'certifications'
-        const validKeys = ['contactInformation', 'objective', 'education', 'skills', 'workExperience', 'achievements', 'projects'];
+    // Allowed keys in the JSON structure, now including 'projects' and 'certifications'
+    const validKeys = [
+      "contactInformation",
+      "objective",
+      "education",
+      "skills",
+      "workExperience",
+      "achievements",
+      "projects",
+    ];
 
-        // Filter out any unnecessary fields
-        const trimmedData = {};
-        validKeys.forEach((key) => {
-            if (parsedData[key]) {
-                trimmedData[key] = parsedData[key];
-            } else {
-                trimmedData[key] = "Empty"; // Handle empty fields
-            }
-        });
+    // Filter out any unnecessary fields
+    const trimmedData = {};
+    validKeys.forEach((key) => {
+      if (parsedData[key]) {
+        trimmedData[key] = parsedData[key];
+      } else {
+        trimmedData[key] = "Empty"; // Handle empty fields
+      }
+    });
 
-        return trimmedData;
-    } catch (error) {
-        console.error("Error parsing or trimming resume data:", error);
-        return {};
-    }
+    return trimmedData;
+  } catch (error) {
+    console.error("Error parsing or trimming resume data:", error);
+    return {};
+  }
 };
 
 // Function to generate resume from raw JSON data
 const generateResume = async (candidateData) => {
-    try {
-        const candidateDataString = JSON.stringify(candidateData);
-        const prompt = `
+  try {
+    const candidateDataString = JSON.stringify(candidateData);
+    const prompt = `
           I will provide you with raw JSON data of a candidate's information.
           Your task is to generate a highly optimized, ATS-friendly resume in JSON format based on this raw data.
           Ensure the final JSON structure is crisp, includes the right keywords, and adheres to ATS standards, allowing the resume to pass any ATS screening.
@@ -140,29 +148,29 @@ const generateResume = async (candidateData) => {
             ]
           }`;
 
-        const response = await groq.chat.completions.create({
-            messages: [
-                {
-                    role: "user",
-                    content: prompt,
-                },
-            ],
-            model: "llama3-70b-8192",
-            max_tokens: 3000,
-        });
+    const response = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      model: "llama3-70b-8192",
+      max_tokens: 3000,
+    });
 
-        console.log("Raw Response:", response.choices[0].message.content);
+    console.log("Raw Response:", response.choices[0].message.content);
 
-        // Trim and validate the JSON response
-        const trimmedResume = trimResumeData(response.choices[0].message.content);
+    // Trim and validate the JSON response
+    const trimmedResume = trimResumeData(response.choices[0].message.content);
 
-        console.log("Trimmed and Valid Resume:", trimmedResume);
+    // console.log("Trimmed and Valid Resume:", trimmedResume);
 
-        return trimmedResume;
-    } catch (error) {
-        console.error("Error generating resume JSON:", error);
-        throw new Error('Groq API error');
-    }
+    return trimmedResume;
+  } catch (error) {
+    console.error("Error generating resume JSON:", error);
+    throw new Error("Groq API error");
+  }
 };
 
 module.exports = { generateResume };

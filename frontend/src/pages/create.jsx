@@ -199,7 +199,7 @@ const CreateResume = () => {
       achievements: formData.achievements,
     };
 
-    console.log("Transformed Data:", transformedData);
+    console.log("Transformed Data (create.jsx):", transformedData);
 
     try {
       const response = await axios.post(
@@ -210,7 +210,7 @@ const CreateResume = () => {
 
       // Navigate to the TemplateSelection page and pass the received data
       navigate("/template-selection", {
-        state: { formData: transformedData },
+        state: { formData: response.data },
       });
     } catch (error) {
       console.error("Error sending data:", error);

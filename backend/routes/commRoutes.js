@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const commController = require('../controllers/commController');
+const commController = require("../controllers/commController");
 
-router.post('/comm', commController);
+// Route for text processing
+router.post("/comm", express.json(), commController);
 
 module.exports = router;
