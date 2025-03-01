@@ -1,14 +1,14 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
-const path = require("path"); 
-const fs = require("fs"); 
+const path = require("path");
+const fs = require("fs");
 const analyzeRoutes = require("./routes/analyzeRoutes");
 const formRoutes = require("./routes/formRoutes");
 const commRoutes = require("./routes/commRoutes");
 
 const app = express();
-
+dotenv.config();
 // Increase payload size limit for large files
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // Configure CORS
 app.use(
   cors({
-    origin: "https://gla-fit.onrender.com",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
@@ -35,7 +35,7 @@ const outputDir = path.join(__dirname, "output");
 // Routes
 app.use("/api/analyze", analyzeRoutes);
 app.use("/api/form", formRoutes);
-app.use("api/communication",commRoutes)
+app.use("/api/communication", commRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

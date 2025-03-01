@@ -14,9 +14,17 @@ const analyzeResume = async (resumeText, jobDescription) => {
 
     Evaluation Guidelines:
     1. Skills Matching
-    - Match technical and soft skills contextually, not just by keyword
-    - Only mark skills as present if they match the exact context required in JD
-    - Example: "Python for Data Structures" is different from "Python for Web Development"
+        - First extract ALL skills from resume (both technical and soft skills)
+        - Then extract ALL required skills from job description
+        - For each skill found in resume:
+          * Check if it appears in job description
+          * Note the context and proficiency level mentioned
+          * Consider skill variations (e.g., "React.js" = "ReactJS")
+          * Mark as true if found in job description, false if not
+        - List all skills from resume regardless of job description match
+        - Ensure no skills are missed even if they don't match
+        - Include proficiency level where mentioned in resume
+        - Example: "Python for Data Structures" is different from "Python for Web Development"
 
     2. Content Evaluation
     - Identify gaps and irrelevant content

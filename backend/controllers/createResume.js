@@ -4,6 +4,7 @@ const createResume = async (req, res) => {
   try {
     console.log('Received form data:', req.body);
     const formData = req.body;
+    console.log('Form data:', formData);
 
     // Send the data to generateResume function
     const resume = await generateResume(formData); // Pass formData directly

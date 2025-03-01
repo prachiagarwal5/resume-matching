@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import Template1 from "./templates/Template1";
@@ -9,8 +9,19 @@ const TemplateSelection = () => {
   const navigate = useNavigate();
   const [showPreview, setShowPreview] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [processedData, setProcessedData] = useState(null);
 
   const formData = location.state?.formData;
+  console.log("Form data: (templateselection)", formData);
+
+  useEffect(() => {
+    if (formData) {
+      const processed =
+        typeof formData === "string" ? JSON.parse(formData) : formData;
+      setProcessedData(processed);
+      console.log("Processed form data:", processed);
+    }
+  }, [formData]);
 
   const templates = [
     {
@@ -86,12 +97,6 @@ const TemplateSelection = () => {
               <div className="p-6">
                 <div className="aspect-w-16 aspect-h-12 mb-6">
                   <div className="bg-gray-700 rounded-lg shadow-lg p-4">
-                    {/* Template Preview Content */}
-                    {/* <img
-                      src={`../assets/template${template.id}.png`}
-                      alt={`Template ${template.id} Preview`}
-                      className="w-full h-48 object-cover rounded-lg shadow-lg"
-                    /> */}
                     <div className="h-48 bg-gray-600 rounded-lg animate-pulse"></div>
                   </div>
                 </div>
@@ -129,7 +134,7 @@ const TemplateSelection = () => {
                   {/* Actions */}
                   <div className="flex gap-4 pt-4">
                     <PDFDownloadLink
-                      document={<template.component data={formData} />}
+                      document={<template.component data={processedData} />}
                       fileName={`resume-${template.id}.pdf`}
                       className="flex-1"
                     >
@@ -189,7 +194,7 @@ const TemplateSelection = () => {
       </main>
 
       {/* Preview Modal */}
-      {showPreview && selectedTemplate && (
+      {showPreview && selectedTemplate && processedData && (
         <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
           <div className="bg-gray-800 rounded-lg w-full max-w-7xl h-[90vh] flex flex-col">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">
@@ -220,7 +225,7 @@ const TemplateSelection = () => {
             </div>
             <div className="flex-1 p-4 bg-gray-900">
               <PDFViewer width="100%" height="100%" className="rounded-lg">
-                <selectedTemplate.component data={formData} />
+                <selectedTemplate.component data={processedData} />
               </PDFViewer>
             </div>
           </div>

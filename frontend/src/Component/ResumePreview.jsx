@@ -11,6 +11,7 @@ const ResumePreview = () => {
   const navigate = useNavigate();
   const { formData, templateId } = location.state;
   const componentRef = useRef();
+  console.log("Form data: (resumepreview)", formData);
 
   const getTemplate = () => {
     switch (templateId) {

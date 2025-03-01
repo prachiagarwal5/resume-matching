@@ -6,6 +6,7 @@ import ResumeUpload from "./pages/ResumeUpload";
 import TemplateSelection from "./Component/TemplateSelection";
 import ResumePreview from "./Component/ResumePreview";
 import MultipleResume from "./pages/MultipleResume";
+import Communication from "./pages/Communication";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/* Home page route */}
         <Route path="/" element={<MultipleResume />} />
         {/* <Route path="/resume" element={< Resume/>} /> */}
+        <Route path='/communication' element={<Communication />} />
       </Routes>
     </Router>
   );
