@@ -58,18 +58,49 @@ const processGroupDiscussion = async (studentNotes, discussionTopic) => {
   }
 };
 
+const validateInputs = (notes, topic) => {
+  if (!notes || typeof notes !== 'string' || notes.trim().length === 0) {
+    throw new Error('Invalid or empty notes provided');
+  }
+  if (!topic || typeof topic !== 'string' || topic.trim().length === 0) {
+    throw new Error('Invalid or empty topic provided');
+  }
+};
+
 // Helper function to extract relevant JSON data
 const extractRelevantJSON = (content) => {
   try {
-    const jsonObject = JSON.parse(content);
+    // Extract the JSON part from the response using regex
+    const jsonMatch = content.match(/```(?:json)?\s*({[\s\S]*?})\s*```/);
+    
+    if (!jsonMatch) {
+      // If no JSON block found, try to find direct JSON object
+      const directJsonMatch = content.match(/{[\s\S]*?}/);
+      if (!directJsonMatch) {
+        throw new Error('No valid JSON found in response');
+      }
+      return directJsonMatch[0];
+    }
+
+    // Get the JSON content from the matched group
+    const jsonString = jsonMatch[1].trim();
+    
+    // Parse and validate the JSON structure
+    const jsonObject = JSON.parse(jsonString);
+    
+    // Ensure all required fields are present
     const trimmedObject = {
       structuredNotes: jsonObject.structuredNotes || "Unable to process the notes.",
-      expectedResponses: jsonObject.expectedResponses || [],
+      expectedResponses: Array.isArray(jsonObject.expectedResponses) 
+        ? jsonObject.expectedResponses 
+        : [],
       brainstormedStructure: jsonObject.brainstormedStructure || "No structure available.",
     };
+
     return JSON.stringify(trimmedObject);
   } catch (error) {
     console.error("Error parsing JSON:", error);
+    // Return default structure if parsing fails
     return JSON.stringify({
       structuredNotes: "Unable to process the notes.",
       expectedResponses: [],
@@ -78,6 +109,8 @@ const extractRelevantJSON = (content) => {
   }
 };
 
+
 module.exports = {
   processGroupDiscussion,
+  validateInputs,
 };
