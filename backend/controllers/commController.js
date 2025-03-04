@@ -1,9 +1,11 @@
-const service = require("../services/groupdiscussion");
+const { processGroupDiscussion, validateInputs } = require("../services/groupdiscussion");
 
 const commController = async (req, res) => {
   try {
-    const { text } = req.body;
-
+    const { text, topic = "General Discussion" } = req.body;
+    
+    console.log("Request body:", req.body);
+    
     if (!text) {
       return res.status(400).json({
         success: false,
@@ -11,13 +13,23 @@ const commController = async (req, res) => {
       });
     }
 
+    try {
+      validateInputs(text, topic);
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error.message
+      });
+    }
+    
     // Process with group discussion service
-    const analysisResult = await service(text);
-
+    const analysisResult = await processGroupDiscussion(text, topic);
+    
     return res.status(200).json({
       success: true,
       data: {
         text: text,
+        topic: topic,
         analysis: analysisResult,
       },
     });
