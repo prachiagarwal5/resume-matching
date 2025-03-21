@@ -56,97 +56,109 @@ const generateResume = async (candidateData) => {
   try {
     const candidateDataString = JSON.stringify(candidateData);
     const prompt = `
-          I will provide you with raw JSON data of a candidate's information.
-          Your task is to generate a highly optimized, ATS-friendly resume in JSON format based on this raw data.
-          Ensure the final JSON structure is crisp, includes the right keywords, and adheres to ATS standards, allowing the resume to pass any ATS screening.
-
-          This is the Candidate data: "${candidateDataString}"
-
-          ### Instructions:
-          1. Include only the following sections: **contactInformation, objective, education, skills, workExperience, achievements, projects, certifications**.
-          2. Use bullet points for **achievements** and **work experience** responsibilities to enhance clarity and ATS parsing.
-          3. Fill out empty fields with the label "Empty".
-          4. Ensure that the summary and work experience sections are tailored to ATS, using key action verbs and industry-relevant terms.
-          5. Keep the descriptions short and keyword-focused, highlighting relevant technologies, skills, and experiences.
-          6. Eliminate irrelevant details; focus only on the most important aspects for the ATS system.
-
-          ### IMPORTANT The response should be in JSON format and must follow this structure. Do not add any additional information, and ensure the keys are exactly as shown below. Ensure there are no symbols like tilde so that I can parse it as JSON:
-          const candidateResume = {
-            "contactInformation": {
-              "name": "Your Full Name" || "Empty",
-              "email": "Your Email Address" || "Empty",
-              "phone": "Your Phone Number" || "Empty",
-              "linkedin": "Your LinkedIn Profile URL" || "Empty",
-              "github": "Your GitHub Profile URL" || "Empty",
-              "location": "Your Current Location" || "Empty"
-            },
-            "objective": "A concise, ATS-optimized summary of the candidate’s strengths and career goals (2-3 sentences)." || "Empty",
-            "education": {
-              "graduation": {
-                "degree": "Your Degree" || "Empty",
-                "institution": "Your University Name" || "Empty",
-                "location": "University Location" || "Empty",
-                "yearSpan": "Years Attended" || "Empty",
-                "CPI": "Your GPA/Grade" || "Empty"
-              },
-              "intermediate": {
-                "schoolName": "Your Intermediate School Name" || "Empty",
-                "percentage": "Your Percentage/Grade" || "Empty",
-                "stream": "Your Stream/Discipline" || "Empty",
-                "yearSpan": "Years Attended" || "Empty",
-                "location": "School Location" || "Empty"
-              },
-              "highSchool": {
-                "schoolName": "Your High School Name" || "Empty",
-                "percentage": "Your High School Percentage/Grade" || "Empty",
-                "yearSpan": "Years Attended" || "Empty",
-                "location": "School Location" || "Empty"
-              }
-            },
-            "workExperience": [
-              {
-                "jobTitle": "Your Designation" || "Empty",
-                "company": "Company Name" || "Empty",
-                "description": [
-                  "• Description point 1 of the candidate's role and responsibilities." || "Empty",
-                  "• Point 2 elaborating on achievements and specific results obtained." || "Empty"
-                ]
-              }
-            ],
-            "projects": [
-              {
-                "projectTitle": "Project Title 1" || "Empty",
-                "description": [
-                  "• Project objective and role." || "Empty",
-                  "• Technologies used." || "Empty",
-                  "• Key results achieved." || "Empty"
-                ]
-              }
-            ],
-            "skills": {
-              "technicalSkills": [
-                "Technical Skill 1" || "Empty",
-                "Technical Skill 2" || "Empty"
-              ],
-              "softSkills": [
-                "Soft Skill 1" || "Empty",
-                "Soft Skill 2" || "Empty",
-                "Soft Skill 3" || "Empty"
-              ]
-            },
-            "certifications": [
-              {
-                "name": "Certification 1" || "Empty"
-              },
-              {
-                "name": "Certification 2" || "Empty"
-              }
-            ],
-            "achievements": [
-              "Achievement 1" || "Empty",
-              "Achievement 2" || "Empty"
-            ]
-          }`;
+    I will provide you with raw JSON data of a candidate's information.
+    Your task is to generate a highly optimized, ATS-friendly resume in JSON format that would achieve an ATS score above 95%.
+  
+    This is the Candidate data: "${candidateData}"
+  
+    ### ATS Optimization Instructions:
+    1. Analyze the job market trends and incorporate highly relevant keywords.
+    2. Use industry-standard job titles and skills terminology.
+    3. Ensure proper keyword density (5-8% keyword density for critical skills).
+    4. Avoid graphics, tables, or complex formatting that might confuse ATS systems.
+    5. Use standardized section headings that ATS systems can easily recognize.
+  
+    ### Content Enhancement Guidelines:
+    1. Begin bullets with strong action verbs (e.g., "Implemented," "Developed," "Managed," "Optimized").
+    2. Include quantifiable achievements with metrics (%, $, numbers).
+    3. Mirror keywords from common job descriptions in your industry.
+    4. Use full terms before abbreviations (e.g., "Application Programming Interface (API)").
+    5. Incorporate both hard skills and soft skills strategically.
+  
+    ### Section-Specific Instructions:
+    - Objective: Create a powerful 2-3 sentence summary focusing on value proposition and key skills.
+    - Work Experience: Lead with impactful achievements, use metrics, and highlight relevant technologies.
+    - Skills: Organize technical skills by categories (e.g., Programming Languages, Frameworks, Tools).
+    - Projects: Emphasize problem-solving and technical implementation details.
+    - Achievements: Quantify results and align with industry standards.
+  
+    ### Response Format:
+    Return a JSON object strictly following this structure, ensuring 95%+ ATS optimization:
+    {
+      "contactInformation": {
+        "name": "Full Name",
+        "email": "professional.email@domain.com",
+        "phone": "Contact Number",
+        "linkedin": "LinkedIn URL",
+        "github": "GitHub URL",
+        "location": "City, State"
+      },
+      "objective": "ATS-optimized professional summary",
+      "education": {
+        "graduation": {
+          "degree": "Complete Degree Name",
+          "institution": "University Name",
+          "location": "Location",
+          "yearSpan": "YYYY-YYYY",
+          "CPI": "GPA"
+        },
+        "intermediate": {
+          "schoolName": "School Name",
+          "percentage": "XX%",
+          "stream": "Stream",
+          "yearSpan": "YYYY-YYYY",
+          "location": "Location"
+        },
+        "highSchool": {
+          "schoolName": "School Name",
+          "percentage": "XX%",
+          "yearSpan": "YYYY-YYYY",
+          "location": "Location"
+        }
+      },
+      "workExperience": [
+        {
+          "jobTitle": "Industry-Standard Title",
+          "company": "Company Name",
+          "description": [
+            "• Achieved X% improvement by implementing Y solution using Z technology",
+            "• Led team of X members to deliver Y project resulting in Z impact"
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "projectTitle": "Descriptive Project Name",
+          "description": [
+            "• Problem solved and approach taken",
+            "• Technologies and methodologies used",
+            "• Quantifiable results and impact"
+          ]
+        }
+      ],
+      "skills": {
+        "technicalSkills": [
+          "Industry-Standard Skill 1",
+          "Framework/Technology 2"
+        ],
+        "softSkills": [
+          "Leadership",
+          "Problem Solving",
+          "Communication"
+        ]
+      },
+      "certifications": [
+        {
+          "name": "Industry-Recognized Certification"
+        }
+      ],
+      "achievements": [
+        "Quantified achievement with metrics",
+        "Recognition or award with context"
+      ]
+    }
+  
+    Ensure each section is optimized for maximum ATS compatibility and keyword matching.`;
 
     const response = await groq.chat.completions.create({
       messages: [
