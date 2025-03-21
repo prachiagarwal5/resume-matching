@@ -54,36 +54,74 @@ const trimResumeData = (data) => {
 // Function to generate resume from raw JSON data
 const generateResume = async (candidateData) => {
   try {
-    const candidateDataString = JSON.stringify(candidateData);
+    const candidateDataString = JSON.stringify(candidateData, null, 2);
     const prompt = `
     I will provide you with raw JSON data of a candidate's information.
     Your task is to generate a highly optimized, ATS-friendly resume in JSON format that would achieve an ATS score above 95%.
   
-    This is the Candidate data: "${candidateData}"
+    This is the Candidate data: "${candidateDataString}"
   
-    ### ATS Optimization Instructions:
-    1. Analyze the job market trends and incorporate highly relevant keywords.
-    2. Use industry-standard job titles and skills terminology.
-    3. Ensure proper keyword density (5-8% keyword density for critical skills).
-    4. Avoid graphics, tables, or complex formatting that might confuse ATS systems.
-    5. Use standardized section headings that ATS systems can easily recognize.
-  
-    ### Content Enhancement Guidelines:
-    1. Begin bullets with strong action verbs (e.g., "Implemented," "Developed," "Managed," "Optimized").
-    2. Include quantifiable achievements with metrics (%, $, numbers).
-    3. Mirror keywords from common job descriptions in your industry.
-    4. Use full terms before abbreviations (e.g., "Application Programming Interface (API)").
-    5. Incorporate both hard skills and soft skills strategically.
-  
-    ### Section-Specific Instructions:
-    - Objective: Create a powerful 2-3 sentence summary focusing on value proposition and key skills.
-    - Work Experience: Lead with impactful achievements, use metrics, and highlight relevant technologies.
-    - Skills: Organize technical skills by categories (e.g., Programming Languages, Frameworks, Tools).
-    - Projects: Emphasize problem-solving and technical implementation details.
-    - Achievements: Quantify results and align with industry standards.
-  
-    ### Response Format:
-    Return a JSON object strictly following this structure, ensuring 95%+ ATS optimization:
+  ### ATS Algorithm Analysis:
+    1. Prioritize exact-match keywords from job descriptions in the candidate's industry
+    2. Maintain optimal keyword density (7-10% for primary skills, 3-5% for secondary skills)
+    3. Use industry-standard section headings (Summary, Experience, Skills, Education)
+    4. Incorporate both hard skills and soft skills with proper context
+    5. Ensure proper semantic keyword relationships (related terms appearing near each other)
+    6. Use active voice with powerful action verbs throughout
+    
+  ### Technical Optimization Rules:
+    1. Eliminate all complex formatting that could confuse ATS parsing
+    2. Use proper keyword hierarchy (most important skills should appear first and most frequently)
+    3. Include both spelled-out terms AND acronyms (e.g., "Machine Learning (ML)")
+    4. Use varied but semantically related terminology (synonyms and related concepts)
+    5. Frontload bullets with metrics and achievements, not responsibilities
+    6. Match job title nomenclature to industry standards precisely
+    
+  ### Content Enhancement Strategy:
+    1. Transform generic experience into specific, quantifiable achievements (use metrics like %, $, time savings)
+    2. Use the PAR/STAR method for all experience bullets: Problem-Action-Result format
+    3. Include at least 2-3 specific, measurable achievements for each role
+    4. Add industry-specific tools, methodologies, and certifications even if only partially mentioned in data
+    5. Incorporate relevant trending skills for the candidate's industry and role
+    6. Include both technical competencies and transferable skills with proper weighting
+    
+  ### Section-Specific Optimization:
+    
+    #### Professional Summary:
+    - Create a powerful 3-4 sentence summary focusing on years of experience, core technical stack, specialist areas, and unique value proposition
+    - Include at least 5-7 critical industry keywords within natural language flow
+    - Focus on outcomes and value delivered, not just skills possessed
+    
+    #### Work Experience:
+    - Transform responsibilities into achievement statements with metrics (increased X by Y%, decreased costs by $Z)
+    - Begin each bullet with strong, varied action verbs (e.g., "Engineered," "Spearheaded," "Architected")
+    - Include project scope, team size, budget, and business impact where applicable
+    - Highlight leadership, cross-functional collaboration, and technical innovation
+    
+    #### Skills:
+    - Segment technical skills into clear categories (Languages, Frameworks, Tools, Methodologies)
+    - Prioritize skills based on frequency in job descriptions for target roles
+    - Include both foundational skills and cutting-edge technologies
+    - Add proficiency levels only for highly advanced skills
+    
+    #### Projects:
+    - Structure as mini case studies: challenge, approach, technology stack, and results
+    - Highlight problem-solving methodology and technical decision-making
+    - Include collaborative aspects and individual contributions
+    - Emphasize business outcomes alongside technical implementation
+    
+    #### Education & Certifications:
+    - List relevant coursework that aligns with target roles
+    - Include academic projects with industry relevance
+    - Format degrees using full, standard terminology
+    - Add certification dates and versions where applicable
+    
+  ### Response Format:
+     - And stick to the given jason format dont change the format and no other information should be added in the response
+     - Format note: Provide ONLY the JSON object with no additional text
+     - No introduction text like "Here's a question..." or "Based on..."
+     - The response should start directly with "{" and end with "}"
+    Return a JSON object strictly following this structure, ensuring 98%+ ATS optimization:
     {
       "contactInformation": {
         "name": "Full Name",
@@ -157,6 +195,9 @@ const generateResume = async (candidateData) => {
         "Recognition or award with context"
       ]
     }
+    Ensure EVERY section is meticulously optimized for maximum ATS compatibility using semantic keyword matching, industry terminology, and quantifiable achievements. The resume should read naturally while containing optimal keyword density.
+    
+    Return ONLY the JSON object without any additional text or formatting.
   
     Ensure each section is optimized for maximum ATS compatibility and keyword matching.`;
 
