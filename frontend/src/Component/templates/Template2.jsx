@@ -1,6 +1,5 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { defaultResumeData } from "../../utils/defaultResumeData";
 
 const styles = StyleSheet.create({
   page: {
@@ -84,36 +83,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Template2 = ({ data = defaultResumeData }) => {
-  // Merge incoming data with default data
-  const resumeData = {
-    ...defaultResumeData,
-    ...data,
-    contactInformation: {
-      ...defaultResumeData.contactInformation,
-      ...(data?.contactInformation || {}),
-    },
-    education: {
-      ...defaultResumeData.education,
-      ...(data?.education || {}),
-      graduation: {
-        ...defaultResumeData.education.graduation,
-        ...(data?.education?.graduation || {}),
-      },
-      intermediate: {
-        ...defaultResumeData.education.intermediate,
-        ...(data?.education?.intermediate || {}),
-      },
-      highSchool: {
-        ...defaultResumeData.education.highSchool,
-        ...(data?.education?.highSchool || {}),
-      },
-    },
-    skills: {
-      ...defaultResumeData.skills,
-      ...(data?.skills || {}),
-    },
-  };
+const Template2 = ({ data }) => {
+  const resumeData = data?.resume || {};
 
   return (
     <Document>
@@ -122,28 +93,28 @@ const Template2 = ({ data = defaultResumeData }) => {
           {/* Left Column */}
           <View style={styles.leftColumn}>
             <Text style={styles.name}>
-              {resumeData.contactInformation.name || "Full Name"}
+              {resumeData.contactInformation?.name || "Full Name"}
             </Text>
 
             <View style={styles.contactInfo}>
               <Text style={styles.leftSectionTitle}>Contact</Text>
               <Text style={styles.contactItem}>
-                {resumeData.contactInformation.email || "Email"}
+                {resumeData.contactInformation?.email || "Email"}
               </Text>
               <Text style={styles.contactItem}>
-                {resumeData.contactInformation.phone || "Phone"}
+                {resumeData.contactInformation?.phone || "Phone"}
               </Text>
               <Text style={styles.contactItem}>
-                {resumeData.contactInformation.location || "Location"}
+                {resumeData.contactInformation?.location || "Location"}
               </Text>
-              {resumeData.contactInformation.linkedin && (
+              {resumeData.contactInformation?.linkedin && (
                 <Text style={styles.contactItem}>
-                  LinkedIn: {resumeData.contactInformation.linkedin}
+                  LinkedIn: {resumeData.contactInformation?.linkedin}
                 </Text>
               )}
-              {resumeData.contactInformation.github && (
+              {resumeData.contactInformation?.github && (
                 <Text style={styles.contactItem}>
-                  GitHub: {resumeData.contactInformation.github}
+                  GitHub: {resumeData.contactInformation?.github}
                 </Text>
               )}
             </View>
@@ -152,14 +123,14 @@ const Template2 = ({ data = defaultResumeData }) => {
               <Text style={styles.leftSectionTitle}>Skills</Text>
 
               <Text style={styles.skillCategory}>Technical Skills</Text>
-              {resumeData.skills.technicalSkills.map((skill, index) => (
+              {resumeData.skills?.technicalSkills.map((skill, index) => (
                 <Text key={index} style={styles.skill}>
                   • {skill}
                 </Text>
               ))}
 
               <Text style={styles.skillCategory}>Soft Skills</Text>
-              {resumeData.skills.softSkills.map((skill, index) => (
+              {resumeData.skills?.softSkills.map((skill, index) => (
                 <Text key={index} style={styles.skill}>
                   • {skill}
                 </Text>
@@ -237,48 +208,48 @@ const Template2 = ({ data = defaultResumeData }) => {
               {/* Graduation */}
               <View style={styles.educationItem}>
                 <Text style={styles.institutionName}>
-                  {resumeData.education.graduation.institution ||
+                  {resumeData.education?.graduation.institution ||
                     "University Name"}
                 </Text>
                 <Text style={styles.bulletPoint}>
-                  {resumeData.education.graduation.degree || "Degree"} | CPI:{" "}
-                  {resumeData.education.graduation.CPI || "N/A"}
+                  {resumeData.education?.graduation.degree || "Degree"} | CPI:{" "}
+                  {resumeData.education?.graduation.CPI || "N/A"}
                 </Text>
                 <Text style={styles.bulletPoint}>
-                  {resumeData.education.graduation.location || "Location"} |
-                  {resumeData.education.graduation.yearSpan || "Year"}
+                  {resumeData.education?.graduation.location || "Location"} |
+                  {resumeData.education?.graduation.yearSpan || "Year"}
                 </Text>
               </View>
 
               {/* Intermediate */}
               <View style={styles.educationItem}>
                 <Text style={styles.institutionName}>
-                  {resumeData.education.intermediate.schoolName ||
+                  {resumeData.education?.intermediate.schoolName ||
                     "School Name"}
                 </Text>
                 <Text style={styles.bulletPoint}>
-                  {resumeData.education.intermediate.stream || "Stream"} |
+                  {resumeData.education?.intermediate.stream || "Stream"} |
                   Percentage:{" "}
-                  {resumeData.education.intermediate.percentage || "N/A"}
+                  {resumeData.education?.intermediate.percentage || "N/A"}
                 </Text>
                 <Text style={styles.bulletPoint}>
-                  {resumeData.education.intermediate.location || "Location"} |
-                  {resumeData.education.intermediate.yearSpan || "Year"}
+                  {resumeData.education?.intermediate.location || "Location"} |
+                  {resumeData.education?.intermediate.yearSpan || "Year"}
                 </Text>
               </View>
 
               {/* High School */}
               <View style={styles.educationItem}>
                 <Text style={styles.institutionName}>
-                  {resumeData.education.highSchool.schoolName || "School Name"}
+                  {resumeData.education?.highSchool.schoolName || "School Name"}
                 </Text>
                 <Text style={styles.bulletPoint}>
                   Percentage:{" "}
-                  {resumeData.education.highSchool.percentage || "N/A"} |
-                  {resumeData.education.highSchool.yearSpan || "Year"}
+                  {resumeData.education?.highSchool.percentage || "N/A"} |
+                  {resumeData.education?.highSchool.yearSpan || "Year"}
                 </Text>
                 <Text style={styles.bulletPoint}>
-                  {resumeData.education.highSchool.location || "Location"}
+                  {resumeData.education?.highSchool.location || "Location"}
                 </Text>
               </View>
             </View>

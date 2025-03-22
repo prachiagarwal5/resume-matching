@@ -32,6 +32,7 @@ const trimResumeData = (data) => {
       "workExperience",
       "achievements",
       "projects",
+      "certifications",
     ];
 
     // Filter out any unnecessary fields

@@ -1,6 +1,5 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import { defaultResumeData } from "../../utils/defaultResumeData";
 
 const styles = StyleSheet.create({
   page: {
@@ -73,9 +72,6 @@ const styles = StyleSheet.create({
 });
 
 const Template1 = ({ data }) => {
-  console.log("Received data in Template1:", data);
-
-  // Extract the resume data from the nested structure
   const resumeData = data?.resume || {};
 
   return (
@@ -99,7 +95,7 @@ const Template1 = ({ data }) => {
           </View>
         </View>
 
-        {/* Objective */}
+        {/* Professional Summary */}
         <View>
           <Text style={styles.sectionTitle}>Professional Summary</Text>
           <Text style={styles.objective}>{resumeData?.objective}</Text>
