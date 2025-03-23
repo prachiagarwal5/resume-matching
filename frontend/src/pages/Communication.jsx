@@ -344,7 +344,7 @@ const Communication = () => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5001/api/communication/comm", {
+      const response = await fetch("https://resumeanalyser-nhai.onrender.com/api/communication/comm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
