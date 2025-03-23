@@ -139,6 +139,56 @@ const Communication = () => {
     }
   };
 
+  // Format paragraph text with proper line breaks
+  const formatParagraph = (text) => {
+    if (!text) return "";
+    
+    // Split by sentences and create bullet points for better readability
+    const sentences = text.split('. ').filter(s => s.trim().length > 0);
+    
+    if (sentences.length <= 2) {
+      return text; // If it's short, return as is
+    }
+    
+    return (
+      <div className="formatted-paragraph">
+        {sentences.map((sentence, index) => (
+          <p key={index} className="paragraph-sentence">
+            {sentence.trim() + (sentence.endsWith('.') ? '' : '.')}
+          </p>
+        ))}
+      </div>
+    );
+  };
+
+  // Format discussion structure into an outline
+  const formatStructure = (text) => {
+    if (!text) return "";
+    
+    // Replace roman numerals and section headers with proper formatting
+    const sections = text.split(/\s*(?:I{1,3}V?|V)\.\s+/).filter(s => s.trim().length > 0);
+    
+    if (sections.length <= 1) {
+      return formatParagraph(text); // If not properly sectioned, use paragraph formatting
+    }
+    
+    return (
+      <div className="structured-outline">
+        {text.split(/\s*(?:I{1,3}V?|V)\.\s+/).filter(s => s.trim().length > 0).map((section, index) => {
+          const [title, ...content] = section.split(':');
+          if (!title) return null;
+          
+          return (
+            <div key={index} className="outline-section">
+              <h5 className="section-title">{`${index + 1}. ${title.trim()}`}</h5>
+              <p className="section-content">{content.join(':').trim()}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="group-discussion-container w-screen">
       <div className="content-wrapper">
@@ -147,18 +197,16 @@ const Communication = () => {
           Analyze your communication skills through speech recognition
         </p>
 
-
         <div className="main-controls">
-        {/* Add Topic Input */}
-        <div className="topic-input">
-          <input
-            type="text"
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            placeholder="Enter discussion topic..."
-            disabled={loading}
-          />
-        </div>
+          <div className="topic-input">
+            <input
+              type="text"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="Enter discussion topic..."
+              disabled={loading}
+            />
+          </div>
           <div className="control-group">
             <button
               onClick={isListening ? stopListening : startListening}
@@ -233,22 +281,109 @@ const Communication = () => {
         {analysis && (
           <div className="analysis-section">
             <h3>Analysis Results</h3>
+            
+            <div className="analysis-tabs">
+              <div className="tabs-container">
+                <div className="tab active">Your Analysis</div>
+              </div>
+            </div>
+            
             <div className="analysis-grid">
-              <div className="analysis-item">
-                <h4>STRUCTURED NOTES</h4>
-                <p>{analysis.structuredNotes}</p>
+              {/* Structured Notes */}
+              <div className="analysis-card primary-card">
+                <div className="card-header">
+                  <h4>STRUCTURED NOTES</h4>
+                  <div className="card-icon">📝</div>
+                </div>
+                <div className="card-content">
+                  {formatParagraph(analysis.structuredNotes)}
+                </div>
               </div>
-              <div className="analysis-item">
-                <h4>EXPECTED RESPONSES</h4>
-                <ul>
-                  {analysis.expectedResponses.map((response, index) => (
-                    <li key={index}>{response}</li>
-                  ))}
-                </ul>
+              
+              {/* Discussion Structure */}
+              <div className="analysis-card primary-card">
+                <div className="card-header">
+                  <h4>RECOMMENDED STRUCTURE</h4>
+                  <div className="card-icon">🏗️</div>
+                </div>
+                <div className="card-content">
+                  {formatStructure(analysis.brainstormedStructure)}
+                </div>
               </div>
-              <div className="analysis-item">
-                <h4>DISCUSSION STRUCTURE</h4>
-                <p>{analysis.brainstormedStructure}</p>
+              
+              {/* Improvement Suggestions */}
+              <div className="analysis-card">
+                <div className="card-header">
+                  <h4>IMPROVEMENT SUGGESTIONS</h4>
+                  <div className="card-icon">⬆️</div>
+                </div>
+                <div className="card-content">
+                  {Array.isArray(analysis.improvementSuggestions) ? (
+                    <ul className="bullet-list">
+                      {analysis.improvementSuggestions.map((suggestion, index) => (
+                        <li key={index}>{suggestion}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{analysis.improvementSuggestions}</p>
+                  )}
+                </div>
+              </div>
+              
+              {/* Expected Responses */}
+              <div className="analysis-card">
+                <div className="card-header">
+                  <h4>EXPECTED RESPONSES</h4>
+                  <div className="card-icon">💬</div>
+                </div>
+                <div className="card-content">
+                  <ul className="bullet-list">
+                    {analysis.expectedResponses.map((response, index) => (
+                      <li key={index}>{response}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Key Insights */}
+              <div className="analysis-card">
+                <div className="card-header">
+                  <h4>KEY INSIGHTS</h4>
+                  <div className="card-icon">💡</div>
+                </div>
+                <div className="card-content">
+                  <ul className="bullet-list highlight">
+                    {analysis.keyInsights && analysis.keyInsights.map((insight, index) => (
+                      <li key={index}>{insight}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Common Pitfalls */}
+              <div className="analysis-card">
+                <div className="card-header">
+                  <h4>COMMON PITFALLS</h4>
+                  <div className="card-icon">⚠️</div>
+                </div>
+                <div className="card-content">
+                  <ul className="bullet-list warning">
+                    {analysis.commonPitfalls && analysis.commonPitfalls.map((pitfall, index) => (
+                      <li key={index}>{pitfall}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              {/* Persuasive Techniques */}
+              <div className="analysis-card">
+                <div className="card-header">
+                  <h4>PERSUASIVE TECHNIQUES</h4>
+                  <div className="card-icon">🎯</div>
+                </div>
+                <div className="card-content">
+                  {formatParagraph(analysis.persuasiveTechniques)}
+                </div>
               </div>
             </div>
           </div>
@@ -263,15 +398,16 @@ const Communication = () => {
           background: #1a1a1a;
           padding: 2rem;
           color: #ffffff;
+          font-family: 'Inter', sans-serif;
         }
 
         .content-wrapper {
-          max-width: 800px;
+          max-width: 1100px;
           margin: 0 auto;
           background: #2d2d2d;
           padding: 2rem;
           border-radius: 12px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         h1 {
@@ -289,13 +425,14 @@ const Communication = () => {
 
         .main-controls {
           display: flex;
-          justify-content: space-between;
+          flex-direction: column;
           margin-bottom: 2rem;
           gap: 1rem;
         }
 
         .control-group {
           display: flex;
+          justify-content: center;
           gap: 1rem;
         }
 
@@ -379,6 +516,11 @@ const Communication = () => {
           background: #0056b3;
         }
 
+        .analyze-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
         .error-message {
           background: rgba(220, 53, 69, 0.1);
           color: #dc3545;
@@ -386,6 +528,180 @@ const Communication = () => {
           border-radius: 8px;
           margin-bottom: 1rem;
           border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .topic-input {
+          margin-bottom: 1rem;
+          width: 100%;
+        }
+
+        .topic-input input {
+          width: 100%;
+          padding: 1rem;
+          border: 1px solid #4a4a4a;
+          border-radius: 8px;
+          background: #3d3d3d;
+          color: #ffffff;
+          font-size: 1rem;
+        }
+
+        .topic-input input:focus {
+          outline: none;
+          border-color: #007bff;
+          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        /* Analysis Section Styling */
+        .analysis-section {
+          margin-top: 3rem;
+          background: #2a2a2a;
+          border-radius: 12px;
+          overflow: hidden;
+        }
+
+        .analysis-section h3 {
+          color: #ffffff;
+          text-align: center;
+          font-size: 1.8rem;
+          padding: 1.5rem 0;
+          background: linear-gradient(90deg, #007bff, #0056b3);
+          margin: 0;
+        }
+
+        .analysis-tabs {
+          background: #333333;
+          padding: 0 1rem;
+        }
+
+        .tabs-container {
+          display: flex;
+          overflow-x: auto;
+        }
+
+        .tab {
+          padding: 1rem 2rem;
+          border-bottom: 3px solid transparent;
+          font-weight: 600;
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .tab.active {
+          border-bottom-color: #007bff;
+          color: #007bff;
+        }
+
+        .analysis-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+          padding: 1.5rem;
+        }
+
+        .analysis-card {
+          background: #333333;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .analysis-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .primary-card {
+          grid-column: span 2;
+        }
+
+        .card-header {
+          background: #3a3a3a;
+          padding: 1rem 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid #444444;
+        }
+
+        .card-header h4 {
+          color: #007bff;
+          margin: 0;
+          font-weight: 600;
+          font-size: 1.1rem;
+        }
+
+        .card-icon {
+          font-size: 1.5rem;
+        }
+
+        .card-content {
+          padding: 1.5rem;
+          flex: 1;
+        }
+
+        .bullet-list {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .bullet-list li {
+          position: relative;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+          line-height: 1.6;
+          color: #bbbbbb;
+        }
+
+        .bullet-list li:before {
+          content: "•";
+          color: #007bff;
+          font-weight: bold;
+          font-size: 1.2rem;
+          position: absolute;
+          left: 0;
+          top: -2px;
+        }
+
+        .bullet-list.highlight li:before {
+          color: #00cc66;
+        }
+
+        .bullet-list.warning li:before {
+          color: #ffaa00;
+        }
+
+        .formatted-paragraph p {
+          margin-bottom: 0.8rem;
+          line-height: 1.6;
+          color: #bbbbbb;
+        }
+
+        .structured-outline {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .outline-section {
+          margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+          color: #00aaff;
+          margin: 0 0 0.5rem 0;
+          font-weight: 600;
+        }
+
+        .section-content {
+          color: #bbbbbb;
+          line-height: 1.6;
+          margin: 0;
+          padding-left: 1rem;
         }
 
         @keyframes pulse {
@@ -409,47 +725,13 @@ const Communication = () => {
             padding: 1.5rem;
           }
 
-          .main-controls {
-            flex-direction: column;
+          .analysis-grid {
+            grid-template-columns: 1fr;
           }
 
-          .control-group {
-            justify-content: center;
+          .primary-card {
+            grid-column: auto;
           }
-        }
-           .topic-input {
-          margin-bottom: 2rem;
-        }
-
-        .topic-input input {
-          width: 100%;
-          padding: 1rem;
-          border: 1px solid #4a4a4a;
-          border-radius: 8px;
-          background: #3d3d3d;
-          color: #ffffff;
-          font-size: 1rem;
-        }
-
-        .topic-input input:focus {
-          outline: none;
-          border-color: #666666;
-        }
-
-        .analysis-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 1.5rem;
-        }
-
-        .analysis-item ul {
-          list-style-type: disc;
-          margin-left: 1.5rem;
-          color: #b3b3b3;
-        }
-
-        .analysis-item li {
-          margin-bottom: 0.5rem;
         }
       `}</style>
     </div>
