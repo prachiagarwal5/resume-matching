@@ -85,6 +85,16 @@ const generateResume = async (candidateData) => {
     4. Add industry-specific tools, methodologies, and certifications even if only partially mentioned in data
     5. Incorporate relevant trending skills for the candidate's industry and role
     6. Include both technical competencies and transferable skills with proper weighting
+
+  ### Sentence Structure Guidelines:
+    1. Keep all sentences under 20 words maximum for optimal ATS parsing
+    2. Limit paragraphs to a maximum of 30 words (approximately 2-3 concise sentences)
+    3. Every sentence must include at least 1-2 relevant industry keywords naturally integrated
+    4. Use simple, direct sentence structures that ATS systems can easily parse
+    5. Avoid complex punctuation that might confuse ATS systems
+    6. Begin sentences with strong action verbs followed by a skill keyword when possible
+    7. Use numerals for all numbers (e.g., "5" instead of "five") to ensure accurate parsing
+    8. Atleast 3-4 bullet points for each section
     
   ### Section-Specific Optimization:
     
