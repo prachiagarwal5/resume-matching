@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import Template1 from "./templates/Template1";
+// import Template1 from "./templates/Template1";
 import Template2 from "./templates/Template2";
 import Template3 from "./templates/Template3";
 import Template4 from "./templates/Template4";
@@ -28,24 +28,24 @@ const TemplateSelection = () => {
   }, [formData]);
 
   const templates = [
+    // {
+    //   id: 1,
+    //   name: "Professional Classic",
+    //   component: Template1,
+    //   description:
+    //     "A clean and professional template perfect for traditional industries.",
+    //   features: [
+    //     "Clean layout design",
+    //     "Perfect for corporate roles",
+    //     "ATS-friendly format",
+    //     "Emphasis on experience",
+    //   ],
+    //   bgColor: "bg-gray-800",
+    //   buttonColor: "bg-blue-600 hover:bg-blue-700",
+    //   borderColor: "border-gray-700",
+    // },
     {
       id: 1,
-      name: "Professional Classic",
-      component: Template1,
-      description:
-        "A clean and professional template perfect for traditional industries.",
-      features: [
-        "Clean layout design",
-        "Perfect for corporate roles",
-        "ATS-friendly format",
-        "Emphasis on experience",
-      ],
-      bgColor: "bg-gray-800",
-      buttonColor: "bg-blue-600 hover:bg-blue-700",
-      borderColor: "border-gray-700",
-    },
-    {
-      id: 2,
       name: "Modern Creative",
       component: Template2,
       description:
@@ -61,7 +61,7 @@ const TemplateSelection = () => {
       borderColor: "border-gray-700",
     },
     {
-      id: 3,
+      id: 2,
       name: "Classic Elegance",
       component: Template3,
       description: "A timeless design with a focus on clarity and simplicity.",
@@ -76,7 +76,7 @@ const TemplateSelection = () => {
       borderColor: "border-gray-700",
     },
     {
-      id: 4,
+      id: 3,
       name: "Sidebar Professional",
       component: Template4,
       description:
@@ -92,7 +92,7 @@ const TemplateSelection = () => {
       borderColor: "border-gray-700",
     },
     {
-      id: 5,
+      id: 4,
       name: "Centered Elegance",
       component: Template5,
       description:
@@ -108,7 +108,7 @@ const TemplateSelection = () => {
       borderColor: "border-gray-700",
     },
     {
-      id: 6,
+      id: 5,
       name: "Two-Column Modern",
       component: Template6,
       description:
