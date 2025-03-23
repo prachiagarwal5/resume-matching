@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaMicrophone, FaStop, FaPaperPlane, FaChartBar } from "react-icons/fa";
 import { MdRefresh, MdContentCopy } from "react-icons/md";
 import { BiTime } from "react-icons/bi";
@@ -6,7 +6,6 @@ import Loading from "../Component/Loading";
 import AnalysisCard from "../Component/AnalysisCard";
 import Timer from "../Component/Timer";
 import Toast from "../Component/Toast";
-
 
 const Communication = () => {
   const [isListening, setIsListening] = useState(false);
@@ -18,6 +17,15 @@ const Communication = () => {
   const [error, setError] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [audioLevel, setAudioLevel] = useState(0);
+  const [visualizationType, setVisualizationType] = useState("bars"); // 'bars' or 'circular'
+  
+  // Refs for audio visualization
+  const audioContext = useRef(null);
+  const analyzer = useRef(null);
+  const microphone = useRef(null);
+  const visualizerRef = useRef(null);
+  const animationFrameId = useRef(null);
 
   useEffect(() => {
     initializeSpeechRecognition();
@@ -25,6 +33,7 @@ const Communication = () => {
       if (recognition) {
         recognition.stop();
       }
+      stopAudioVisualization();
     };
   }, []);
 
@@ -64,6 +73,223 @@ const Communication = () => {
     }
   };
 
+  const initializeAudioVisualization = async () => {
+    try {
+      // Create audio context and analyzer
+      audioContext.current = new (window.AudioContext || window.webkitAudioContext)();
+      analyzer.current = audioContext.current.createAnalyser();
+      analyzer.current.fftSize = 256;
+      
+      // Get microphone stream
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      microphone.current = audioContext.current.createMediaStreamSource(stream);
+      microphone.current.connect(analyzer.current);
+      
+      // Start visualization
+      visualizeAudio();
+      
+    } catch (err) {
+      console.error("Error accessing microphone:", err);
+      setError("Cannot access microphone for visualization");
+    }
+  };
+
+  const visualizeAudio = () => {
+    if (!analyzer.current || !visualizerRef.current) return;
+    
+    const dataArray = new Uint8Array(analyzer.current.frequencyBinCount);
+    const canvas = visualizerRef.current;
+    const canvasCtx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // Function to draw the visualization
+    const draw = () => {
+      // Request next animation frame
+      animationFrameId.current = requestAnimationFrame(draw);
+      
+      // Get frequency data
+      analyzer.current.getByteFrequencyData(dataArray);
+      
+      // Calculate average level for amplitude tracking
+      const average = dataArray.reduce((acc, val) => acc + val, 0) / dataArray.length;
+      setAudioLevel(average);
+      
+      // Clear canvas
+      canvasCtx.clearRect(0, 0, width, height);
+      
+      if (visualizationType === "bars") {
+        drawBarVisualization(canvasCtx, dataArray, width, height);
+      } else {
+        drawCircularVisualization(canvasCtx, dataArray, width, height);
+      }
+    };
+    
+    // Start drawing
+    draw();
+  };
+
+  const drawBarVisualization = (canvasCtx, dataArray, width, height) => {
+    // Draw background
+    canvasCtx.fillStyle = '#262626';
+    canvasCtx.fillRect(0, 0, width, height);
+    
+    // Number of bars
+    const barCount = dataArray.length / 2;
+    
+    // Width of each bar with spacing
+    const barWidth = (width / barCount) * 0.8;
+    const spacing = (width / barCount) * 0.2;
+    
+    // Draw bars
+    for (let i = 0; i < barCount; i++) {
+      const value = dataArray[i];
+      
+      // Calculate bar height based on audio data
+      let barHeight = (value / 255) * height * 0.8;
+      barHeight = Math.max(barHeight, 3); // Minimum bar height
+      
+      // Calculate x position with spacing
+      const x = i * (barWidth + spacing);
+      
+      // Gradient color based on frequency
+      const hue = i / barCount * 180 + 180; // from blue to purple
+      
+      // Brighter when listening, dimmer when not
+      const saturation = isListening ? '100%' : '60%';
+      const lightness = isListening ? '50%' : '30%';
+      
+      // Draw bar
+      canvasCtx.fillStyle = `hsl(${hue}, ${saturation}, ${lightness})`;
+      canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight);
+      
+      // Draw reflection (mirrored and faded)
+      const gradientReflection = canvasCtx.createLinearGradient(0, height - barHeight - 1, 0, height - barHeight - barHeight * 0.3);
+      gradientReflection.addColorStop(0, `hsla(${hue}, ${saturation}, ${lightness}, 0.3)`);
+      gradientReflection.addColorStop(1, `hsla(${hue}, ${saturation}, ${lightness}, 0)`);
+      
+      canvasCtx.fillStyle = gradientReflection;
+      canvasCtx.fillRect(x, height - barHeight - barHeight * 0.3, barWidth, barHeight * 0.3);
+    }
+    
+    // Draw center line
+    canvasCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    canvasCtx.lineWidth = 1;
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(0, height / 2);
+    canvasCtx.lineTo(width, height / 2);
+    canvasCtx.stroke();
+  };
+
+  const drawCircularVisualization = (canvasCtx, dataArray, width, height) => {
+    // Set background
+    canvasCtx.fillStyle = '#262626';
+    canvasCtx.fillRect(0, 0, width, height);
+    
+    const center = {
+      x: width / 2,
+      y: height / 2
+    };
+    
+    // Draw center circle
+    const baseRadius = Math.min(width, height) * 0.3;
+    
+    // Draw outer circles (frequency bins)
+    const binCount = dataArray.length / 2;
+    
+    // Draw frequency circles
+    for (let i = 0; i < binCount; i++) {
+      const amplitude = dataArray[i];
+      const amplitudePercentage = amplitude / 255;
+      
+      // Calculate radius increase based on amplitude
+      const radiusIncrease = isListening 
+        ? amplitudePercentage * 50
+        : amplitudePercentage * 20;
+      
+      // Calculate angle for this frequency bin
+      const angle = (i / binCount) * Math.PI * 2;
+      
+      // Calculate point position
+      const x = center.x + Math.cos(angle) * (baseRadius + radiusIncrease);
+      const y = center.y + Math.sin(angle) * (baseRadius + radiusIncrease);
+      
+      // Calculate color based on frequency
+      const hue = (i / binCount) * 180 + 180; // blue to purple
+      const saturation = isListening ? '80%' : '60%';
+      const lightness = 40 + amplitudePercentage * 30 + '%';
+      
+      canvasCtx.fillStyle = `hsl(${hue}, ${saturation}, ${lightness})`;
+      
+      // Draw point
+      canvasCtx.beginPath();
+      canvasCtx.arc(x, y, 2 + amplitudePercentage * 3, 0, Math.PI * 2);
+      canvasCtx.fill();
+      
+      // Draw line from center to this point
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(center.x, center.y);
+      canvasCtx.lineTo(x, y);
+      canvasCtx.strokeStyle = `hsla(${hue}, ${saturation}, ${lightness}, 0.4)`;
+      canvasCtx.lineWidth = 1 + amplitudePercentage * 2;
+      canvasCtx.stroke();
+    }
+    
+    // Draw central circle
+    const gradient = canvasCtx.createRadialGradient(
+      center.x, center.y, 0,
+      center.x, center.y, baseRadius
+    );
+    
+    // Use the average level to determine center circle color intensity
+    const avgLevel = audioLevel / 255;
+    const centerHue = isListening ? 210 : 200;
+    const centerLightness = isListening ? 40 + avgLevel * 20 : 30;
+    
+    gradient.addColorStop(0, `hsla(${centerHue}, 80%, ${centerLightness}%, 0.8)`);
+    gradient.addColorStop(0.7, `hsla(${centerHue}, 70%, ${centerLightness - 10}%, 0.5)`);
+    gradient.addColorStop(1, `hsla(${centerHue}, 60%, ${centerLightness - 20}%, 0)`);
+    
+    canvasCtx.fillStyle = gradient;
+    canvasCtx.beginPath();
+    canvasCtx.arc(center.x, center.y, baseRadius, 0, Math.PI * 2);
+    canvasCtx.fill();
+    
+    // Add pulsating effect if listening
+    if (isListening) {
+      const pulseRadius = baseRadius + 10 + Math.sin(Date.now() / 200) * 5;
+      const pulseGradient = canvasCtx.createRadialGradient(
+        center.x, center.y, baseRadius,
+        center.x, center.y, pulseRadius
+      );
+      
+      pulseGradient.addColorStop(0, 'rgba(0, 150, 255, 0.3)');
+      pulseGradient.addColorStop(1, 'rgba(0, 150, 255, 0)');
+      
+      canvasCtx.fillStyle = pulseGradient;
+      canvasCtx.beginPath();
+      canvasCtx.arc(center.x, center.y, pulseRadius, 0, Math.PI * 2);
+      canvasCtx.fill();
+    }
+  };
+
+  const stopAudioVisualization = () => {
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = null;
+    }
+    
+    if (microphone.current) {
+      microphone.current.disconnect();
+      microphone.current = null;
+    }
+    
+    if (audioContext.current && audioContext.current.state !== 'closed') {
+      audioContext.current.close();
+      audioContext.current = null;
+    }
+  };
+
   const showToastMessage = (message) => {
     setToastMessage(message);
     setShowToast(true);
@@ -75,11 +301,16 @@ const Communication = () => {
     showToastMessage("Text copied to clipboard");
   };
 
-  const startListening = () => {
+  const toggleVisualizationType = () => {
+    setVisualizationType(prev => prev === "bars" ? "circular" : "bars");
+  };
+
+  const startListening = async () => {
     if (recognition) {
       recognition.start();
       setIsListening(true);
       setError(null);
+      await initializeAudioVisualization();
     }
   };
 
@@ -87,6 +318,7 @@ const Communication = () => {
     if (recognition) {
       recognition.stop();
       setIsListening(false);
+      stopAudioVisualization();
     }
   };
 
@@ -99,7 +331,7 @@ const Communication = () => {
 
   const analyzeText = async () => {
     if (!text.trim()) {
-      setError("Please record or enter some text first");
+      setError("Please record some speech first");
       return;
     }
 
@@ -225,6 +457,15 @@ const Communication = () => {
             </button>
             
             <Timer isRunning={isListening} />
+            
+            <button
+              onClick={toggleVisualizationType}
+              className="control-btn viz-toggle"
+              disabled={loading}
+              title="Change visualization"
+            >
+              {visualizationType === "bars" ? "⚪" : "▮"}
+            </button>
           </div>
 
           <div className="control-group">
@@ -256,12 +497,31 @@ const Communication = () => {
             </div>
           </div>
           
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Start speaking or type here..."
-            disabled={isListening || loading}
-          />
+          {/* Audio Visualization */}
+          <div className="audio-visualizer-container">
+            <canvas 
+              ref={visualizerRef} 
+              width="800" 
+              height="250" 
+              className="audio-visualizer"
+            />
+            
+            {!isListening && text && (
+              <div className="transcript-overlay">
+                <div className="transcript-text">{text}</div>
+              </div>
+            )}
+            
+            {!isListening && !text && (
+              <div className="transcript-placeholder">
+                <div className="placeholder-icon">
+                  <FaMicrophone size={40} color="#666666" />
+                  <div className="placeholder-ripple"></div>
+                </div>
+                <p>Click "Start" to begin recording your discussion</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <button
@@ -459,6 +719,11 @@ const Communication = () => {
           animation: pulse 2s infinite;
         }
 
+        .control-btn.viz-toggle {
+          font-size: 1.2rem;
+          padding: 0.8rem 1rem;
+        }
+
         .control-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
@@ -480,21 +745,107 @@ const Communication = () => {
           font-size: 0.9rem;
         }
 
-        textarea {
+        /* Audio visualizer styling */
+        .audio-visualizer-container {
+          position: relative;
           width: 100%;
-          min-height: 200px;
-          padding: 1rem;
-          border: 1px solid #4a4a4a;
-          border-radius: 8px;
-          resize: vertical;
-          font-family: inherit;
-          background: #3d3d3d;
-          color: #ffffff;
+          height: 250px;
+          background: #262626;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        textarea:focus {
-          outline: none;
-          border-color: #666666;
+        .audio-visualizer {
+          width: 100%;
+          height: 100%;
+        }
+
+        .transcript-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          overflow-y: auto;
+          backdrop-filter: blur(5px);
+        }
+
+        .transcript-text {
+          color: #ffffff;
+          line-height: 1.6;
+          max-height: 100%;
+          text-align: center;
+          font-size: 1.1rem;
+          max-width: 80%;
+        }
+
+        .transcript-placeholder {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.5);
+          color: #999999;
+          backdrop-filter: blur(3px);
+        }
+
+        .placeholder-icon {
+          position: relative;
+          margin-bottom: 1.5rem;
+        }
+
+        .placeholder-ripple {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 2px solid rgba(0, 123, 255, 0.3);
+          animation: ripple 2s infinite ease-out;
+        }
+
+        .placeholder-ripple:before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 2px solid rgba(0, 123, 255, 0.3);
+          animation: ripple 2s infinite ease-out 0.5s;
+        }
+
+        .transcript-placeholder p {
+          margin-top: 1rem;
+          font-size: 1.1rem;
+          color: #b3b3b3;
+        }
+
+        @keyframes ripple {
+          0% {
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 0;
+          }
         }
 
         .analyze-btn {
@@ -502,7 +853,7 @@ const Communication = () => {
           align-items: center;
           gap: 0.5rem;
           padding: 1rem 2rem;
-          background: #007bff;
+          background: linear-gradient(90deg, #007bff, #0056b3);
           color: white;
           border: none;
           border-radius: 8px;
@@ -510,15 +861,25 @@ const Communication = () => {
           font-weight: 600;
           margin: 0 auto;
           transition: all 0.3s ease;
+          box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
         }
 
         .analyze-btn:hover:not(:disabled) {
-          background: #0056b3;
+          background: linear-gradient(90deg, #0069d9, #004494);
+          box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+          transform: translateY(-2px);
+        }
+
+        .analyze-btn:active:not(:disabled) {
+          transform: translateY(0);
+          box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
         }
 
         .analyze-btn:disabled {
           opacity: 0.7;
           cursor: not-allowed;
+          background: linear-gradient(90deg, #6c757d, #495057);
+          box-shadow: none;
         }
 
         .error-message {
@@ -534,7 +895,6 @@ const Communication = () => {
           margin-bottom: 1rem;
           width: 100%;
         }
-
         .topic-input input {
           width: 100%;
           padding: 1rem;
@@ -557,6 +917,7 @@ const Communication = () => {
           background: #2a2a2a;
           border-radius: 12px;
           overflow: hidden;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
         }
 
         .analysis-section h3 {
@@ -566,11 +927,13 @@ const Communication = () => {
           padding: 1.5rem 0;
           background: linear-gradient(90deg, #007bff, #0056b3);
           margin: 0;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .analysis-tabs {
           background: #333333;
           padding: 0 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .tabs-container {
@@ -584,11 +947,17 @@ const Communication = () => {
           font-weight: 600;
           cursor: pointer;
           white-space: nowrap;
+          transition: all 0.3s ease;
         }
 
         .tab.active {
           border-bottom-color: #007bff;
           color: #007bff;
+        }
+
+        .tab:hover:not(.active) {
+          border-bottom-color: rgba(0, 123, 255, 0.3);
+          color: #b0b0b0;
         }
 
         .analysis-grid {
@@ -607,6 +976,7 @@ const Communication = () => {
           height: 100%;
           display: flex;
           flex-direction: column;
+          border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .analysis-card:hover {
@@ -641,6 +1011,8 @@ const Communication = () => {
         .card-content {
           padding: 1.5rem;
           flex: 1;
+          overflow-y: auto;
+          max-height: 300px;
         }
 
         .bullet-list {
@@ -731,6 +1103,14 @@ const Communication = () => {
 
           .primary-card {
             grid-column: auto;
+          }
+          
+          .control-btn.viz-toggle {
+            display: none;
+          }
+          
+          .card-content {
+            max-height: 250px;
           }
         }
       `}</style>
