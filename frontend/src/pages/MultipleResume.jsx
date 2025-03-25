@@ -23,7 +23,7 @@ function MultipleResume() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/analyze/multiple",
+        "https://resumeanalyser-nhai.onrender.com/api/analyze/multiple",
         formData,
         {
           responseType: "blob",
