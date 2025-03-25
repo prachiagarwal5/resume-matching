@@ -50,7 +50,7 @@ const Education = ({
               className={inputClasses}
               value={formData.graduation.cpi}
               onChange={(e) => handleInputChange(e, "graduation", "cpi")}
-              placeholder="3.8/4.0"
+              placeholder="8.5"
               required
             />
           </div>
@@ -110,7 +110,7 @@ const Education = ({
             />
           </div>
           <div>
-            <label className={labelClasses}>Percentage/CGPA</label>
+            <label className={labelClasses}>Percentage</label>
             <input
               type="text"
               className={inputClasses}
@@ -123,7 +123,7 @@ const Education = ({
             />
           </div>
           <div>
-            <label className={labelClasses}>Year Span</label>
+            <label className={labelClasses}>Passing Year</label>
             <input
               type="text"
               className={inputClasses}
@@ -165,7 +165,7 @@ const Education = ({
             />
           </div>
           <div>
-            <label className={labelClasses}>Percentage/CGPA</label>
+            <label className={labelClasses}>Percentage</label>
             <input
               type="text"
               className={inputClasses}
@@ -176,7 +176,7 @@ const Education = ({
             />
           </div>
           <div>
-            <label className={labelClasses}>Year Span</label>
+            <label className={labelClasses}>Passing Year</label>
             <input
               type="text"
               className={inputClasses}
