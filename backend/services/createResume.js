@@ -103,7 +103,7 @@ const generateResume = async (candidateData) => {
     - Focus on outcomes and value delivered, not just skills possessed
     
     #### Work Experience:
-    - If there is no work experience, then dont include this section in the resume Like dont send any thing 
+    - If there is no work experience, then send empty array
     - Transform responsibilities into achievement statements with metrics (increased X by Y%, decreased costs by $Z)
     - Begin each bullet with strong, varied action verbs (e.g., "Engineered," "Spearheaded," "Architected")
     - Include project scope, team size, budget, and business impact where applicable
