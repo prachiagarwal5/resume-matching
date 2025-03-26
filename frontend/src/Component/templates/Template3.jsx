@@ -337,7 +337,7 @@ const Template3 = ({ data }) => {
                 PROFESSIONAL ACHIEVEMENTS
               </Text>
               {resumeData?.achievements?.map((achievement, index) => (
-                <Text key={index} style={styles.bulletPoint}>
+                <Text key={index} >
                   • {achievement}
                 </Text>
               ))}

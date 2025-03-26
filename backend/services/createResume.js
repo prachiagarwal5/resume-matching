@@ -95,6 +95,7 @@ const generateResume = async (candidateData) => {
     6. Begin sentences with strong action verbs followed by a skill keyword when possible
     7. Use numerals for all numbers (e.g., "5" instead of "five") to ensure accurate parsing
     8. Atleast 3-4 bullet points for each section
+
   ### Section-Specific Optimization:
     
     #### Professional Summary:
