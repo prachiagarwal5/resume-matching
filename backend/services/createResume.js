@@ -115,6 +115,7 @@ const generateResume = async (candidateData) => {
     - Prioritize skills based on frequency in job descriptions for target roles
     - Include both foundational skills and cutting-edge technologies
     - Add proficiency levels only for highly advanced skills
+    - Add top 5 technical skills
     
     #### Projects:
     - Structure as mini case studies: challenge, approach, technology stack, and results
@@ -203,8 +204,7 @@ const generateResume = async (candidateData) => {
         }
       ],
       "achievements": [
-        "Quantified achievement with metrics",
-        "Recognition or award with context"
+        "Quantified achievement with metrics"
       ]
     }
     Ensure EVERY section is meticulously optimized for maximum ATS compatibility using semantic keyword matching, industry terminology, and quantifiable achievements. The resume should read naturally while containing optimal keyword density.
