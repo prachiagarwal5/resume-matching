@@ -240,7 +240,7 @@ const Template3 = ({ data }) => {
             <>
               <View>
                 <Text style={styles.sectionTitle}>
-                  INTERNSHIP/ TRAINING EXPERIENCE
+                  INTERNSHIP
                 </Text>
                 {resumeData?.workExperience?.map(
                   (internship, index) =>
@@ -255,7 +255,7 @@ const Template3 = ({ data }) => {
                         <Text>{internship.duration}</Text>
                         {internship.description?.map((desc, i) => (
                           <Text key={i} style={styles.bulletPoint}>
-                            • {desc}
+                            {desc}
                           </Text>
                         ))}
                       </View>
@@ -278,7 +278,7 @@ const Template3 = ({ data }) => {
                   </Text>
                   {project.description?.map((desc, i) => (
                     <Text key={i} style={styles.bulletPoint}>
-                      • {desc}
+                      {desc}
                     </Text>
                   ))}
                 </View>
@@ -334,7 +334,7 @@ const Template3 = ({ data }) => {
           <>
             <View>
               <Text style={styles.sectionTitle}>
-                PROFESSIONAL ACHIEVEMENTS/ INSIGHTS
+                PROFESSIONAL ACHIEVEMENTS
               </Text>
               {resumeData?.achievements?.map((achievement, index) => (
                 <Text key={index} style={styles.bulletPoint}>
