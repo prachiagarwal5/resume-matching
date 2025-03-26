@@ -278,7 +278,7 @@ const Template3 = ({ data }) => {
                   </Text>
                   {project.description?.map((desc, i) => (
                     <Text key={i} style={styles.bulletPoint}>
-                      • {desc}
+                       {desc}
                     </Text>
                   ))}
                 </View>
