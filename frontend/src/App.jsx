@@ -5,22 +5,22 @@ import ResumeUpload from "./pages/ResumeUpload";
 // import TemplateSelection from './pages/TemplateSelection';
 import TemplateSelection from "./Component/TemplateSelection";
 import ResumePreview from "./Component/ResumePreview";
-import MultipleResume from "./pages/MultipleResume";
-import Communication from "./pages/Communication";
+// import MultipleResume from "./pages/MultipleResume";
+// import Communication from "./pages/Communication";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/resume" element={<ResumeUpload />} />
+        <Route path="/" element={<ResumeUpload />} />
         <Route path="/resume-creation" element={<CreateResume />} />
         <Route path="/template-selection" element={<TemplateSelection />} />
         <Route path="/resume-preview/:templateId" element={<ResumePreview />} />
-        <Route path="/resume-creation" element={<CreateResume />} />{" "}
+        {/* <Route path="/resume-creation" element={<CreateResume />} /> */}
         {/* Home page route */}
-        <Route path="/" element={<MultipleResume />} />
+        {/* <Route path="/" element={<MultipleResume />} /> */}
         {/* <Route path="/resume" element={< Resume/>} /> */}
-        <Route path='/communication' element={<Communication />} />
+        {/* <Route path='/communication' element={<Communication />} /> */}
       </Routes>
     </Router>
   );

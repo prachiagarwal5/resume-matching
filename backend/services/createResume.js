@@ -87,18 +87,15 @@ const generateResume = async (candidateData) => {
     6. Include both technical competencies and transferable skills with proper weighting
 
   ### Sentence Structure Guidelines:
-    1. Keep all sentences under 15 words maximum for optimal ATS parsing
-    2. Limit paragraphs to a maximum of 20 words (approximately 2-3 concise sentences)
+    1. Keep all sentences under 20 words maximum for optimal ATS parsing
+    2. Limit paragraphs to a maximum of 25 words (approximately 2-3 concise sentences)
     3. Every sentence must include at least 1-2 relevant industry keywords naturally integrated
     4. Use simple, direct sentence structures that ATS systems can easily parse
     5. Avoid complex punctuation that might confuse ATS systems
     6. Begin sentences with strong action verbs followed by a skill keyword when possible
     7. Use numerals for all numbers (e.g., "5" instead of "five") to ensure accurate parsing
     8. Atleast 3-4 bullet points for each section
-    9. if there is no work experience dont include that section in the resume
-    10.If there is no certification dont include that section in the resume
-    11. I f there is any empty section then dont add.
-    
+
   ### Section-Specific Optimization:
     
     #### Professional Summary:
@@ -107,7 +104,7 @@ const generateResume = async (candidateData) => {
     - Focus on outcomes and value delivered, not just skills possessed
     
     #### Work Experience:
-    - If there is no work experience, then dont include this section in the resume Like dont send any thing 
+    - If there is no work experience, then send empty array
     - Transform responsibilities into achievement statements with metrics (increased X by Y%, decreased costs by $Z)
     - Begin each bullet with strong, varied action verbs (e.g., "Engineered," "Spearheaded," "Architected")
     - Include project scope, team size, budget, and business impact where applicable

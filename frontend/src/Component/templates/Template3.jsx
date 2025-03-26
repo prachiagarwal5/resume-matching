@@ -254,8 +254,8 @@ const Template3 = ({ data }) => {
                         </Text>
                         <Text>{internship.duration}</Text>
                         {internship.description?.map((desc, i) => (
-                          <Text key={i} >
-                            • {desc}
+                          <Text key={i} style={styles.bulletPoint}>
+                            {desc}
                           </Text>
                         ))}
                       </View>
@@ -277,8 +277,8 @@ const Template3 = ({ data }) => {
                     {project.projectTitle}
                   </Text>
                   {project.description?.map((desc, i) => (
-                    <Text key={i} >
-                      • {desc}
+                    <Text key={i} style={styles.bulletPoint}>
+                      {desc}
                     </Text>
                   ))}
                 </View>
