@@ -131,229 +131,233 @@ const Template3 = ({ data }) => {
         <View style={styles.divider} />
 
         {/* Objective */}
-        <View>
-          <Text style={styles.sectionTitle}>OBJECTIVE</Text>
-          <Text style={styles.objective}>{resumeData?.objective}</Text>
-        </View>
+        {resumeData?.objective && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>OBJECTIVE</Text>
+              <Text style={styles.objective}>{resumeData?.objective}</Text>
+            </View>
+            <View style={styles.divider} />
+          </>
+        )}
 
         {/* Education */}
-        <View>
-          <Text style={styles.sectionTitle}>EDUCATION</Text>
+        {(resumeData?.education?.graduation ||
+          resumeData?.education?.intermediate ||
+          resumeData?.education?.highSchool) && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>EDUCATION</Text>
 
-          {/* Graduation */}
-          <View style={styles.educationTable}>
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.institutionName}>
-                  {resumeData?.education?.graduation?.institution}
-                </Text>
-              </View>
-              <View style={styles.educationColRight}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.graduation?.yearSpan} | CPI:{" "}
-                  {resumeData?.education?.graduation?.CPI}
-                </Text>
-              </View>
-            </View>
-            {/* <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.graduation?.degree}
-                </Text>
-              </View>
-              <View style={styles.educationColRight}>
-                <Text style={styles.educationText}>
-                  CPI: {resumeData?.education?.graduation?.CPI}
-                </Text>
-              </View>
-            </View> */}
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.graduation?.location}
-                </Text>
-              </View>
-            </View>
-          </View>
+              {/* Graduation */}
+              {resumeData?.education?.graduation && (
+                <View style={styles.educationTable}>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.institutionName}>
+                        {resumeData?.education?.graduation?.institution}
+                      </Text>
+                    </View>
+                    <View style={styles.educationColRight}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.graduation?.yearSpan} | CPI:{" "}
+                        {resumeData?.education?.graduation?.CPI}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.graduation?.location}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )}
 
-          {/* Intermediate */}
-          <View style={styles.educationTable}>
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.institutionName}>
-                  {resumeData?.education?.intermediate?.schoolName}
-                </Text>
-              </View>
-              <View style={styles.educationColRight}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.intermediate?.yearSpan} | Percentage:{" "}
-                  {resumeData?.education?.intermediate?.percentage}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.intermediate?.stream}
-                </Text>
-              </View>
-              {/* <View style={styles.educationColRight}>
-                <Text style={styles.educationText}>
-                  Percentage: {resumeData?.education?.intermediate?.percentage}
-                </Text>
-              </View> */}
-            </View>
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.intermediate?.location}
-                </Text>
-              </View>
-            </View>
-          </View>
+              {/* Intermediate */}
+              {resumeData?.education?.intermediate && (
+                <View style={styles.educationTable}>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.institutionName}>
+                        {resumeData?.education?.intermediate?.schoolName}
+                      </Text>
+                    </View>
+                    <View style={styles.educationColRight}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.intermediate?.yearSpan} |
+                        Percentage:{" "}
+                        {resumeData?.education?.intermediate?.percentage}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.intermediate?.stream}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.intermediate?.location}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )}
 
-          {/* High School */}
-          <View style={styles.educationTable}>
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.institutionName}>
-                  {resumeData?.education?.highSchool?.schoolName}
-                </Text>
-              </View>
-              <View style={styles.educationColRight}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.highSchool?.yearSpan} | Percentage:{" "}
-                  {resumeData?.education?.highSchool?.percentage}
-                </Text>
-              </View>
+              {/* High School */}
+              {resumeData?.education?.highSchool && (
+                <View style={styles.educationTable}>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.institutionName}>
+                        {resumeData?.education?.highSchool?.schoolName}
+                      </Text>
+                    </View>
+                    <View style={styles.educationColRight}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.highSchool?.yearSpan} |
+                        Percentage:{" "}
+                        {resumeData?.education?.highSchool?.percentage}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.educationRow}>
+                    <View style={styles.educationCol}>
+                      <Text style={styles.educationText}>
+                        {resumeData?.education?.highSchool?.location}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              )}
             </View>
-            {/* <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  Percentage: {resumeData?.education?.highSchool?.percentage}
-                </Text>
-              </View>
-            </View> */}
-            <View style={styles.educationRow}>
-              <View style={styles.educationCol}>
-                <Text style={styles.educationText}>
-                  {resumeData?.education?.highSchool?.location}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
+            <View style={styles.divider} />
+          </>
+        )}
 
         {/* Internship/ Training Experience */}
-        <View>
-          <Text style={styles.sectionTitle}>
-            INTERNSHIP/ TRAINING EXPERIENCE
-          </Text>
-          {resumeData?.workExperience?.map((internship, index) => (
-            <View key={index} style={styles.educationItem}>
-              <Text style={styles.experienceTitle}>{internship.jobTitle}</Text>
-              <Text style={styles.companyName}>{internship.company}</Text>
-              <Text>{internship.duration}</Text>
-              {internship.description?.map((desc, i) => (
-                <Text key={i} style={styles.bulletPoint}>
-                  {desc}
-                </Text>
+        {resumeData?.workExperience?.length > 0 && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>
+                INTERNSHIP/ TRAINING EXPERIENCE
+              </Text>
+              {resumeData?.workExperience?.map((internship, index) => (
+                <View key={index} style={styles.educationItem}>
+                  <Text style={styles.experienceTitle}>
+                    {internship.jobTitle}
+                  </Text>
+                  <Text style={styles.companyName}>{internship.company}</Text>
+                  <Text>{internship.duration}</Text>
+                  {internship.description?.map((desc, i) => (
+                    <Text key={i} style={styles.bulletPoint}>
+                      {desc}
+                    </Text>
+                  ))}
+                </View>
               ))}
             </View>
-          ))}
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
+            <View style={styles.divider} />
+          </>
+        )}
 
         {/* Projects */}
-        <View>
-          <Text style={styles.sectionTitle}>PROJECTS</Text>
-          {resumeData?.projects?.map((project, index) => (
-            <View key={index} style={styles.educationItem}>
-              <Text style={styles.experienceTitle}>{project.projectTitle}</Text>
-              {project.description?.map((desc, i) => (
-                <Text key={i} style={styles.bulletPoint}>
-                  {desc}
+        {resumeData?.projects?.length > 0 && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>PROJECTS</Text>
+              {resumeData?.projects?.map((project, index) => (
+                <View key={index} style={styles.educationItem}>
+                  <Text style={styles.experienceTitle}>
+                    {project.projectTitle}
+                  </Text>
+                  {project.description?.map((desc, i) => (
+                    <Text key={i} style={styles.bulletPoint}>
+                      {desc}
+                    </Text>
+                  ))}
+                </View>
+              ))}
+            </View>
+            <View style={styles.divider} />
+          </>
+        )}
+
+        {/* Skills */}
+        {(resumeData?.skills?.technicalSkills?.length > 0 ||
+          resumeData?.skills?.softSkills?.length > 0) && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>SKILLS</Text>
+              <View style={styles.table}>
+                <View style={styles.tableRow}>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.institutionName}>Technical Skills</Text>
+                    {resumeData?.skills?.technicalSkills?.map(
+                      (skill, index) => (
+                        <Text key={index} style={styles.tableCell}>
+                          • {skill}
+                        </Text>
+                      ),
+                    )}
+                  </View>
+                  <View style={styles.tableCol}>
+                    <Text style={styles.institutionName}>
+                      Professional Skills
+                    </Text>
+                    {resumeData?.skills?.softSkills?.map((skill, index) => (
+                      <Text key={index} style={styles.tableCell}>
+                        • {skill}
+                      </Text>
+                    ))}
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View style={styles.divider} />
+          </>
+        )}
+
+        {/* Achievements */}
+        {resumeData?.achievements?.length > 0 && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>
+                PROFESSIONAL ACHIEVEMENTS/ INSIGHTS
+              </Text>
+              {resumeData?.achievements?.map((achievement, index) => (
+                <Text key={index} style={styles.bulletPoint}>
+                  {achievement}
                 </Text>
               ))}
             </View>
-          ))}
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
-
-        {/* Skills */}
-        <View>
-          <Text style={styles.sectionTitle}>SKILLS</Text>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCol}>
-                <Text style={styles.institutionName}>Technical Skills</Text>
-                {resumeData?.skills?.technicalSkills?.map((skill, index) => (
-                  <Text key={index} style={styles.tableCell}>
-                    • {skill}
-                  </Text>
-                ))}
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.institutionName}>Professional Skills</Text>
-                {resumeData?.skills?.softSkills?.map((skill, index) => (
-                  <Text key={index} style={styles.tableCell}>
-                    • {skill}
-                  </Text>
-                ))}
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
-
-        {/* Achievements */}
-        <View>
-          <Text style={styles.sectionTitle}>
-            PROFESSIONAL ACHIEVEMENTS/ INSIGHTS
-          </Text>
-          {resumeData?.achievements?.map((achievement, index) => (
-            <Text key={index} style={styles.bulletPoint}>
-              {achievement}
-            </Text>
-          ))}
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
-
-        {/* Co-curricular Activities */}
-        {/* <View>
-          <Text style={styles.sectionTitle}>CO-CURRICULAR ACTIVITIES</Text>
-          {resumeData?.coCurricularActivities?.map((activity, index) => (
-            <Text key={index} style={styles.bulletPoint}>
-              {activity}
-            </Text>
-          ))}
-        </View> */}
+            <View style={styles.divider} />
+          </>
+        )}
 
         {/* Certifications */}
-        <View>
-          <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
-          {resumeData?.certifications?.map((certification, index) => (
-            <View key={index} style={styles.educationItem}>
-              <Text style={styles.institutionName}>{certification.name}</Text>
-              <Text style={styles.bulletPoint}>{certification.issuer}</Text>
-              <Text style={styles.bulletPoint}>{certification.date}</Text>
+        {resumeData?.certifications?.length > 0 && (
+          <>
+            <View>
+              <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
+              {resumeData?.certifications?.map((certification, index) => (
+                <View key={index} style={styles.educationItem}>
+                  <Text style={styles.institutionName}>
+                    {certification.name}
+                  </Text>
+                  <Text style={styles.bulletPoint}>{certification.issuer}</Text>
+                  <Text style={styles.bulletPoint}>{certification.date}</Text>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-
-        {/* Divider Line */}
-        <View style={styles.divider} />
+            <View style={styles.divider} />
+          </>
+        )}
 
         {/* Declaration */}
         <View>
@@ -367,5 +371,270 @@ const Template3 = ({ data }) => {
     </Document>
   );
 };
+
+// const Template3 = ({ data }) => {
+//   const resumeData = data?.resume || {};
+
+//   return (
+//     <Document>
+//       <Page size="A4" style={styles.page}>
+//         {/* Contact Information */}
+//         <View style={styles.header}>
+//           <Text style={styles.name}>
+//             {resumeData?.contactInformation?.name}
+//           </Text>
+//           <View style={styles.contactInfo}>
+//             <Text>{resumeData?.contactInformation?.location}</Text>
+//             <Text> | {resumeData?.contactInformation?.phone}</Text>
+//             <Text> | {resumeData?.contactInformation?.email}</Text>
+//             {resumeData?.contactInformation?.linkedin && (
+//               <Text> | LinkedIn: {resumeData.contactInformation.linkedin}</Text>
+//             )}
+//             {resumeData?.contactInformation?.github && (
+//               <Text> | GitHub: {resumeData.contactInformation.github}</Text>
+//             )}
+//           </View>
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Objective */}
+//         <View>
+//           <Text style={styles.sectionTitle}>OBJECTIVE</Text>
+//           <Text style={styles.objective}>{resumeData?.objective}</Text>
+//         </View>
+
+//         {/* Education */}
+//         <View>
+//           <Text style={styles.sectionTitle}>EDUCATION</Text>
+
+//           {/* Graduation */}
+//           <View style={styles.educationTable}>
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.institutionName}>
+//                   {resumeData?.education?.graduation?.institution}
+//                 </Text>
+//               </View>
+//               <View style={styles.educationColRight}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.graduation?.yearSpan} | CPI:{" "}
+//                   {resumeData?.education?.graduation?.CPI}
+//                 </Text>
+//               </View>
+//             </View>
+//             {/* <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.graduation?.degree}
+//                 </Text>
+//               </View>
+//               <View style={styles.educationColRight}>
+//                 <Text style={styles.educationText}>
+//                   CPI: {resumeData?.education?.graduation?.CPI}
+//                 </Text>
+//               </View>
+//             </View> */}
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.graduation?.location}
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+
+//           {/* Intermediate */}
+//           <View style={styles.educationTable}>
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.institutionName}>
+//                   {resumeData?.education?.intermediate?.schoolName}
+//                 </Text>
+//               </View>
+//               <View style={styles.educationColRight}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.intermediate?.yearSpan} | Percentage:{" "}
+//                   {resumeData?.education?.intermediate?.percentage}
+//                 </Text>
+//               </View>
+//             </View>
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.intermediate?.stream}
+//                 </Text>
+//               </View>
+//               {/* <View style={styles.educationColRight}>
+//                 <Text style={styles.educationText}>
+//                   Percentage: {resumeData?.education?.intermediate?.percentage}
+//                 </Text>
+//               </View> */}
+//             </View>
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.intermediate?.location}
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+
+//           {/* High School */}
+//           <View style={styles.educationTable}>
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.institutionName}>
+//                   {resumeData?.education?.highSchool?.schoolName}
+//                 </Text>
+//               </View>
+//               <View style={styles.educationColRight}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.highSchool?.yearSpan} | Percentage:{" "}
+//                   {resumeData?.education?.highSchool?.percentage}
+//                 </Text>
+//               </View>
+//             </View>
+//             {/* <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   Percentage: {resumeData?.education?.highSchool?.percentage}
+//                 </Text>
+//               </View>
+//             </View> */}
+//             <View style={styles.educationRow}>
+//               <View style={styles.educationCol}>
+//                 <Text style={styles.educationText}>
+//                   {resumeData?.education?.highSchool?.location}
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Internship/ Training Experience */}
+//         <View>
+//           <Text style={styles.sectionTitle}>
+//             INTERNSHIP/ TRAINING EXPERIENCE
+//           </Text>
+//           {resumeData?.workExperience?.map((internship, index) => (
+//             <View key={index} style={styles.educationItem}>
+//               <Text style={styles.experienceTitle}>{internship.jobTitle}</Text>
+//               <Text style={styles.companyName}>{internship.company}</Text>
+//               <Text>{internship.duration}</Text>
+//               {internship.description?.map((desc, i) => (
+//                 <Text key={i} style={styles.bulletPoint}>
+//                   {desc}
+//                 </Text>
+//               ))}
+//             </View>
+//           ))}
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Projects */}
+//         <View>
+//           <Text style={styles.sectionTitle}>PROJECTS</Text>
+//           {resumeData?.projects?.map((project, index) => (
+//             <View key={index} style={styles.educationItem}>
+//               <Text style={styles.experienceTitle}>{project.projectTitle}</Text>
+//               {project.description?.map((desc, i) => (
+//                 <Text key={i} style={styles.bulletPoint}>
+//                   {desc}
+//                 </Text>
+//               ))}
+//             </View>
+//           ))}
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Skills */}
+//         <View>
+//           <Text style={styles.sectionTitle}>SKILLS</Text>
+//           <View style={styles.table}>
+//             <View style={styles.tableRow}>
+//               <View style={styles.tableCol}>
+//                 <Text style={styles.institutionName}>Technical Skills</Text>
+//                 {resumeData?.skills?.technicalSkills?.map((skill, index) => (
+//                   <Text key={index} style={styles.tableCell}>
+//                     • {skill}
+//                   </Text>
+//                 ))}
+//               </View>
+//               <View style={styles.tableCol}>
+//                 <Text style={styles.institutionName}>Professional Skills</Text>
+//                 {resumeData?.skills?.softSkills?.map((skill, index) => (
+//                   <Text key={index} style={styles.tableCell}>
+//                     • {skill}
+//                   </Text>
+//                 ))}
+//               </View>
+//             </View>
+//           </View>
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Achievements */}
+//         <View>
+//           <Text style={styles.sectionTitle}>
+//             PROFESSIONAL ACHIEVEMENTS/ INSIGHTS
+//           </Text>
+//           {resumeData?.achievements?.map((achievement, index) => (
+//             <Text key={index} style={styles.bulletPoint}>
+//               {achievement}
+//             </Text>
+//           ))}
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Co-curricular Activities */}
+//         {/* <View>
+//           <Text style={styles.sectionTitle}>CO-CURRICULAR ACTIVITIES</Text>
+//           {resumeData?.coCurricularActivities?.map((activity, index) => (
+//             <Text key={index} style={styles.bulletPoint}>
+//               {activity}
+//             </Text>
+//           ))}
+//         </View> */}
+
+//         {/* Certifications */}
+//         <View>
+//           <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
+//           {resumeData?.certifications?.map((certification, index) => (
+//             <View key={index} style={styles.educationItem}>
+//               <Text style={styles.institutionName}>{certification.name}</Text>
+//               <Text style={styles.bulletPoint}>{certification.issuer}</Text>
+//               <Text style={styles.bulletPoint}>{certification.date}</Text>
+//             </View>
+//           ))}
+//         </View>
+
+//         {/* Divider Line */}
+//         <View style={styles.divider} />
+
+//         {/* Declaration */}
+//         <View>
+//           <Text style={styles.sectionTitle}>DECLARATION</Text>
+//           <Text style={styles.objective}>
+//             I hereby declare that all the above mentioned information is true
+//             and correct to the best of my knowledge.
+//           </Text>
+//         </View>
+//       </Page>
+//     </Document>
+//   );
+// };
 
 export default Template3;
