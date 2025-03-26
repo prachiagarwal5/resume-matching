@@ -1,7 +1,7 @@
 require("dotenv").config();
-const Groq = require("groq-sdk");
+const OpenAI = require("openai");
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY2 });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Helper function to extract valid JSON from response
 const extractValidJson = (data) => {
@@ -212,15 +212,19 @@ const generateResume = async (candidateData) => {
   
     Ensure each section is optimized for maximum ATS compatibility and keyword matching.`;
 
-    const response = await groq.chat.completions.create({
+    const response = await openai.chat.completions.create({
       messages: [
+        { 
+          role: "system", 
+          content: "You are a resume creator who create ATS friendly resume which  have very high ATS Score. Follow the provided guidelines and return only the JSON object as specified." 
+        },
         {
           role: "user",
           content: prompt,
         },
       ],
-      model: "llama3-70b-8192",
-      max_tokens: 3000,
+      model: "gpt-4o-mini",
+      max_tokens: 1000,
     });
 
     console.log("Raw Response:", response.choices[0].message.content);

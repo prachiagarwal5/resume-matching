@@ -1,7 +1,7 @@
 require("dotenv").config();
-const Groq = require("groq-sdk");
+const OpenAI = require("openai");
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY3 });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 // Function to analyze resume against job description
 const atsScore = async (resumeText, jobDescription) => {
@@ -39,18 +39,28 @@ const atsScore = async (resumeText, jobDescription) => {
       40-69: Decent structure, needs minor improvements
       0-39: Major improvements needed
 
+      - And stick to the given jason format dont change the format and no other information should be added in the response
+  - Format note: Provide ONLY the JSON object with no additional text
+  - No introduction text like "Here's a question..." or "Based on..."
+  - The response should start directly with "{" and end with "}"
+
         Below is the Resume Text: "${resumeText}"
         Below is the Job Description: "${jobDescription}"`;
 
-    const response = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      model: "llama3-70b-8192",
-    });
+        const response = await openai.chat.completions.create({
+          messages: [
+            { 
+              role: "system", 
+              content: "You are a strict evaluator for resumes against job descriptions. Follow the provided guidelines and return only the JSON object as specified." 
+            },
+            { 
+              role: "user", 
+              content: prompt 
+            }
+          ],
+          model: "gpt-4o-mini",
+          max_tokens: 1000,
+        });
 
     const { choices } = response;
     if (choices && choices[0]?.message?.content) {
