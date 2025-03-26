@@ -31,10 +31,10 @@ const Skills = ({
         </div>
         <div className="space-y-3">
           {formData.technicalSkills.map((skill, index) => (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex items-center gap-2">
               <input
                 type="text"
-                className={inputClasses}
+                className={`${inputClasses} flex-grow`}
                 value={skill}
                 onChange={(e) =>
                   handleSkillChange(index, "technicalSkills", e.target.value)
@@ -67,10 +67,10 @@ const Skills = ({
         </div>
         <div className="space-y-3">
           {formData.softSkills.map((skill, index) => (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex items-center gap-2">
               <input
                 type="text"
-                className={inputClasses}
+                className={`${inputClasses} flex-grow`}
                 value={skill}
                 onChange={(e) =>
                   handleSkillChange(index, "softSkills", e.target.value)

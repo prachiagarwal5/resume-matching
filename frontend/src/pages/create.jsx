@@ -181,14 +181,14 @@ const CreateResume = () => {
       achievements: formData.achievements,
     };
 
-    console.log("Transformed Data (create.jsx):", transformedData);
+    // console.log("Transformed Data (create.jsx):", transformedData);
 
     try {
       const response = await axios.post(
         "http://localhost:5001/api/form/submit",
         formData,
       );
-      console.log("Data sent successfully:", response.data);
+      // console.log("Data sent successfully:", response.data);
 
       navigate("/template-selection", {
         state: { formData: response.data },

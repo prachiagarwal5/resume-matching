@@ -72,7 +72,7 @@ const PersonalInformation = ({
             className={inputClasses}
             value={formData.linkedIn}
             onChange={(e) => handleInputChange(e, null, "linkedIn")}
-            placeholder="linkedin.com/in/johndoe"
+            placeholder="https://www.linkedin.com/in/johndoe"
           />
         </div>
         <div>
@@ -85,7 +85,7 @@ const PersonalInformation = ({
             className={inputClasses}
             value={formData.github}
             onChange={(e) => handleInputChange(e, null, "github")}
-            placeholder="github.com/johndoe"
+            placeholder="https://github.com/johndoe"
           />
         </div>
         <div>

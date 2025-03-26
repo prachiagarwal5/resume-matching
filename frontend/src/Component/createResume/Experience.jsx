@@ -11,6 +11,11 @@ const Experience = ({
   sectionClasses,
   SectionTitle,
 }) => {
+  // Check if any experience fields are filled out
+  const hasExperience = formData.experience.some(
+    (exp) => exp.designation || exp.companyName || exp.description,
+  );
+
   return (
     <section className={sectionClasses}>
       <div className="flex justify-between items-center mb-6">
@@ -37,7 +42,7 @@ const Experience = ({
                   handleExperienceChange(index, "designation", e.target.value)
                 }
                 placeholder="Job Title"
-                required
+                required={hasExperience}
               />
             </div>
             <div>
@@ -50,7 +55,7 @@ const Experience = ({
                   handleExperienceChange(index, "companyName", e.target.value)
                 }
                 placeholder="Company Name"
-                required
+                required={hasExperience}
               />
             </div>
             <div className="md:col-span-2">
@@ -62,7 +67,7 @@ const Experience = ({
                   handleExperienceChange(index, "description", e.target.value)
                 }
                 placeholder="Describe your role, responsibilities, and achievements"
-                required
+                required={hasExperience}
               />
             </div>
           </div>

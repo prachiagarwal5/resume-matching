@@ -4,7 +4,7 @@ import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontSize: 10,
+    fontSize: 11,
     fontFamily: "Times-Roman",
   },
   header: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
     marginBottom: 5,
-    marginTop: 5,
+    marginTop: 3,
   },
   educationItem: {
     marginBottom: 5,
@@ -64,7 +64,13 @@ const styles = StyleSheet.create({
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: "#000000",
-    marginBottom: 5,
+    marginBottom: 3,
+  },
+  dividerWithMargin: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#000000",
+    marginBottom: 3,
+    marginTop: 10, // Add extra margin here
   },
   table: {
     display: "table",
@@ -110,25 +116,38 @@ const Template3 = ({ data }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Contact Information */}
-        <View style={styles.header}>
-          <Text style={styles.name}>
-            {resumeData?.contactInformation?.name}
-          </Text>
-          <View style={styles.contactInfo}>
-            <Text>{resumeData?.contactInformation?.location}</Text>
-            <Text> | {resumeData?.contactInformation?.phone}</Text>
-            <Text> | {resumeData?.contactInformation?.email}</Text>
-            {resumeData?.contactInformation?.linkedin && (
-              <Text> | LinkedIn: {resumeData.contactInformation.linkedin}</Text>
-            )}
-            {resumeData?.contactInformation?.github && (
-              <Text> | GitHub: {resumeData.contactInformation.github}</Text>
-            )}
+        {resumeData?.contactInformation?.name && (
+          <View style={styles.header}>
+            <Text style={styles.name}>
+              {resumeData?.contactInformation?.name}
+            </Text>
+            <View style={styles.contactInfo}>
+              {resumeData?.contactInformation?.location && (
+                <Text>{resumeData?.contactInformation?.location}</Text>
+              )}
+              {resumeData?.contactInformation?.phone && (
+                <Text> | {resumeData?.contactInformation?.phone}</Text>
+              )}
+              {resumeData?.contactInformation?.email && (
+                <Text> | {resumeData?.contactInformation?.email}</Text>
+              )}
+              {resumeData?.contactInformation?.linkedin && (
+                <Text>
+                  {" "}
+                  | LinkedIn: {resumeData.contactInformation.linkedin}
+                </Text>
+              )}
+              {resumeData?.contactInformation?.github && (
+                <Text> | GitHub: {resumeData.contactInformation.github}</Text>
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
         {/* Divider Line */}
-        <View style={styles.divider} />
+        {resumeData?.contactInformation?.name && (
+          <View style={styles.divider} />
+        )}
 
         {/* Objective */}
         {resumeData?.objective && (
@@ -137,7 +156,7 @@ const Template3 = ({ data }) => {
               <Text style={styles.sectionTitle}>OBJECTIVE</Text>
               <Text style={styles.objective}>{resumeData?.objective}</Text>
             </View>
-            <View style={styles.divider} />
+            <View style={styles.dividerWithMargin} />
           </>
         )}
 
@@ -155,20 +174,14 @@ const Template3 = ({ data }) => {
                   <View style={styles.educationRow}>
                     <View style={styles.educationCol}>
                       <Text style={styles.institutionName}>
-                        {resumeData?.education?.graduation?.institution}
+                        {resumeData?.education?.graduation?.institution},{" "}
+                        {resumeData?.education?.graduation?.location} |
+                        {resumeData?.education?.graduation?.CPI}
                       </Text>
                     </View>
                     <View style={styles.educationColRight}>
                       <Text style={styles.educationText}>
-                        {resumeData?.education?.graduation?.yearSpan} | CPI:{" "}
-                        {resumeData?.education?.graduation?.CPI}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.educationRow}>
-                    <View style={styles.educationCol}>
-                      <Text style={styles.educationText}>
-                        {resumeData?.education?.graduation?.location}
+                        {resumeData?.education?.graduation?.yearSpan}
                       </Text>
                     </View>
                   </View>
@@ -181,28 +194,14 @@ const Template3 = ({ data }) => {
                   <View style={styles.educationRow}>
                     <View style={styles.educationCol}>
                       <Text style={styles.institutionName}>
-                        {resumeData?.education?.intermediate?.schoolName}
+                        {resumeData?.education?.intermediate?.schoolName},{" "}
+                        {resumeData?.education?.intermediate?.location} |
+                        {resumeData?.education?.intermediate?.percentage}
                       </Text>
                     </View>
                     <View style={styles.educationColRight}>
                       <Text style={styles.educationText}>
-                        {resumeData?.education?.intermediate?.yearSpan} |
-                        Percentage:{" "}
-                        {resumeData?.education?.intermediate?.percentage}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.educationRow}>
-                    <View style={styles.educationCol}>
-                      <Text style={styles.educationText}>
-                        {resumeData?.education?.intermediate?.stream}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.educationRow}>
-                    <View style={styles.educationCol}>
-                      <Text style={styles.educationText}>
-                        {resumeData?.education?.intermediate?.location}
+                        {resumeData?.education?.intermediate?.yearSpan}
                       </Text>
                     </View>
                   </View>
@@ -215,21 +214,14 @@ const Template3 = ({ data }) => {
                   <View style={styles.educationRow}>
                     <View style={styles.educationCol}>
                       <Text style={styles.institutionName}>
-                        {resumeData?.education?.highSchool?.schoolName}
+                        {resumeData?.education?.highSchool?.schoolName},{" "}
+                        {resumeData?.education?.highSchool?.location} |
+                        {resumeData?.education?.highSchool?.percentage}
                       </Text>
                     </View>
                     <View style={styles.educationColRight}>
                       <Text style={styles.educationText}>
-                        {resumeData?.education?.highSchool?.yearSpan} |
-                        Percentage:{" "}
-                        {resumeData?.education?.highSchool?.percentage}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.educationRow}>
-                    <View style={styles.educationCol}>
-                      <Text style={styles.educationText}>
-                        {resumeData?.education?.highSchool?.location}
+                        {resumeData?.education?.highSchool?.yearSpan}
                       </Text>
                     </View>
                   </View>
@@ -241,30 +233,38 @@ const Template3 = ({ data }) => {
         )}
 
         {/* Internship/ Training Experience */}
-        {resumeData?.workExperience?.length > 0 && (
-          <>
-            <View>
-              <Text style={styles.sectionTitle}>
-                INTERNSHIP/ TRAINING EXPERIENCE
-              </Text>
-              {resumeData?.workExperience?.map((internship, index) => (
-                <View key={index} style={styles.educationItem}>
-                  <Text style={styles.experienceTitle}>
-                    {internship.jobTitle}
-                  </Text>
-                  <Text style={styles.companyName}>{internship.company}</Text>
-                  <Text>{internship.duration}</Text>
-                  {internship.description?.map((desc, i) => (
-                    <Text key={i} style={styles.bulletPoint}>
-                      {desc}
-                    </Text>
-                  ))}
-                </View>
-              ))}
-            </View>
-            <View style={styles.divider} />
-          </>
-        )}
+        {resumeData?.workExperience?.length > 0 &&
+          resumeData?.workExperience.some(
+            (internship) => internship.jobTitle,
+          ) && (
+            <>
+              <View>
+                <Text style={styles.sectionTitle}>
+                  INTERNSHIP/ TRAINING EXPERIENCE
+                </Text>
+                {resumeData?.workExperience?.map(
+                  (internship, index) =>
+                    internship.jobTitle && (
+                      <View key={index} style={styles.educationItem}>
+                        <Text style={styles.experienceTitle}>
+                          {internship.jobTitle}
+                        </Text>
+                        <Text style={styles.companyName}>
+                          {internship.company}
+                        </Text>
+                        <Text>{internship.duration}</Text>
+                        {internship.description?.map((desc, i) => (
+                          <Text key={i} style={styles.bulletPoint}>
+                            • {desc}
+                          </Text>
+                        ))}
+                      </View>
+                    ),
+                )}
+              </View>
+              <View style={styles.divider} />
+            </>
+          )}
 
         {/* Projects */}
         {resumeData?.projects?.length > 0 && (
@@ -278,7 +278,7 @@ const Template3 = ({ data }) => {
                   </Text>
                   {project.description?.map((desc, i) => (
                     <Text key={i} style={styles.bulletPoint}>
-                      {desc}
+                      • {desc}
                     </Text>
                   ))}
                 </View>
@@ -296,26 +296,32 @@ const Template3 = ({ data }) => {
               <Text style={styles.sectionTitle}>SKILLS</Text>
               <View style={styles.table}>
                 <View style={styles.tableRow}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.institutionName}>Technical Skills</Text>
-                    {resumeData?.skills?.technicalSkills?.map(
-                      (skill, index) => (
+                  {resumeData?.skills?.technicalSkills?.length > 0 && (
+                    <View style={styles.tableCol}>
+                      <Text style={styles.institutionName}>
+                        Technical Skills
+                      </Text>
+                      {resumeData?.skills?.technicalSkills?.map(
+                        (skill, index) => (
+                          <Text key={index} style={styles.tableCell}>
+                            • {skill}
+                          </Text>
+                        ),
+                      )}
+                    </View>
+                  )}
+                  {resumeData?.skills?.softSkills?.length > 0 && (
+                    <View style={styles.tableCol}>
+                      <Text style={styles.institutionName}>
+                        Professional Skills
+                      </Text>
+                      {resumeData?.skills?.softSkills?.map((skill, index) => (
                         <Text key={index} style={styles.tableCell}>
                           • {skill}
                         </Text>
-                      ),
-                    )}
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.institutionName}>
-                      Professional Skills
-                    </Text>
-                    {resumeData?.skills?.softSkills?.map((skill, index) => (
-                      <Text key={index} style={styles.tableCell}>
-                        • {skill}
-                      </Text>
-                    ))}
-                  </View>
+                      ))}
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -332,7 +338,7 @@ const Template3 = ({ data }) => {
               </Text>
               {resumeData?.achievements?.map((achievement, index) => (
                 <Text key={index} style={styles.bulletPoint}>
-                  {achievement}
+                  • {achievement}
                 </Text>
               ))}
             </View>
@@ -347,9 +353,7 @@ const Template3 = ({ data }) => {
               <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
               {resumeData?.certifications?.map((certification, index) => (
                 <View key={index} style={styles.educationItem}>
-                  <Text style={styles.institutionName}>
-                    {certification.name}
-                  </Text>
+                  <Text style={styles.bulletPoint}>• {certification.name}</Text>
                   <Text style={styles.bulletPoint}>{certification.issuer}</Text>
                   <Text style={styles.bulletPoint}>{certification.date}</Text>
                 </View>
@@ -371,6 +375,8 @@ const Template3 = ({ data }) => {
     </Document>
   );
 };
+
+// export default Template3;
 
 // const Template3 = ({ data }) => {
 //   const resumeData = data?.resume || {};

@@ -98,7 +98,7 @@ const Education = ({
               required
             />
           </div>
-          <div>
+          {/* <div>
             <label className={labelClasses}>Stream</label>
             <input
               type="text"
@@ -108,7 +108,7 @@ const Education = ({
               placeholder="Science/Commerce/Arts"
               required
             />
-          </div>
+          </div> */}
           <div>
             <label className={labelClasses}>Percentage</label>
             <input
@@ -129,7 +129,7 @@ const Education = ({
               className={inputClasses}
               value={formData.intermediate.yearSpan}
               onChange={(e) => handleInputChange(e, "intermediate", "yearSpan")}
-              placeholder="2018-2020"
+              placeholder="2020"
               required
             />
           </div>
