@@ -193,7 +193,7 @@ const Template3 = ({ data }) => {
                 <View style={styles.educationTable}>
                   <View style={styles.educationRow}>
                     <View style={styles.educationCol}>
-                      <Text style={styles.institutionName}>
+                      <Text style={styles.institutionName}> Intermediate, 
                         {resumeData?.education?.intermediate?.schoolName},{" "}
                         {resumeData?.education?.intermediate?.location} |
                         {resumeData?.education?.intermediate?.percentage}
@@ -213,7 +213,7 @@ const Template3 = ({ data }) => {
                 <View style={styles.educationTable}>
                   <View style={styles.educationRow}>
                     <View style={styles.educationCol}>
-                      <Text style={styles.institutionName}>
+                      <Text style={styles.institutionName}> High School, 
                         {resumeData?.education?.highSchool?.schoolName},{" "}
                         {resumeData?.education?.highSchool?.location} |
                         {resumeData?.education?.highSchool?.percentage}
