@@ -99,7 +99,7 @@ const generateResume = async (candidateData) => {
   ### Section-Specific Optimization:
     
     #### Professional Summary:
-    - Create a powerful 3-4 sentence summary focusing on years of experience, core technical stack, specialist areas, and unique value proposition
+    - Create a powerful 2-3 sentence summary focusing on years of experience, core technical stack, specialist areas, and unique value proposition
     - Include at least 5-7 critical industry keywords within natural language flow
     - Focus on outcomes and value delivered, not just skills possessed
     
@@ -115,6 +115,8 @@ const generateResume = async (candidateData) => {
     - Prioritize skills based on frequency in job descriptions for target roles
     - Include both foundational skills and cutting-edge technologies
     - Add proficiency levels only for highly advanced skills
+    -Include only top 5 technical skills and top 3 soft skills
+    - Use industry-standard terminology for all skills
     
     #### Projects:
     - Structure as mini case studies: challenge, approach, technology stack, and results
@@ -133,6 +135,8 @@ const generateResume = async (candidateData) => {
      - Format note: Provide ONLY the JSON object with no additional text
      - No introduction text like "Here's a question..." or "Based on..."
      - The response should start directly with "{" and end with "}"
+    - No extra spaces or new lines outside the JSON object
+    - Restrict the content to one page and ensure it is ATS friendly
     Return a JSON object strictly following this structure, ensuring 98%+ ATS optimization:
     {
       "contactInformation": {
@@ -217,7 +221,7 @@ const generateResume = async (candidateData) => {
       messages: [
         { 
           role: "system", 
-          content: "You are a resume creator who create ATS friendly resume which  have very high ATS Score. Follow the provided guidelines and return only the JSON object as specified." 
+          content: "You are a resume creator who create ATS friendly resume which have very high ATS Score and restricte the content in one page. Follow the provided guidelines and return only the JSON object as specified." 
         },
         {
           role: "user",
@@ -225,7 +229,7 @@ const generateResume = async (candidateData) => {
         },
       ],
       model: "gpt-4o-mini",
-      max_tokens: 1000,
+      max_tokens: 1200,
     });
 
     console.log("Raw Response:", response.choices[0].message.content);
