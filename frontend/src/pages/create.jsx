@@ -45,6 +45,7 @@ const CreateResume = () => {
     achievements: [""],
     experience: [{ designation: "", companyName: "", description: "" }],
   });
+  const [isLoading, setIsLoading] = useState(false); // New loading state
   const navigate = useNavigate();
 
   const handleInputChange = (e, section, field) => {
@@ -101,35 +102,47 @@ const CreateResume = () => {
   };
 
   const addSkillInput = (type) => {
-    setFormData({
-      ...formData,
-      [type]: [...formData[type], ""],
-    });
+    if (
+      (type === "technicalSkills" && formData.technicalSkills.length < 5) ||
+      (type === "softSkills" && formData.softSkills.length < 3)
+    ) {
+      setFormData({
+        ...formData,
+        [type]: [...formData[type], ""],
+      });
+    }
   };
 
   const addProjectInput = () => {
-    setFormData({
-      ...formData,
-      projects: [...formData.projects, { title: "", description: "" }],
-    });
+    if (formData.projects.length < 3) {
+      setFormData({
+        ...formData,
+        projects: [...formData.projects, { title: "", description: "" }],
+      });
+    }
   };
 
   const addCertification = () => {
-    setFormData({
-      ...formData,
-      certification: [...formData.certification, ""],
-    });
+    if (formData.certification.length < 2) {
+      setFormData({
+        ...formData,
+        certification: [...formData.certification, ""],
+      });
+    }
   };
 
   const addAchieveInput = () => {
-    setFormData({
-      ...formData,
-      achievements: [...formData.achievements, ""],
-    });
+    if (formData.achievements.length < 2) {
+      setFormData({
+        ...formData,
+        achievements: [...formData.achievements, ""],
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Set loading to true
     const transformedData = {
       contactInformation: {
         name: formData.name,
@@ -172,7 +185,7 @@ const CreateResume = () => {
         description: [proj.description],
       })),
       skills: {
-        technicalSkills: formData.technicalSkills,
+        technicalSkills : formData.technicalSkills,
         softSkills: formData.softSkills,
       },
       certifications: formData.certification.map((cert) => ({
@@ -195,17 +208,21 @@ const CreateResume = () => {
       });
     } catch (error) {
       console.error("Error sending data:", error);
+    } finally {
+      setIsLoading(false); // Set loading to false
     }
   };
 
   const addExperienceInput = () => {
-    setFormData({
-      ...formData,
-      experience: [
-        ...formData.experience,
-        { designation: "", companyName: "", description: "" },
-      ],
-    });
+    if (formData.experience.length < 2) {
+      setFormData({
+        ...formData,
+        experience: [
+          ...formData.experience,
+          { designation: "", companyName: "", description: "" },
+        ],
+      });
+    }
   };
 
   const handleExperienceChange = (index, field, value) => {
@@ -279,10 +296,13 @@ const CreateResume = () => {
       transition duration-300 flex items-center justify-center gap-2
     `;
 
-  const SectionTitle = ({ icon: Icon, title }) => (
+  const SectionTitle = ({ icon: Icon, title, limit }) => (
     <div className="flex items-center gap-2 text-xl font-bold text-white mb-4">
       <Icon className="text-purple-500" />
-      <h2>{title}</h2>
+      <h2>
+        {title}
+        {limit ? ` (AT MAX ${limit})` : ""} {/* Only show limit if provided */}
+      </h2>
     </div>
   );
 
@@ -298,12 +318,12 @@ const CreateResume = () => {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <button className="text-gray-300 hover:text-white transition duration-200">
+              {/* <button className="text-gray-300 hover:text-white transition duration-200">
                 Help
-              </button>
-              <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
+              </button> */}
+              {/* <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
                 Save Draft
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -317,7 +337,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} title="Personal Details" />} // Removed "AT MAX"
           />
           <Education
             formData={formData}
@@ -325,7 +345,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} title="Education" />} // Removed "AT MAX"
           />
           <Skills
             formData={formData}
@@ -335,7 +355,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => (
+              <SectionTitle {...props}  />
+            )}
           />
           <Projects
             formData={formData}
@@ -345,7 +367,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} limit={3} />}
           />
           <Experience
             formData={formData}
@@ -355,7 +377,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} limit={2} />}
           />
           <Certifications
             formData={formData}
@@ -365,7 +387,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} limit={2} />}
           />
           <Achievements
             formData={formData}
@@ -375,15 +397,24 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={SectionTitle}
+            SectionTitle={(props) => <SectionTitle {...props} limit={2} />}
           />
           <div className="flex justify-center mt-8">
             <button
               type="submit"
-              className="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700
-                                       transition duration-300 flex items-center gap-2 text-lg font-semibold"
+              className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700
+                                       transition duration-300 flex items-center gap-2 text-lg font-semibold ${
+                                         isLoading ? "opacity-50 cursor-not-allowed" : ""
+                                       }`}
+              disabled={isLoading} // Disable button when loading
             >
-              <FaCheck /> Create Resume
+              {isLoading ? (
+                <div >Creating....</div> // White circle loader
+              ) : (
+                <>
+                  <FaCheck /> Create Resume
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -399,5 +430,27 @@ const CreateResume = () => {
     </div>
   );
 };
+
+// Add loader styles
+const loaderStyles = `
+  .loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+// Inject loader styles into the document
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = loaderStyles;
+document.head.appendChild(styleSheet);
 
 export default CreateResume;
