@@ -355,11 +355,15 @@ const Template3 = ({ data }) => {
             <View>
               <Text style={styles.sectionTitle}>CERTIFICATIONS</Text>
               {resumeData?.certifications?.map((certification, index) => (
-                <View key={index} style={styles.educationItem}>
-                  <Text style={styles.bulletPoint}>• {certification.name}</Text>
-                  <Text style={styles.bulletPoint}>{certification.issuer}</Text>
-                  <Text style={styles.bulletPoint}>{certification.date}</Text>
-                </View>
+                <Text key={index} >
+                • {certification.name}
+              </Text>  
+                // <View key={index} style={styles.educationItem}>
+                //   <Text style={styles.bulletPoint}>• {certification.name}</Text>
+                //    <Text style={styles.bulletPoint}>{certification.issuer}</Text>
+                //   <Text style={styles.bulletPoint}>{certification.date}</Text>
+                // </View>
+                   
               ))}
             </View>
             <View style={styles.divider} />
