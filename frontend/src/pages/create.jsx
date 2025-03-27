@@ -198,7 +198,7 @@ const CreateResume = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/form/submit",
+        "https://resumeanalyser-nhai.onrender.com/api/form/submit",
         formData,
       );
       // console.log("Data sent successfully:", response.data);

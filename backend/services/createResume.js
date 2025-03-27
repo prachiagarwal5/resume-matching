@@ -207,8 +207,7 @@ const generateResume = async (candidateData) => {
         }
       ],
       "achievements": [
-        "Quantified achievement with metrics",
-        "Recognition or award with context"
+        "Quantified achievement with metrics"
       ]
     }
     Ensure EVERY section is meticulously optimized for maximum ATS compatibility using semantic keyword matching, industry terminology, and quantifiable achievements. The resume should read naturally while containing optimal keyword density.
