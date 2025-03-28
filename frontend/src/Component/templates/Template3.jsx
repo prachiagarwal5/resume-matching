@@ -4,7 +4,7 @@ import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: "Times-Roman",
   },
   header: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
     marginBottom: 5,
     marginTop: 3,
