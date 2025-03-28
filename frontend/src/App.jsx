@@ -5,8 +5,8 @@ import ResumeUpload from "./pages/ResumeUpload";
 // import TemplateSelection from './pages/TemplateSelection';
 import TemplateSelection from "./Component/TemplateSelection";
 import ResumePreview from "./Component/ResumePreview";
-// import MultipleResume from "./pages/MultipleResume";
-// import Communication from "./pages/Communication";
+import MultipleResume from "./pages/MultipleResume";
+import Communication from "./pages/Communication";
 
 function App() {
   return (
@@ -18,9 +18,9 @@ function App() {
         <Route path="/resume-preview/:templateId" element={<ResumePreview />} />
         {/* <Route path="/resume-creation" element={<CreateResume />} /> */}
         {/* Home page route */}
-        {/* <Route path="/" element={<MultipleResume />} /> */}
+        <Route path="/mul-resume" element={<MultipleResume />} />
         {/* <Route path="/resume" element={< Resume/>} /> */}
-        {/* <Route path='/communication' element={<Communication />} /> */}
+        <Route path='/communication' element={<Communication />} />
       </Routes>
     </Router>
   );

@@ -324,6 +324,24 @@ const CreateResume = () => {
               {/* <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
                 Save Draft
               </button> */}
+              <button 
+                onClick={() => navigate('/')} 
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
+              >
+               ATS Analyzer
+              </button>
+              <button 
+                onClick={() => navigate('/mul-resume')}
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
+              >
+                Multiple Resume Analyzer
+              </button>
+              <button
+                onClick={() => navigate('/communication')}
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
+              >
+                Communication
+              </button>
             </div>
           </div>
         </div>
