@@ -70,18 +70,25 @@ const ResumeUpload = () => {
         </div>
         <div className="flex items-center space-x-4">
           {/* Add the Create Resume button */}
-          <Link
-            to="/"
-            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
-          >
-            ATS Analyzer
-          </Link>
+          
+                    <Link
+                      to="/mul-resume"
+                      className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+                    >
+                      Multiple Resume Analyzer
+                    </Link>
           <Link
             to="/resume-creation"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
             Create Resume
           </Link>
+          <Link
+                      to="/communication"
+                      className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+                    >
+                      Communication
+            </Link>
         </div>
       </nav>
 
