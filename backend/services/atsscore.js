@@ -59,7 +59,7 @@ const atsScore = async (resumeText, jobDescription) => {
             }
           ],
           model: "gpt-4o-mini",
-          max_tokens: 1000,
+          max_tokens: 25,
         });
 
     const { choices } = response;

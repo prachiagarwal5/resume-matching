@@ -185,7 +185,7 @@ const CreateResume = () => {
         description: [proj.description],
       })),
       skills: {
-        technicalSkills : formData.technicalSkills,
+        technicalSkills: formData.technicalSkills,
         softSkills: formData.softSkills,
       },
       certifications: formData.certification.map((cert) => ({
@@ -324,20 +324,20 @@ const CreateResume = () => {
               {/* <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
                 Save Draft
               </button> */}
-              <button 
-                onClick={() => navigate('/')} 
+              <button
+                onClick={() => navigate("/")}
                 className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
               >
-               ATS Analyzer
+                ATS Analyzer
               </button>
-              <button 
-                onClick={() => navigate('/mul-resume')}
+              <button
+                onClick={() => navigate("/mul-resume")}
                 className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
               >
                 Multiple Resume Analyzer
               </button>
               <button
-                onClick={() => navigate('/communication')}
+                onClick={() => navigate("/communication")}
                 className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
               >
                 Communication
@@ -355,7 +355,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Personal Details" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Personal Details" />
+            )} // Removed "AT MAX"
           />
           <Education
             formData={formData}
@@ -363,7 +365,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Education" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Education" />
+            )} // Removed "AT MAX"
           />
           <Skills
             formData={formData}
@@ -373,9 +377,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => (
-              <SectionTitle {...props}  />
-            )}
+            SectionTitle={(props) => <SectionTitle {...props} />}
           />
           <Projects
             formData={formData}
@@ -422,12 +424,14 @@ const CreateResume = () => {
               type="submit"
               className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700
                                        transition duration-300 flex items-center gap-2 text-lg font-semibold ${
-                                         isLoading ? "opacity-50 cursor-not-allowed" : ""
+                                         isLoading
+                                           ? "opacity-50 cursor-not-allowed"
+                                           : ""
                                        }`}
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (
-                <div >Creating....</div> // White circle loader
+                <div>Creating....</div> // White circle loader
               ) : (
                 <>
                   <FaCheck /> Create Resume

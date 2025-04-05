@@ -87,32 +87,32 @@ function MultipleResume() {
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-gray-800 flex flex-col items-center justify-center w-screen">
       {/* Navbar */}
-            <nav className="bg-white dark:bg-gray-900 bg-opacity-80 text-purple-900 dark:text-purple-300 w-full p-4 shadow-lg flex justify-between items-center">
-              <div className="text-3xl font-extrabold tracking-wide">
-                GLA Resume Fit
-              </div>
-              <div className="flex items-center space-x-4">
-                {/* Add the Create Resume button */}
-                <Link
-                  to="/"
-                  className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
-                >
-                  ATS Analyzer
-                </Link>
-                <Link
-                  to="/resume-creation"
-                  className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
-                >
-                  Create Resume
-                </Link>
-                <Link
-                            to="/communication"
-                            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
-                          >
-                            Communication
-                  </Link>
-              </div>
-            </nav>
+      <nav className="bg-white dark:bg-gray-900 bg-opacity-80 text-purple-900 dark:text-purple-300 w-full p-4 shadow-lg flex justify-between items-center">
+        <div className="text-3xl font-extrabold tracking-wide">
+          GLA Resume Fit
+        </div>
+        <div className="flex items-center space-x-4">
+          {/* Add the Create Resume button */}
+          <Link
+            to="/"
+            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+          >
+            ATS Analyzer
+          </Link>
+          <Link
+            to="/resume-creation"
+            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+          >
+            Create Resume
+          </Link>
+          <Link
+            to="/communication"
+            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+          >
+            Communication
+          </Link>
+        </div>
+      </nav>
 
       {/* Content Area */}
       <div className="w-full max-w-7xl mt-12 grid grid-cols-2 gap-8 bg-white dark:bg-gray-900 shadow-2xl rounded-lg overflow-hidden transition-transform transform">
