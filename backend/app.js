@@ -1,11 +1,10 @@
 const dotenv = require("dotenv");
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-const analyzeRoutes = require("./routes/analyzeRoutes");
-const formRoutes = require("./routes/formRoutes");
-const commRoutes = require("./routes/commRoutes");
+const routes = require("./routes");
 
 const app = express();
 dotenv.config();
@@ -32,10 +31,18 @@ const outputDir = path.join(__dirname, "output");
   }
 });
 
+
+//connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err)); 
+
 // Routes
-app.use("/api/analyze", analyzeRoutes);
-app.use("/api/form", formRoutes);
-app.use("/api/communication", commRoutes);
+app.use("/api", routes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
