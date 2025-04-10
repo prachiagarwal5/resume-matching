@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const resumeSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   contactInformation: {
     name: { type: String, required: true },
     email: { type: String, required: true },

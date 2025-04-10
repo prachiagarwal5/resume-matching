@@ -1,5 +1,5 @@
 const { generateResume } = require("../services/createResume");
-const { generateResumePDF } = require("../services/createResume");
+const generateResumePDF = require("../services/GenrateResumePdf").default;
 const PdfService = require("../services/pdfService");
 const Resume = require("../db/Resume");
 
@@ -32,12 +32,26 @@ const uploadResume = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
+    const userId = req.body.userId;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
 
     // Extract text from file
     const resumeText = await PdfService.extractText(req.file.path);
+    console.log("Extracted text from PDF:", resumeText);
 
     // Generate resume JSON from text
-    const generateResume = await generateResumeFromText(resumeText);
+    let resumeData = await generateResumePDF(resumeText);
+    console.log("Generated resume data:", resumeData);
+
+    // Ensure resumeData is an object
+    if (typeof resumeData === "string") {
+      resumeData = JSON.parse(resumeData);
+    }
+
+    // Add user ID to resume data
+    resumeData.user = userId;
 
     // Store resume data into the db
     const newResume = new Resume(resumeData);

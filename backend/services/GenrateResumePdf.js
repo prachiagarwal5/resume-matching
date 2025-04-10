@@ -5,8 +5,9 @@ dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-async function generateResumePdf(resumeData) {
-    const prompt=` I will provide you the resume data and you have to simply fit that data into to the jason format provided below.
+const generateResumePDF = async (resumeData) => {
+  try {
+    const prompt = ` I will provide you the resume data and you have to simply fit that data into to the jason format provided below.
     Without modifing anything in the json format and no other information should be added in the response onlt the data given,
     and if any data is missing then put that data as "N/A" in the json format.
 
@@ -18,7 +19,10 @@ async function generateResumePdf(resumeData) {
      - No introduction text like "Here's a question..." or "Based on..."
      - The response should start directly with "{" and end with "}"
      - No extra spaces or new lines outside the JSON object
-    Return a JSON object strictly following this structure, ensuring 98%+ ATS optimization:
+     - NO introduction text, preamble, or additional explanations
+     - ONLY provide the exact JSON format requested with nothing else
+     - ZERO extraneous words, commentary, or formatting outside the JSON structure
+    Return a JSON object strictly following this structure:
     {
       "contactInformation": {
         "name": "Full Name",
@@ -73,8 +77,8 @@ async function generateResumePdf(resumeData) {
       "skills": {
         "technicalSkills": [
           "Technical Skill 1",
-          Technical Skill 2",
-            "Technical Skill 3",....
+          "Technical Skill 2",
+          "Technical Skill 3",....
         ],
         "softSkills": [
           "Soft Skill 1",
@@ -92,14 +96,18 @@ async function generateResumePdf(resumeData) {
     }
     `;
     const response = await groq.chat.completions.create({
-        messages: [
-        //   { role: "system", content: "You are an expert interview question designer who specializes in creating thoughtful, in-depth questions that test candidates' domain knowledge and problem-solving abilities." },
-          { role: "user", content: prompt }
-        ],
-        model: "llama3-70b-8192",
-      });
-    
-      const parsedResponse = (response.choices[0].message.content);
-      return parsedResponse;
-    }
-export default generateResumePdf;
+      messages: [
+        { role: "user", content: prompt }
+      ],
+      model: "llama3-70b-8192",
+    });
+
+    const parsedResponse = (response.choices[0].message.content);
+    return parsedResponse;
+  } catch (error) {
+    console.error("Error generating resume PDF:", error);
+    throw new Error("Failed to generate resume PDF");
+  }
+};
+
+export default generateResumePDF;

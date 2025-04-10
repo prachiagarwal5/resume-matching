@@ -46,6 +46,9 @@ const SignupPage = () => {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to sign up");
       }
+      const { token, userId } = await response.json();
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
 
       alert("Signup successful!");
       navigate("/"); // Redirect to login page

@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 const routes = require("./routes"); // Import the main router
-const authRoutes = require("./routes/auth"); // Import auth routes
+// const authRoutes = require("./routes/auth"); // Import auth routes
 
 const app = express();
 dotenv.config();
@@ -48,7 +48,7 @@ mongoose
 app.use("/api", routes); // Ensure the main router is used under "/api"
 
 // Auth routes
-app.use("/api/auth", authRoutes);
+// app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

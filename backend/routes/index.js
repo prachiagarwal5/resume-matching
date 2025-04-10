@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const authRoutes = require("./auth"); // Import the correct auth route
+const authRoutes = require("./authRoutes.js"); // Import the correct auth route
 const analyzeRoutes = require("./analyzeRoutes");
 const formRoutes = require("./formRoutes");
 const commRoutes = require("./commRoutes");

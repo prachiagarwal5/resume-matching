@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -14,11 +14,28 @@ const UploadResume = () => {
     setError(""); // Clear any previous errors
   };
 
+  useEffect(() => {
+    // Check if the user is logged in by checking for the user ID in local storage
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      setError("User ID is required. Please log in.");
+      navigate("/"); // Redirect to login page if user is not logged in
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (resume) {
       const formData = new FormData();
       formData.append("resume", resume);
+
+      // Retrieve the user ID from local storage or another source
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        setError("User ID is required. Please log in.");
+        return;
+      }
+      formData.append("userId", userId);
 
       try {
         const response = await axios.post(
@@ -28,10 +45,12 @@ const UploadResume = () => {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-          }
+          },
         );
         console.log("Resume uploaded successfully:", response.data);
-        navigate("/resume-creation", { state: { uploaded: true } });
+        navigate("/resume-creation", {
+          state: { resumeData: response.data.data },
+        });
       } catch (error) {
         console.error("Error uploading resume:", error);
 
@@ -41,7 +60,10 @@ const UploadResume = () => {
           console.error("Response status:", error.response.status);
           console.error("Response headers:", error.response.headers);
         } else if (error.request) {
-          console.error("Request made but no response received:", error.request);
+          console.error(
+            "Request made but no response received:",
+            error.request,
+          );
         } else {
           console.error("Error setting up the request:", error.message);
         }
@@ -49,7 +71,7 @@ const UploadResume = () => {
         // Set a user-friendly error message
         setError(
           error.response?.data?.message ||
-            "An unexpected error occurred while uploading the resume. Please try again later."
+            "An unexpected error occurred while uploading the resume. Please try again later.",
         );
       }
     } else {

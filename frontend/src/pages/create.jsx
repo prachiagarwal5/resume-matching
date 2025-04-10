@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaCode, FaCheck } from "react-icons/fa";
 import PersonalInformation from "../Component/createResume/PersonalInformation";
 import Education from "../Component/createResume/Education";
@@ -47,6 +47,13 @@ const CreateResume = () => {
   });
   const [isLoading, setIsLoading] = useState(false); // New loading state
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.resumeData) {
+      console.log("Received resume data:", location.state.resumeData);
+    }
+  }, [location.state]);
 
   const handleInputChange = (e, section, field) => {
     if (section) {
@@ -185,7 +192,7 @@ const CreateResume = () => {
         description: [proj.description],
       })),
       skills: {
-        technicalSkills : formData.technicalSkills,
+        technicalSkills: formData.technicalSkills,
         softSkills: formData.softSkills,
       },
       certifications: formData.certification.map((cert) => ({
@@ -337,7 +344,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Personal Details" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Personal Details" />
+            )} // Removed "AT MAX"
           />
           <Education
             formData={formData}
@@ -345,7 +354,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Education" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Education" />
+            )} // Removed "AT MAX"
           />
           <Skills
             formData={formData}
@@ -355,9 +366,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => (
-              <SectionTitle {...props}  />
-            )}
+            SectionTitle={(props) => <SectionTitle {...props} />}
           />
           <Projects
             formData={formData}
@@ -404,12 +413,14 @@ const CreateResume = () => {
               type="submit"
               className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700
                                        transition duration-300 flex items-center gap-2 text-lg font-semibold ${
-                                         isLoading ? "opacity-50 cursor-not-allowed" : ""
+                                         isLoading
+                                           ? "opacity-50 cursor-not-allowed"
+                                           : ""
                                        }`}
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (
-                <div >Creating....</div> // White circle loader
+                <div>Creating....</div> // White circle loader
               ) : (
                 <>
                   <FaCheck /> Create Resume
