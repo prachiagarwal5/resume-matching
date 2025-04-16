@@ -51,7 +51,43 @@ const CreateResume = () => {
 
   useEffect(() => {
     if (location.state && location.state.resumeData) {
-      console.log("Received resume data:", location.state.resumeData);
+      const resumeData = location.state.resumeData;
+      setFormData({
+        name: resumeData.name || "",
+        phoneNumber: resumeData.phoneNumber || "",
+        gmail: resumeData.gmail || "",
+        linkedIn: resumeData.linkedIn || "",
+        github: resumeData.github || "",
+        location: resumeData.location || "",
+        graduation: resumeData.graduation || {
+          universityName: "",
+          cpi: "",
+          degree: "",
+          yearSpan: "",
+          location: "",
+        },
+        intermediate: resumeData.intermediate || {
+          schoolName: "",
+          percentage: "",
+          stream: "",
+          yearSpan: "",
+          location: "",
+        },
+        highSchool: resumeData.highSchool || {
+          schoolName: "",
+          percentage: "",
+          yearSpan: "",
+          location: "",
+        },
+        technicalSkills: resumeData.technicalSkills || [""],
+        softSkills: resumeData.softSkills || [""],
+        projects: resumeData.projects || [{ title: "", description: "" }],
+        certification: resumeData.certifications || [""],
+        achievements: resumeData.achievements || [""],
+        experience: resumeData.experience || [
+          { designation: "", companyName: "", description: "" },
+        ],
+      });
     }
   }, [location.state]);
 

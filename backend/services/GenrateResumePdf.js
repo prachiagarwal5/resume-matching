@@ -5,6 +5,15 @@ dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+const extractJson = (responseText) => {
+  const jsonMatch = responseText.match(/{[\s\S]*}/);
+  if (jsonMatch) {
+    return jsonMatch[0];
+  } else {
+    throw new Error("No JSON object found in the response");
+  }
+};
+
 const generateResumePDF = async (resumeData) => {
   try {
     const prompt = ` I will provide you the resume data and you have to simply fit that data into to the jason format provided below.
@@ -26,22 +35,19 @@ const generateResumePDF = async (resumeData) => {
      -*IMPORTANT*  Dont give this type of text "I hereby declare that all the above-mentioned information is correct to the best of my knowledge and belief. I bear the responsibility for the correctness of the above-mentioned particulars." please give only the json format
      - *IMPORTANT* No additional text, comments, or explanations like "I hereby declare that all the above-mentioned information......" please give only the json format
     Return a JSON object strictly following this structure:
-    {
-      "contactInformation": {
+    {  
         "name": "Full Name",
-        "email": "professional.email@domain.com",
-        "phone": "Contact Number",
-        "linkedin": "LinkedIn URL",
+        "gmail": "professional.email@domain.com",
+        "phoneNumber": "Contact Number",
+        "linkedIn": "LinkedIn URL",
         "github": "GitHub URL",
-        "location": "City, State"
-}
-      "education": {
+        "location": "City, State",
         "graduation": {
           "degree": "Complete Degree Name",
-          "institution": "University Name",
+          "universityName": "University Name",
           "location": "Location",
           "yearSpan": "YYYY-YYYY",
-          "CPI": "GPA"
+          "cpi": "GPA"
         },
         "intermediate": {
           "schoolName": "School Name",
@@ -55,12 +61,11 @@ const generateResumePDF = async (resumeData) => {
           "percentage": "XX%",
           "yearSpan": "YYYY-YYYY",
           "location": "Location"
-        }
-      },
-      "workExperience": [
+        },
+      "experience": [
         {
-          "jobTitle": "Industry-Standard Title",
-          "company": "Company Name",
+          "designation": "Industry-Standard Title",
+          "companyName": "Company Name",
           "description": [
             "• Achieved X% improvement by implementing Y solution using Z technology",
             "• Led team of X members to deliver Y project resulting in Z impact"
@@ -69,7 +74,7 @@ const generateResumePDF = async (resumeData) => {
       ],
       "projects": [
         {
-          "projectTitle": "Descriptive Project Name",
+          "title": "Descriptive Project Name",
           "description": [
             "• Problem solved and approach taken",
             "• Technologies and methodologies used",
@@ -77,7 +82,6 @@ const generateResumePDF = async (resumeData) => {
           ]
         }
       ],
-      "skills": {
         "technicalSkills": [
           "Technical Skill 1",
           "Technical Skill 2",
@@ -86,11 +90,11 @@ const generateResumePDF = async (resumeData) => {
         "softSkills": [
           "Soft Skill 1",
           "Soft Skill 2",....
-        ]
-      },
-      "certifications": [
+        ],
+      "certification": [
         {
-          "name": "Industry-Recognized Certification"
+         "Industry-Recognized Certification",
+         "Industry-Recognized Certification"
         }
       ],
       "achievements": [
@@ -105,7 +109,7 @@ const generateResumePDF = async (resumeData) => {
       model: "llama3-70b-8192",
     });
 
-    const parsedResponse = (response.choices[0].message.content);
+    const parsedResponse = extractJson(response.choices[0].message.content);
     return parsedResponse;
   } catch (error) {
     console.error("Error generating resume PDF:", error);

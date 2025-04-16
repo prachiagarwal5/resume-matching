@@ -2,26 +2,22 @@ const mongoose = require("mongoose");
 
 const resumeSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  contactInformation: {
     name: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    linkedin: { type: String, required: true },
+    gmail: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    linkedIn: { type: String, required: true },
     github: { type: String, required: true },
     location: { type: String, required: true },
-  },
-  education: {
     graduation: {
       degree: { type: String, required: true },
-      institution: { type: String, required: true },
+      universityName: { type: String, required: true },
       location: { type: String, required: true },
       yearSpan: { type: String, required: true },
-      CPI: { type: String, required: true },
+      cpi: { type: String, required: true },
     },
     intermediate: {
       schoolName: { type: String, required: true },
       percentage: { type: String, required: true },
-      stream: { type: String, required: true },
       yearSpan: { type: String, required: true },
       location: { type: String, required: true },
     },
@@ -31,24 +27,21 @@ const resumeSchema = new mongoose.Schema({
       yearSpan: { type: String, required: true },
       location: { type: String, required: true },
     },
-  },
-  workExperience: [
+  experience: [
     {
-      jobTitle: { type: String, required: true },
-      company: { type: String, required: true },
+      designation: { type: String, required: true },
+      companyName: { type: String, required: true },
       description: [{ type: String, required: true }],
     },
   ],
   projects: [
     {
-      projectTitle: { type: String, required: true },
+      title: { type: String, required: true },
       description: [{ type: String, required: true }],
     },
   ],
-  skills: {
     technicalSkills: [{ type: String, required: true }],
     softSkills: [{ type: String, required: true }],
-  },
   certifications: [
     {
       name: { type: String, required: true },
