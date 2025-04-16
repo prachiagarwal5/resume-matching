@@ -1,8 +1,11 @@
 require("dotenv").config();
-const OpenAI = require("openai");
+// const OpenAI = require("openai");
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+const Groq = require("groq-sdk");
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // Function to process group discussion notes
 const processGroupDiscussion = async (studentNotes, discussionTopic) => {
   try {
@@ -57,7 +60,7 @@ const processGroupDiscussion = async (studentNotes, discussionTopic) => {
       Notes: "${studentNotes}"
       Topic: "${discussionTopic}"`;
 
-      const response = await openai.chat.completions.create({
+      const response = await groq.chat.completions.create({
         messages: [
           { 
             role: "system", 
@@ -68,8 +71,9 @@ const processGroupDiscussion = async (studentNotes, discussionTopic) => {
             content: prompt,
           },
         ],
-        model: "gpt-4o-mini",
-        max_tokens: 1000,
+        // model: "gpt-4o-mini",
+        // max_tokens: 1000,
+        model: "llama3-70b-8192", 
       });
 
     const { choices } = response;

@@ -1,8 +1,11 @@
 require("dotenv").config();
-const OpenAI = require("openai");
+// const OpenAI = require("openai");
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+const Groq = require("groq-sdk");
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // Function to analyze resume against job description
 const atsScore = async (resumeText, jobDescription) => {
   try {
@@ -47,7 +50,7 @@ const atsScore = async (resumeText, jobDescription) => {
         Below is the Resume Text: "${resumeText}"
         Below is the Job Description: "${jobDescription}"`;
 
-        const response = await openai.chat.completions.create({
+        const response = await groq.chat.completions.create({
           messages: [
             { 
               role: "system", 
@@ -58,8 +61,9 @@ const atsScore = async (resumeText, jobDescription) => {
               content: prompt 
             }
           ],
-          model: "gpt-4o-mini",
-          max_tokens: 1000,
+          // model: "gpt-4o-mini",
+          // max_tokens: 1000,
+          model: "llama3-70b-8192", 
         });
 
     const { choices } = response;

@@ -5,7 +5,7 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import Template2 from "./templates/Template2";
 import Template3 from "./templates/Template3";
 import Template4 from "./templates/Template4";
-import Template5 from "./templates/Template5";
+// import Template5 from "./templates/Template5";
 import Template6 from "./templates/Template6";
 
 const TemplateSelection = () => {
@@ -44,22 +44,6 @@ const TemplateSelection = () => {
     //   buttonColor: "bg-blue-600 hover:bg-blue-700",
     //   borderColor: "border-gray-700",
     // },
-    // {
-    //   id: 1,
-    //   name: "Modern Creative",
-    //   component: Template2,
-    //   description:
-    //     "A contemporary design that balances creativity with professionalism.",
-    //   features: [
-    //     "Modern two-column layout",
-    //     "Distinct section styling",
-    //     "Skills-focused design",
-    //     "Visual hierarchy",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-purple-600 hover:bg-purple-700",
-    //   borderColor: "border-gray-700",
-    // },
     {
       id: 1,
       name: "Classic Elegance",
@@ -75,22 +59,38 @@ const TemplateSelection = () => {
       buttonColor: "bg-green-600 hover:bg-green-700",
       borderColor: "border-gray-700",
     },
-    // {
-    //   id: ,
-    //   name: "Sidebar Professional",
-    //   component: Template4,
-    //   description:
-    //     "A modern template with a sidebar for contact information and a clean main content area.",
-    //   features: [
-    //     "Sidebar for contact info",
-    //     "Clean main content area",
-    //     "Modern and professional look",
-    //     "Emphasis on skills and experience",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-teal-600 hover:bg-teal-700",
-    //   borderColor: "border-gray-700",
-    // },
+    {
+      id: 2,
+      name: "Modern Creative",
+      component: Template2,
+      description:
+        "A contemporary design that balances creativity with professionalism.",
+      features: [
+        "Modern two-column layout",
+        "Distinct section styling",
+        "Skills-focused design",
+        "Visual hierarchy",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-purple-600 hover:bg-purple-700",
+      borderColor: "border-gray-700",
+    },
+    {
+      id: 3,
+      name: "Sidebar Professional",
+      component: Template4,
+      description:
+        "A modern template with a sidebar for contact information and a clean main content area.",
+      features: [
+        "Sidebar for contact info",
+        "Clean main content area",
+        "Modern and professional look",
+        "Emphasis on skills and experience",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-teal-600 hover:bg-teal-700",
+      borderColor: "border-gray-700",
+    },
     // {
     //   id: 4,
     //   name: "Centered Elegance",
@@ -107,22 +107,22 @@ const TemplateSelection = () => {
     //   buttonColor: "bg-orange-600 hover:bg-orange-700",
     //   borderColor: "border-gray-700",
     // },
-    // {
-    //   id: 5,
-    //   name: "Two-Column Modern",
-    //   component: Template6,
-    //   description:
-    //     "A modern two-column layout with a focus on skills and experience.",
-    //   features: [
-    //     "Two-column layout",
-    //     "Left column for contact info and skills",
-    //     "Right column for main content",
-    //     "Modern and clean design",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-red-600 hover:bg-red-700",
-    //   borderColor: "border-gray-700",
-    // },
+    {
+      id: 4,
+      name: "Two-Column Modern",
+      component: Template6,
+      description:
+        "A modern two-column layout with a focus on skills and experience.",
+      features: [
+        "Two-column layout",
+        "Left column for contact info and skills",
+        "Right column for main content",
+        "Modern and clean design",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-red-600 hover:bg-red-700",
+      borderColor: "border-gray-700",
+    },
   ];
 
   return (

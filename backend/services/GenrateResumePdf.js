@@ -22,6 +22,9 @@ const generateResumePDF = async (resumeData) => {
      - NO introduction text, preamble, or additional explanations
      - ONLY provide the exact JSON format requested with nothing else
      - ZERO extraneous words, commentary, or formatting outside the JSON structure
+     - No additional text, comments, or explanations like "I hereby declare that all the above-mentioned information......" please give only the json format
+     -*IMPORTANT*  Dont give this type of text "I hereby declare that all the above-mentioned information is correct to the best of my knowledge and belief. I bear the responsibility for the correctness of the above-mentioned particulars." please give only the json format
+     - *IMPORTANT* No additional text, comments, or explanations like "I hereby declare that all the above-mentioned information......" please give only the json format
     Return a JSON object strictly following this structure:
     {
       "contactInformation": {

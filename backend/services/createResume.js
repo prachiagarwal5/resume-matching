@@ -1,8 +1,11 @@
 require("dotenv").config();
-const OpenAI = require("openai");
+// const OpenAI = require("openai");
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+const Groq = require("groq-sdk");
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 // Helper function to extract valid JSON from response
 const extractValidJson = (data) => {
   try {
@@ -217,7 +220,7 @@ const generateResume = async (candidateData) => {
   
     Ensure each section is optimized for maximum ATS compatibility and keyword matching.`;
 
-    const response = await openai.chat.completions.create({
+    const response = await groq.chat.completions.create({
       messages: [
         { 
           role: "system", 
@@ -228,8 +231,9 @@ const generateResume = async (candidateData) => {
           content: prompt,
         },
       ],
-      model: "gpt-4o-mini",
-      max_tokens: 1200,
+      // model: "gpt-4o-mini",
+      // max_tokens: 1200,
+      model: "llama3-70b-8192", 
     });
 
     console.log("Raw Response:", response.choices[0].message.content);
