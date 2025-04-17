@@ -91,16 +91,22 @@ const UploadResume = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-            to="/"
+            to="/mul_resume"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
             ATS Analyzer
           </Link>
           <Link
-            to="/resume"
+                      to="/resumeupload"
+                      className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+                    >
+                      Resume Analyzer
+                    </Link>
+          <Link
+            to="/communication"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
-            Create Resume
+            Communication
           </Link>
         </div>
       </nav>
