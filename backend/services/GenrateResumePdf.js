@@ -1,5 +1,6 @@
 import { Groq } from "groq-sdk";
 import dotenv from "dotenv";
+import { jsonrepair } from "jsonrepair";
 
 dotenv.config();
 
@@ -91,25 +92,30 @@ const generateResumePDF = async (resumeData) => {
           "Soft Skill 1",
           "Soft Skill 2",....
         ],
-      "certification": [
-        {
-         "Industry-Recognized Certification",
-         "Industry-Recognized Certification"
-        }
-      ],
+        "certification": [
+          { "name": "Certified in Introduction to Generative AI" },
+          { "name": "AWS Certified Solutions Architect" }
+        ],
       "achievements": [
         "Quantified achievement with metrics"
       ]
     }
     `;
     const response = await groq.chat.completions.create({
-      messages: [
-        { role: "user", content: prompt }
-      ],
+      messages: [{ role: "user", content: prompt }],
       model: "llama3-70b-8192",
     });
 
-    const parsedResponse = extractJson(response.choices[0].message.content);
+    console.log("Raw Response:", response);
+    const rawContent = response.choices[0].message.content;
+    const jsonString = extractJson(rawContent);
+    let parsedResponse;
+    try {
+      parsedResponse = JSON.parse(jsonString);
+    } catch (e) {
+      // Try to repair and parse again
+      parsedResponse = JSON.parse(jsonrepair(jsonString));
+    }
     return parsedResponse;
   } catch (error) {
     console.error("Error generating resume PDF:", error);

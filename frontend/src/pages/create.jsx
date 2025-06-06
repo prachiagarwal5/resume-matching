@@ -82,7 +82,9 @@ const CreateResume = () => {
         technicalSkills: resumeData.technicalSkills || [""],
         softSkills: resumeData.softSkills || [""],
         projects: resumeData.projects || [{ title: "", description: "" }],
-        certification: resumeData.certifications || [""],
+        certification: resumeData.certification
+          ? resumeData.certification.map((c) => c.name)
+          : [""],
         achievements: resumeData.achievements || [""],
         experience: resumeData.experience || [
           { designation: "", companyName: "", description: "" },
@@ -240,11 +242,19 @@ const CreateResume = () => {
     // console.log("Transformed Data (create.jsx):", transformedData);
 
     try {
+      const dataToSend = {
+        ...formData,
+        certification: formData.certification
+          .filter((c) => c && c.trim() !== "") // remove empty
+          .map((c) => ({ name: c })), // convert to {name: ...}
+      };
+      console.log("Data to send:", dataToSend);
+
       const response = await axios.post(
         "http://localhost:5001/api/form/submit",
-        formData,
+        dataToSend,
       );
-      // console.log("Data sent successfully:", response.data);
+      console.log("Data sent successfully:", response.data);
 
       navigate("/template-selection", {
         state: { formData: response.data },
