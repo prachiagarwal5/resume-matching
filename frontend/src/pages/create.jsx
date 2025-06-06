@@ -11,7 +11,9 @@ import Certifications from "../Component/createResume/Certifications";
 import Achievements from "../Component/createResume/Achievements";
 
 const CreateResume = () => {
+  const userId = localStorage.getItem("userId");
   const [formData, setFormData] = useState({
+    userId: userId,
     name: "",
     phoneNumber: "",
     gmail: "",
@@ -53,6 +55,7 @@ const CreateResume = () => {
     if (location.state && location.state.resumeData) {
       const resumeData = location.state.resumeData;
       setFormData({
+        userId: resumeData.userId,
         name: resumeData.name || "",
         phoneNumber: resumeData.phoneNumber || "",
         gmail: resumeData.gmail || "",
@@ -191,9 +194,9 @@ const CreateResume = () => {
     const transformedData = {
       contactInformation: {
         name: formData.name,
-        email: formData.gmail,
-        phone: formData.phoneNumber,
-        linkedin: formData.linkedIn,
+        gmail: formData.gmail,
+        phoneNumber: formData.phoneNumber,
+        linkedIn: formData.linkedIn,
         github: formData.github,
         location: formData.location,
       },
@@ -201,10 +204,10 @@ const CreateResume = () => {
       education: {
         graduation: {
           degree: formData.graduation.degree,
-          institution: formData.graduation.universityName,
+          universityName: formData.graduation.universityName,
           location: formData.graduation.location,
           yearSpan: formData.graduation.yearSpan,
-          CPI: formData.graduation.cpi,
+          cpi: formData.graduation.cpi,
         },
         intermediate: {
           schoolName: formData.intermediate.schoolName,
@@ -220,13 +223,13 @@ const CreateResume = () => {
           location: formData.highSchool.location,
         },
       },
-      workExperience: formData.experience.map((exp) => ({
-        jobTitle: exp.designation,
-        company: exp.companyName,
+      experience: formData.experience.map((exp) => ({
+        designation: exp.designation,
+        companyName: exp.companyName,
         description: [exp.description],
       })),
       projects: formData.projects.map((proj) => ({
-        projectTitle: proj.title,
+        title: proj.title,
         description: [proj.description],
       })),
       skills: {

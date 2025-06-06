@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const resumeSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   name: { type: String, required: true },
   gmail: { type: String, required: true },
+  objective: { type: String },
   phoneNumber: { type: String, required: true },
   linkedIn: { type: String, required: true },
   github: { type: String },

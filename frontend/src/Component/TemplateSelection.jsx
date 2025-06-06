@@ -8,6 +8,63 @@ import Template4 from "./templates/Template4";
 // import Template5 from "./templates/Template5";
 import Template6 from "./templates/Template6";
 
+function mapResumeToTemplateFormat(resume) {
+  if (!resume) return {};
+
+  return {
+    contactInformation: {
+      name: resume.name,
+      email: resume.gmail,
+      phone: resume.phoneNumber,
+      linkedin: resume.linkedIn,
+      github: resume.github,
+      location: resume.location,
+    },
+    objective: resume.objective || "",
+    education: {
+      graduation: {
+        degree: resume.graduation?.degree,
+        institution: resume.graduation?.universityName,
+        location: resume.graduation?.location,
+        yearSpan: resume.graduation?.yearSpan,
+        CPI: resume.graduation?.cpi,
+      },
+      intermediate: {
+        schoolName: resume.intermediate?.schoolName,
+        percentage: resume.intermediate?.percentage,
+        stream: resume.intermediate?.stream,
+        yearSpan: resume.intermediate?.yearSpan,
+        location: resume.intermediate?.location,
+      },
+      highSchool: {
+        schoolName: resume.highSchool?.schoolName,
+        percentage: resume.highSchool?.percentage,
+        yearSpan: resume.highSchool?.yearSpan,
+        location: resume.highSchool?.location,
+      },
+    },
+    workExperience: (resume.experience || []).map((exp) => ({
+      jobTitle: exp.designation,
+      company: exp.companyName,
+      description: Array.isArray(exp.description)
+        ? exp.description
+        : [exp.description],
+    })),
+    projects: (resume.projects || []).map((proj) => ({
+      projectTitle: proj.title,
+      description: Array.isArray(proj.description)
+        ? proj.description
+        : [proj.description],
+    })),
+    skills: {
+      technicalSkills: resume.technicalSkills || [],
+      softSkills: resume.softSkills || [],
+    },
+    certifications: resume.certification || [],
+    achievements: resume.achievements || [],
+  };
+}
+
 const TemplateSelection = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,8 +79,9 @@ const TemplateSelection = () => {
     if (formData) {
       const processed =
         typeof formData === "string" ? JSON.parse(formData) : formData;
-      setProcessedData(processed);
-      console.log("Processed form data:", processed);
+      const resumeObj = processed.resume ? processed.resume : processed;
+      setProcessedData(resumeObj);
+      console.log("Processed form data:", resumeObj);
     }
   }, [formData]);
 
@@ -201,7 +259,13 @@ const TemplateSelection = () => {
                   {/* Actions */}
                   <div className="flex gap-4 pt-4">
                     <PDFDownloadLink
-                      document={<template.component data={processedData} />}
+                      document={
+                        <template.component
+                          data={{
+                            resume: mapResumeToTemplateFormat(processedData),
+                          }}
+                        />
+                      }
                       fileName={`resume-${template.id}.pdf`}
                       className="flex-1"
                     >
@@ -292,7 +356,11 @@ const TemplateSelection = () => {
             </div>
             <div className="flex-1 p-4 bg-gray-900">
               <PDFViewer width="100%" height="100%" className="rounded-lg">
-                <selectedTemplate.component data={processedData} />
+                <selectedTemplate.component
+                  data={{
+                    resume: mapResumeToTemplateFormat(processedData),
+                  }}
+                />
               </PDFViewer>
             </div>
           </div>
