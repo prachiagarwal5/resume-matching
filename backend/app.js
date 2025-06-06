@@ -1,11 +1,11 @@
 const dotenv = require("dotenv");
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-const analyzeRoutes = require("./routes/analyzeRoutes");
-const formRoutes = require("./routes/formRoutes");
-const commRoutes = require("./routes/commRoutes");
+const routes = require("./routes"); // Import the main router
+// const authRoutes = require("./routes/auth"); // Import auth routes
 
 const app = express();
 dotenv.config();
@@ -32,10 +32,23 @@ const outputDir = path.join(__dirname, "output");
   }
 });
 
+// MongoDB connection string
+const dbURI = process.env.MONGO_URI || 'mongodb://localhost:27017/resume-matching'; // Updated fallback string
+
+// Connect to MongoDB
+mongoose
+  .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch((err) => {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1); // Exit the process if the connection fails
+  });
+
 // Routes
-app.use("/api/analyze", analyzeRoutes);
-app.use("/api/form", formRoutes);
-app.use("/api/communication", commRoutes);
+app.use("/api", routes); // Ensure the main router is used under "/api"
+
+// Auth routes
+// app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {

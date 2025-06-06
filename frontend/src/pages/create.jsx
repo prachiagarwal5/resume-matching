@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaCode, FaCheck } from "react-icons/fa";
 import PersonalInformation from "../Component/createResume/PersonalInformation";
 import Education from "../Component/createResume/Education";
@@ -11,7 +11,9 @@ import Certifications from "../Component/createResume/Certifications";
 import Achievements from "../Component/createResume/Achievements";
 
 const CreateResume = () => {
+  const userId = localStorage.getItem("userId");
   const [formData, setFormData] = useState({
+    userId: userId,
     name: "",
     phoneNumber: "",
     gmail: "",
@@ -47,6 +49,52 @@ const CreateResume = () => {
   });
   const [isLoading, setIsLoading] = useState(false); // New loading state
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.resumeData) {
+      const resumeData = location.state.resumeData;
+      setFormData({
+        userId: resumeData.userId,
+        name: resumeData.name || "",
+        phoneNumber: resumeData.phoneNumber || "",
+        gmail: resumeData.gmail || "",
+        linkedIn: resumeData.linkedIn || "",
+        github: resumeData.github || "",
+        location: resumeData.location || "",
+        graduation: resumeData.graduation || {
+          universityName: "",
+          cpi: "",
+          degree: "",
+          yearSpan: "",
+          location: "",
+        },
+        intermediate: resumeData.intermediate || {
+          schoolName: "",
+          percentage: "",
+          stream: "",
+          yearSpan: "",
+          location: "",
+        },
+        highSchool: resumeData.highSchool || {
+          schoolName: "",
+          percentage: "",
+          yearSpan: "",
+          location: "",
+        },
+        technicalSkills: resumeData.technicalSkills || [""],
+        softSkills: resumeData.softSkills || [""],
+        projects: resumeData.projects || [{ title: "", description: "" }],
+        certification: resumeData.certification
+          ? resumeData.certification.map((c) => c.name)
+          : [""],
+        achievements: resumeData.achievements || [""],
+        experience: resumeData.experience || [
+          { designation: "", companyName: "", description: "" },
+        ],
+      });
+    }
+  }, [location.state]);
 
   const handleInputChange = (e, section, field) => {
     if (section) {
@@ -146,9 +194,9 @@ const CreateResume = () => {
     const transformedData = {
       contactInformation: {
         name: formData.name,
-        email: formData.gmail,
-        phone: formData.phoneNumber,
-        linkedin: formData.linkedIn,
+        gmail: formData.gmail,
+        phoneNumber: formData.phoneNumber,
+        linkedIn: formData.linkedIn,
         github: formData.github,
         location: formData.location,
       },
@@ -156,10 +204,10 @@ const CreateResume = () => {
       education: {
         graduation: {
           degree: formData.graduation.degree,
-          institution: formData.graduation.universityName,
+          universityName: formData.graduation.universityName,
           location: formData.graduation.location,
           yearSpan: formData.graduation.yearSpan,
-          CPI: formData.graduation.cpi,
+          cpi: formData.graduation.cpi,
         },
         intermediate: {
           schoolName: formData.intermediate.schoolName,
@@ -175,17 +223,17 @@ const CreateResume = () => {
           location: formData.highSchool.location,
         },
       },
-      workExperience: formData.experience.map((exp) => ({
-        jobTitle: exp.designation,
-        company: exp.companyName,
+      experience: formData.experience.map((exp) => ({
+        designation: exp.designation,
+        companyName: exp.companyName,
         description: [exp.description],
       })),
       projects: formData.projects.map((proj) => ({
-        projectTitle: proj.title,
+        title: proj.title,
         description: [proj.description],
       })),
       skills: {
-        technicalSkills : formData.technicalSkills,
+        technicalSkills: formData.technicalSkills,
         softSkills: formData.softSkills,
       },
       certifications: formData.certification.map((cert) => ({
@@ -197,11 +245,19 @@ const CreateResume = () => {
     // console.log("Transformed Data (create.jsx):", transformedData);
 
     try {
+      const dataToSend = {
+        ...formData,
+        certification: formData.certification
+          .filter((c) => c && c.trim() !== "") // remove empty
+          .map((c) => ({ name: c })), // convert to {name: ...}
+      };
+      console.log("Data to send:", dataToSend);
+
       const response = await axios.post(
         "https://resumeanalyser-nhai.onrender.com/api/form/submit",
-        formData,
+        dataToSend,
       );
-      // console.log("Data sent successfully:", response.data);
+      console.log("Data sent successfully:", response.data);
 
       navigate("/template-selection", {
         state: { formData: response.data },
@@ -337,7 +393,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Personal Details" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Personal Details" />
+            )} // Removed "AT MAX"
           />
           <Education
             formData={formData}
@@ -345,7 +403,9 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => <SectionTitle {...props} title="Education" />} // Removed "AT MAX"
+            SectionTitle={(props) => (
+              <SectionTitle {...props} title="Education" />
+            )} // Removed "AT MAX"
           />
           <Skills
             formData={formData}
@@ -355,9 +415,7 @@ const CreateResume = () => {
             inputClasses={inputClasses}
             labelClasses={labelClasses}
             sectionClasses={sectionClasses}
-            SectionTitle={(props) => (
-              <SectionTitle {...props}  />
-            )}
+            SectionTitle={(props) => <SectionTitle {...props} />}
           />
           <Projects
             formData={formData}
@@ -404,12 +462,14 @@ const CreateResume = () => {
               type="submit"
               className={`bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700
                                        transition duration-300 flex items-center gap-2 text-lg font-semibold ${
-                                         isLoading ? "opacity-50 cursor-not-allowed" : ""
+                                         isLoading
+                                           ? "opacity-50 cursor-not-allowed"
+                                           : ""
                                        }`}
               disabled={isLoading} // Disable button when loading
             >
               {isLoading ? (
-                <div >Creating....</div> // White circle loader
+                <div>Creating....</div> // White circle loader
               ) : (
                 <>
                   <FaCheck /> Create Resume

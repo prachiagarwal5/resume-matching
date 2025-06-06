@@ -5,8 +5,65 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import Template2 from "./templates/Template2";
 import Template3 from "./templates/Template3";
 import Template4 from "./templates/Template4";
-import Template5 from "./templates/Template5";
+// import Template5 from "./templates/Template5";
 import Template6 from "./templates/Template6";
+
+function mapResumeToTemplateFormat(resume) {
+  if (!resume) return {};
+
+  return {
+    contactInformation: {
+      name: resume.name,
+      email: resume.gmail,
+      phone: resume.phoneNumber,
+      linkedin: resume.linkedIn,
+      github: resume.github,
+      location: resume.location,
+    },
+    objective: resume.objective || "",
+    education: {
+      graduation: {
+        degree: resume.graduation?.degree,
+        institution: resume.graduation?.universityName,
+        location: resume.graduation?.location,
+        yearSpan: resume.graduation?.yearSpan,
+        CPI: resume.graduation?.cpi,
+      },
+      intermediate: {
+        schoolName: resume.intermediate?.schoolName,
+        percentage: resume.intermediate?.percentage,
+        stream: resume.intermediate?.stream,
+        yearSpan: resume.intermediate?.yearSpan,
+        location: resume.intermediate?.location,
+      },
+      highSchool: {
+        schoolName: resume.highSchool?.schoolName,
+        percentage: resume.highSchool?.percentage,
+        yearSpan: resume.highSchool?.yearSpan,
+        location: resume.highSchool?.location,
+      },
+    },
+    workExperience: (resume.experience || []).map((exp) => ({
+      jobTitle: exp.designation,
+      company: exp.companyName,
+      description: Array.isArray(exp.description)
+        ? exp.description
+        : [exp.description],
+    })),
+    projects: (resume.projects || []).map((proj) => ({
+      projectTitle: proj.title,
+      description: Array.isArray(proj.description)
+        ? proj.description
+        : [proj.description],
+    })),
+    skills: {
+      technicalSkills: resume.technicalSkills || [],
+      softSkills: resume.softSkills || [],
+    },
+    certifications: resume.certification || [],
+    achievements: resume.achievements || [],
+  };
+}
 
 const TemplateSelection = () => {
   const location = useLocation();
@@ -22,8 +79,9 @@ const TemplateSelection = () => {
     if (formData) {
       const processed =
         typeof formData === "string" ? JSON.parse(formData) : formData;
-      setProcessedData(processed);
-      console.log("Processed form data:", processed);
+      const resumeObj = processed.resume ? processed.resume : processed;
+      setProcessedData(resumeObj);
+      console.log("Processed form data:", resumeObj);
     }
   }, [formData]);
 
@@ -44,22 +102,6 @@ const TemplateSelection = () => {
     //   buttonColor: "bg-blue-600 hover:bg-blue-700",
     //   borderColor: "border-gray-700",
     // },
-    // {
-    //   id: 1,
-    //   name: "Modern Creative",
-    //   component: Template2,
-    //   description:
-    //     "A contemporary design that balances creativity with professionalism.",
-    //   features: [
-    //     "Modern two-column layout",
-    //     "Distinct section styling",
-    //     "Skills-focused design",
-    //     "Visual hierarchy",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-purple-600 hover:bg-purple-700",
-    //   borderColor: "border-gray-700",
-    // },
     {
       id: 1,
       name: "Classic Elegance",
@@ -75,22 +117,38 @@ const TemplateSelection = () => {
       buttonColor: "bg-green-600 hover:bg-green-700",
       borderColor: "border-gray-700",
     },
-    // {
-    //   id: ,
-    //   name: "Sidebar Professional",
-    //   component: Template4,
-    //   description:
-    //     "A modern template with a sidebar for contact information and a clean main content area.",
-    //   features: [
-    //     "Sidebar for contact info",
-    //     "Clean main content area",
-    //     "Modern and professional look",
-    //     "Emphasis on skills and experience",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-teal-600 hover:bg-teal-700",
-    //   borderColor: "border-gray-700",
-    // },
+    {
+      id: 2,
+      name: "Modern Creative",
+      component: Template2,
+      description:
+        "A contemporary design that balances creativity with professionalism.",
+      features: [
+        "Modern two-column layout",
+        "Distinct section styling",
+        "Skills-focused design",
+        "Visual hierarchy",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-purple-600 hover:bg-purple-700",
+      borderColor: "border-gray-700",
+    },
+    {
+      id: 3,
+      name: "Sidebar Professional",
+      component: Template4,
+      description:
+        "A modern template with a sidebar for contact information and a clean main content area.",
+      features: [
+        "Sidebar for contact info",
+        "Clean main content area",
+        "Modern and professional look",
+        "Emphasis on skills and experience",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-teal-600 hover:bg-teal-700",
+      borderColor: "border-gray-700",
+    },
     // {
     //   id: 4,
     //   name: "Centered Elegance",
@@ -107,22 +165,22 @@ const TemplateSelection = () => {
     //   buttonColor: "bg-orange-600 hover:bg-orange-700",
     //   borderColor: "border-gray-700",
     // },
-    // {
-    //   id: 5,
-    //   name: "Two-Column Modern",
-    //   component: Template6,
-    //   description:
-    //     "A modern two-column layout with a focus on skills and experience.",
-    //   features: [
-    //     "Two-column layout",
-    //     "Left column for contact info and skills",
-    //     "Right column for main content",
-    //     "Modern and clean design",
-    //   ],
-    //   bgColor: "bg-gray-800",
-    //   buttonColor: "bg-red-600 hover:bg-red-700",
-    //   borderColor: "border-gray-700",
-    // },
+    {
+      id: 4,
+      name: "Two-Column Modern",
+      component: Template6,
+      description:
+        "A modern two-column layout with a focus on skills and experience.",
+      features: [
+        "Two-column layout",
+        "Left column for contact info and skills",
+        "Right column for main content",
+        "Modern and clean design",
+      ],
+      bgColor: "bg-gray-800",
+      buttonColor: "bg-red-600 hover:bg-red-700",
+      borderColor: "border-gray-700",
+    },
   ];
 
   return (
@@ -201,7 +259,13 @@ const TemplateSelection = () => {
                   {/* Actions */}
                   <div className="flex gap-4 pt-4">
                     <PDFDownloadLink
-                      document={<template.component data={processedData} />}
+                      document={
+                        <template.component
+                          data={{
+                            resume: mapResumeToTemplateFormat(processedData),
+                          }}
+                        />
+                      }
                       fileName={`resume-${template.id}.pdf`}
                       className="flex-1"
                     >
@@ -292,7 +356,11 @@ const TemplateSelection = () => {
             </div>
             <div className="flex-1 p-4 bg-gray-900">
               <PDFViewer width="100%" height="100%" className="rounded-lg">
-                <selectedTemplate.component data={processedData} />
+                <selectedTemplate.component
+                  data={{
+                    resume: mapResumeToTemplateFormat(processedData),
+                  }}
+                />
               </PDFViewer>
             </div>
           </div>

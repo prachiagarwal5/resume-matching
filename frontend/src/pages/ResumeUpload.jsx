@@ -38,7 +38,7 @@ const ResumeUpload = () => {
 
     try {
       const response = await axios.post(
-        "https://resumeanalyser-nhai.onrender.com/api/analyze",
+        "http://localhost:5001/api/analyze",
         formData,
         {
           headers: {
@@ -71,16 +71,22 @@ const ResumeUpload = () => {
         <div className="flex items-center space-x-4">
           {/* Add the Create Resume button */}
           <Link
-            to="/"
+            to="/mul_resume"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
             ATS Analyzer
           </Link>
           <Link
-            to="/resume-creation"
+            to="/resume"
             className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
           >
             Create Resume
+          </Link>
+          <Link
+            to="/communication"
+            className="bg-purple-700 dark:bg-purple-600 text-white py-2 px-4 rounded-lg shadow hover:bg-purple-800 dark:hover:bg-purple-500 transition duration-300"
+          >
+            Communication
           </Link>
         </div>
       </nav>
